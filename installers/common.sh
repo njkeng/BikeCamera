@@ -1,5 +1,5 @@
-raspap_dir="/etc/raspap"
-raspap_user="www-data"
+pihelmetcam_dir="/etc/pihelmetcam"
+pihelmetcam_user="www-data"
 version=`sed 's/\..*//' /etc/debian_version`
 
 # Determine version, set default home location for lighttpd and 
@@ -17,14 +17,14 @@ else
     php_package="php5-cgi" 
 fi 
 
-# Outputs a RaspAP Install log line
+# Outputs a PiHelmetCam Install log line
 function install_log() {
-    echo -e "\033[1;32mRaspAP Install: $*\033[m"
+    echo -e "\033[1;32mPiHelmetCam Install: $*\033[m"
 }
 
-# Outputs a RaspAP Install Error log line and exits with status code 1
+# Outputs a PiHelmetCam Install Error log line and exits with status code 1
 function install_error() {
-    echo -e "\033[1;37;41mRaspAP Install Error: $*\033[m"
+    echo -e "\033[1;37;41mPiHelmetCam Install Error: $*\033[m"
     exit 1
 }
 
@@ -34,17 +34,17 @@ function display_welcome() {
     green='\033[1;32m'
 
     echo -e "${raspberry}\n"
-    echo -e " 888888ba                              .d888888   888888ba" 
-    echo -e " 88     8b                            d8     88   88     8b" 
-    echo -e "a88aaaa8P' .d8888b. .d8888b. 88d888b. 88aaaaa88a a88aaaa8P" 
-    echo -e " 88    8b. 88    88 Y8ooooo. 88    88 88     88   88" 
-    echo -e " 88     88 88.  .88       88 88.  .88 88     88   88" 
-    echo -e " dP     dP  88888P8  88888P  88Y888P  88     88   dP" 
-    echo -e "                             88"                             
-    echo -e "                             dP"                             
+    echo -e " __________________________________________________________________________"
+    echo -e "    ____         _     _                                 __                "
+    echo -e "    /    )   ,   /    /          /                     /    )              "
+    echo -e "   /____/       /___ /     __   /   _  _    __  _/_   /         __   _  _  "
+    echo -e "  /        /   /    /    /___) /   / /  ) /___) /    /        /   ) / /  ) "
+    echo -e "_/________/___/____/____(___ _/___/_/__/_(___ _(_ __(____/___(___(_/_/__/_ "
+    echo -e ""
     echo -e "${green}"
     echo -e "The Quick Installer will guide you through a few easy steps\n\n"
 }
+
 
 ### NOTE: all the below functions are overloadable for system-specific installs
 ### NOTE: some of the below functions MUST be overloaded due to system-specific installs
@@ -52,7 +52,7 @@ function display_welcome() {
 function config_installation() {
     install_log "Configure installation"
     echo "Detected ${version_msg}" 
-    echo "Install directory: ${raspap_dir}"
+    echo "Install directory: ${pihelmetcam_dir}"
     echo "Lighttpd directory: ${webroot_dir}"
     echo -n "Complete installation with these values? [y/N]: "
     read answer
@@ -83,38 +83,45 @@ function enable_php_lighttpd() {
     sudo /etc/init.d/lighttpd restart || install_error "Unable to restart lighttpd"
 }
 
-# Verifies existence and permissions of RaspAP directory
-function create_raspap_directories() {
-    install_log "Creating RaspAP directories"
-    if [ -d "$raspap_dir" ]; then
-        sudo mv $raspap_dir "$raspap_dir.`date +%F-%R`" || install_error "Unable to move old '$raspap_dir' out of the way"
+# Verifies existence and permissions of PiHelmetCam directory
+function create_pihelmetcam_directories() {
+    install_log "Creating PiHelmetCam directories"
+    if [ -d "$pihelmetcam_dir" ]; then
+        sudo mv $pihelmetcam_dir "$pihelmetcam_dir.`date +%F-%R`" || install_error "Unable to move old '$pihelmetcam_dir' out of the way"
     fi
-    sudo mkdir -p "$raspap_dir" || install_error "Unable to create directory '$raspap_dir'"
+    sudo mkdir -p "$pihelmetcam_dir" || install_error "Unable to create directory '$pihelmetcam_dir'"
 
     # Create a directory for existing file backups.
-    sudo mkdir -p "$raspap_dir/backups"
+    sudo mkdir -p "$pihelmetcam_dir/backups"
 
     # Create a directory to store networking configs
-    sudo mkdir -p "$raspap_dir/networking"
+    sudo mkdir -p "$pihelmetcam_dir/networking"
     # Copy existing dhcpcd.conf to use as base config
-    cat /etc/dhcpcd.conf | sudo tee -a /etc/raspap/networking/defaults
+    cat /etc/dhcpcd.conf | sudo tee -a /etc/pihelmetcam/networking/defaults
 
-    sudo chown -R $raspap_user:$raspap_user "$raspap_dir" || install_error "Unable to change file ownership for '$raspap_dir'"
+    sudo chown -R $pihelmetcam_user:$pihelmetcam_user "$pihelmetcam_dir" || install_error "Unable to change file ownership for '$pihelmetcam_dir'"
 }
 
 # Generate logging enable/disable files for hostapd
 function create_logging_scripts() {
     install_log "Creating logging scripts"
-    sudo mkdir $raspap_dir/hostapd || install_error "Unable to create directory '$raspap_dir/hostapd'"
+    sudo mkdir $pihelmetcam_dir/hostapd || install_error "Unable to create directory '$pihelmetcam_dir/hostapd'"
 
     # Move existing shell scripts 
-    sudo mv $webroot_dir/installers/*log.sh $raspap_dir/hostapd || install_error "Unable to move logging scripts"
+    sudo mv $webroot_dir/installers/*log.sh $pihelmetcam_dir/hostapd || install_error "Unable to move logging scripts"
 }
 
-# Generate configuration reset files for raspap
+# Generate configuration reset files for pihelmetcam
 function create_reset_scripts() {
-    sudo mv /var/www/html/installers/reset.sh /etc/raspap/hostapd
-    sudo mv /var/www/html/installers/button.py /etc/raspap/hostapd
+    sudo mv /var/www/html/installers/reset.sh /etc/pihelmetcam/hostapd
+    sudo mv /var/www/html/installers/button.py /etc/pihelmetcam/hostapd
+}
+
+# Move video files for pihelmetcam
+function create_video_files() {
+    install_log "Preparing video recording scripts"
+    sudo mkdir $pihelmetcam_dir/video || install_error "Unable to create directory '$pihelmetcam_dir/video'"
+    sudo mv /var/www/html/installers/video.py /etc/pihelmetcam/video
 }
 
 # Fetches latest files from github to webroot
@@ -124,8 +131,8 @@ function download_latest_files() {
     fi
 
     install_log "Cloning latest files from github"
-    git clone https://github.com/billz/raspap-webgui /tmp/raspap-webgui || install_error "Unable to download files from github"
-    sudo mv /tmp/raspap-webgui $webroot_dir || install_error "Unable to move raspap-webgui to web root"
+    git clone https://github.com/njkeng/PiHelmetCam /tmp/pihelmetcam || install_error "Unable to download files from github"
+    sudo mv /tmp/pihelmetcam $webroot_dir || install_error "Unable to move pihelmetcam to web root"
 }
 
 # Sets files ownership in web root directory
@@ -135,45 +142,45 @@ function change_file_ownership() {
     fi
 
     install_log "Changing file ownership in web root directory"
-    sudo chown -R $raspap_user:$raspap_user "$webroot_dir" || install_error "Unable to change file ownership for '$webroot_dir'"
+    sudo chown -R $pihelmetcam_user:$pihelmetcam_user "$webroot_dir" || install_error "Unable to change file ownership for '$webroot_dir'"
 }
 
 # Check for existing /etc/network/interfaces and /etc/hostapd/hostapd.conf files
 function check_for_old_configs() {
     if [ -f /etc/network/interfaces ]; then
-        sudo cp /etc/network/interfaces "$raspap_dir/backups/interfaces.`date +%F-%R`"
-        sudo ln -sf "$raspap_dir/backups/interfaces.`date +%F-%R`" "$raspap_dir/backups/interfaces"
+        sudo cp /etc/network/interfaces "$pihelmetcam_dir/backups/interfaces.`date +%F-%R`"
+        sudo ln -sf "$pihelmetcam_dir/backups/interfaces.`date +%F-%R`" "$pihelmetcam_dir/backups/interfaces"
     fi
 
     if [ -f /etc/hostapd/hostapd.conf ]; then
-        sudo cp /etc/hostapd/hostapd.conf "$raspap_dir/backups/hostapd.conf.`date +%F-%R`"
-        sudo ln -sf "$raspap_dir/backups/hostapd.conf.`date +%F-%R`" "$raspap_dir/backups/hostapd.conf"
+        sudo cp /etc/hostapd/hostapd.conf "$pihelmetcam_dir/backups/hostapd.conf.`date +%F-%R`"
+        sudo ln -sf "$pihelmetcam_dir/backups/hostapd.conf.`date +%F-%R`" "$pihelmetcam_dir/backups/hostapd.conf"
     fi
 
     if [ -f /etc/dnsmasq.conf ]; then
-        sudo cp /etc/dnsmasq.conf "$raspap_dir/backups/dnsmasq.conf.`date +%F-%R`"
-        sudo ln -sf "$raspap_dir/backups/dnsmasq.conf.`date +%F-%R`" "$raspap_dir/backups/dnsmasq.conf"
+        sudo cp /etc/dnsmasq.conf "$pihelmetcam_dir/backups/dnsmasq.conf.`date +%F-%R`"
+        sudo ln -sf "$pihelmetcam_dir/backups/dnsmasq.conf.`date +%F-%R`" "$pihelmetcam_dir/backups/dnsmasq.conf"
     fi
 
     if [ -f /etc/dhcpcd.conf ]; then
-        sudo cp /etc/dhcpcd.conf "$raspap_dir/backups/dhcpcd.conf.`date +%F-%R`"
-        sudo ln -sf "$raspap_dir/backups/dhcpcd.conf.`date +%F-%R`" "$raspap_dir/backups/dhcpcd.conf"
+        sudo cp /etc/dhcpcd.conf "$pihelmetcam_dir/backups/dhcpcd.conf.`date +%F-%R`"
+        sudo ln -sf "$pihelmetcam_dir/backups/dhcpcd.conf.`date +%F-%R`" "$pihelmetcam_dir/backups/dhcpcd.conf"
     fi
 
     if [ -f /etc/rc.local ]; then
-        sudo cp /etc/rc.local "$raspap_dir/backups/rc.local.`date +%F-%R`"
-        sudo ln -sf "$raspap_dir/backups/rc.local.`date +%F-%R`" "$raspap_dir/backups/rc.local"
+        sudo cp /etc/rc.local "$pihelmetcam_dir/backups/rc.local.`date +%F-%R`"
+        sudo ln -sf "$pihelmetcam_dir/backups/rc.local.`date +%F-%R`" "$pihelmetcam_dir/backups/rc.local"
     fi
 }
 
 # Move configuration file to the correct location
 function move_config_file() {
-    if [ ! -d "$raspap_dir" ]; then
-        install_error "'$raspap_dir' directory doesn't exist"
+    if [ ! -d "$pihelmetcam_dir" ]; then
+        install_error "'$pihelmetcam_dir' directory doesn't exist"
     fi
 
-    install_log "Moving configuration file to '$raspap_dir'"
-    sudo mv "$webroot_dir"/raspap.php "$raspap_dir" || install_error "Unable to move files to '$raspap_dir'"
+    install_log "Moving configuration file to '$pihelmetcam_dir'"
+    sudo mv "$webroot_dir"/pihelmetcam.php "$pihelmetcam_dir" || install_error "Unable to move files to '$pihelmetcam_dir'"
 }
 
 # Set up configuration for the reset function
@@ -182,12 +189,12 @@ function configuration_for_reset() {
     sudo echo "webroot_dir = \"$webroot_dir\"" >> /tmp/reset.ini || install_error "Unable to write to reset configuration file"
     sudo echo "user_reset_files = 0" >> /tmp/reset.ini || install_error "Unable to write to reset configuration file"
     sudo echo "user_files_saved = 0" >> /tmp/reset.ini || install_error "Unable to write to reset configuration file"
-    sudo mv /tmp/reset.ini /etc/raspap/hostapd/ || install_error "Unable to move files to '$raspap_dir'"
+    sudo mv /tmp/reset.ini /etc/pihelmetcam/hostapd/ || install_error "Unable to move files to '$pihelmetcam_dir'"
 }
 
-# Set permissions for all RaspAP directories and folders
+# Set permissions for all PiHelmetCam directories and folders
 function set_permissions() {
-    sudo chown -R $raspap_user:$raspap_user "$raspap_dir" || install_error "Unable to change file ownership for '$raspap_dir'"
+    sudo chown -R $pihelmetcam_user:$pihelmetcam_user "$pihelmetcam_dir" || install_error "Unable to change file ownership for '$pihelmetcam_dir'"
 }
 
 
@@ -216,7 +223,8 @@ function default_configuration() {
     lines=(
     'echo 1 > /proc/sys/net/ipv4/ip_forward #RASPAP'
     'iptables -t nat -A POSTROUTING -j MASQUERADE #RASPAP'
-    "python3 $raspap_dir/hostapd/button.py \&  #RASPAP"
+    "python3 $pihelmetcam_dir/hostapd/button.py \&  #RASPAP"
+    "python3 $pihelmetcam_dir/video/video.py \&  #RASPAP"
     )
     
     for line in "${lines[@]}"; do
@@ -267,9 +275,9 @@ function patch_system_files() {
         "/sbin/ip link set wlan1 down"
         "/sbin/ip link set wlan1 up"
         "/sbin/ip -s a f label wlan1"
-        "/bin/cp /etc/raspap/networking/dhcpcd.conf /etc/dhcpcd.conf"
-        "/etc/raspap/hostapd/enablelog.sh"
-        "/etc/raspap/hostapd/disablelog.sh"
+        "/bin/cp /etc/pihelmetcam/networking/dhcpcd.conf /etc/dhcpcd.conf"
+        "/etc/pihelmetcam/hostapd/enablelog.sh"
+        "/etc/pihelmetcam/hostapd/disablelog.sh"
     )
 
     # Check if sudoers needs patching
@@ -302,18 +310,19 @@ function install_complete() {
     sudo shutdown -r now || install_error "Unable to execute shutdown"
 }
 
-function install_raspap() {
+function install_pihelmetcam() {
     display_welcome
     config_installation
     update_system_packages
     install_dependencies
     enable_php_lighttpd
-    create_raspap_directories
+    create_pihelmetcam_directories
     check_for_old_configs
     download_latest_files
     change_file_ownership
     create_logging_scripts
     create_reset_scripts
+    create_video_files
     move_config_file
     configuration_for_reset
     set_permissions
