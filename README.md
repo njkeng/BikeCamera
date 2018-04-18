@@ -33,7 +33,7 @@ Real time clock??
 ## Quick installer
 Install RaspAP from your RaspberryPi's shell prompt:
 ```sh
-$ wget -q https://git.io/vpk26 -O /tmp/pihelmetcam && bash /tmp/pihelmetcam
+$ wget -q https://git.io/vpk26 -O /tmp/caminstaller && bash /tmp/caminstaller
 ```
 The installer will complete the steps in the manual installation (below) for you.
 
