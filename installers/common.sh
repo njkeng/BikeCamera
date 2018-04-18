@@ -122,6 +122,16 @@ function create_video_files() {
     install_log "Preparing video recording scripts"
     sudo mkdir $pihelmetcam_dir/video || install_error "Unable to create directory '$pihelmetcam_dir/video'"
     sudo mv /var/www/html/installers/video.py /etc/pihelmetcam/video
+    #
+    # Need to move other video processing scripts HERE
+    # After I have written them of course
+    #
+    sudo mkdir $pihelmetcam_dir/video/processing || install_error "Unable to create directory '$pihelmetcam_dir/video/processing'"
+    sudo chmod a+r $pihelmetcam_dir/video/processing || install_error "Unable to set read permissions for '$pihelmetcam_dir/video/processing'"
+    sudo chmod a+w $pihelmetcam_dir/video/processing || install_error "Unable to set write permissions for '$pihelmetcam_dir/video/processing'"
+    sudo mkdir /boot/video || install_error "Unable to create directory '/boot/video'"
+    sudo chmod a+r /boot/video || install_error "Unable to set read permissions for '/boot/video'"
+    sudo chmod a+w /boot/video || install_error "Unable to set write permissions for '/boot/video'"
 }
 
 # Fetches latest files from github to webroot

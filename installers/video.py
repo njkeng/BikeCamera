@@ -19,7 +19,7 @@ hc_vflip = False
 
 # File parameters
 vid_length = 5          # Video file length in minutes
-vid_dir = '/home/pi/video/'
+vid_dir = '/etc/pihelmetcam/video/processing'
 
 # GPIO parameters
 buttonGPIO = 10         # Pushbutton is connected to GPIO 10 (pin 19)
