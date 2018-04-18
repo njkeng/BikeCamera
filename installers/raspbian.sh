@@ -1,6 +1,6 @@
 UPDATE_URL="https://raw.githubusercontent.com/njkeng/PiHelmetCam/master/"
-wget -q ${UPDATE_URL}/installers/common.sh -O /tmp/raspapcommon.sh
-source /tmp/raspapcommon.sh && rm -f /tmp/raspapcommon.sh
+wget -q ${UPDATE_URL}/installers/common.sh -O /tmp/pihelmetcamcommon.sh
+source /tmp/pihelmetcamcommon.sh && rm -f /tmp/pihelmetcamcommon.sh
 
 function update_system_packages() {
     install_log "Updating sources"
@@ -12,4 +12,4 @@ function install_dependencies() {
     sudo apt-get install lighttpd $php_package git hostapd dnsmasq || install_error "Unable to install dependencies"
 }
 
-install_raspap
+install_pihelmetcam
