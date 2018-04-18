@@ -1,3 +1,4 @@
+pihelmetcam_hostname="pihelmetcam"
 pihelmetcam_dir="/etc/pihelmetcam"
 pihelmetcam_user="www-data"
 version=`sed 's/\..*//' /etc/debian_version`
@@ -72,6 +73,13 @@ function update_system_packages() {
 function install_dependencies() {
     # OVERLOAD THIS
     install_error "No function definition for install_dependencies"
+}
+
+# Sets the hostname of the Pi
+function set_hostname() {
+    echo $pihelmetcam_hostname | sudo tee  /etc/hostname || install_error "Unable to set /etc/hostname"
+    sudo sed -i -e 's/^.*pihelmetcam-installer.*$//g' /etc/hosts
+    echo "127.0.1.1      " $pihelmetcam_hostname " ### Set by pihelmetcam-installer"  | sudo tee -a /etc/hosts || install_error "Unable to set /etc/hosts"
 }
 
 # Enables PHP for lighttpd and restarts service for settings to take effect
@@ -325,6 +333,7 @@ function install_pihelmetcam() {
     config_installation
     update_system_packages
     install_dependencies
+    set_hostname
     enable_php_lighttpd
     create_pihelmetcam_directories
     check_for_old_configs
