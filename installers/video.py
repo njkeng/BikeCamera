@@ -35,14 +35,14 @@ def when_pressed():
         filename = vid_dir + 'vid%s.h264' % dt
         print ("Filename is: " + filename)
         camera.start_recording(filename, format='h264', quality=hc_quality, bitrate=hc_bitrate)
-        led.on()
         split_timer.start()
 
     if camera.recording:
+        led.blink(on_time=0.5, off_time=0.5)
         print ("Stopping recording")
         camera.stop_recording()
-        led.off()
         split_timer.cancel()
+        led.on()
 
 # Start a new file if the time limit is reached
 #
@@ -78,7 +78,7 @@ camera.hflip = hc_hflip
 camera.vflip = hc_vflip
 
 led = LED(ledGPIO)
-led.off()
+led.on()
 
 button = Button(buttonGPIO)
 button.when_pressed = when_pressed
