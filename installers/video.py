@@ -35,39 +35,33 @@ def when_pressed():
         filename = vid_dir + 'vid%s.h264' % dt
         print ("Filename is: " + filename)
         camera.start_recording(filename, format='h264', quality=hc_quality, bitrate=hc_bitrate)
-        split_timer.start()
-
-    if camera.recording:
         led.blink(on_time=0.5, off_time=0.5)
+    else:
         print ("Stopping recording")
         camera.stop_recording()
-        split_timer.cancel()
         led.on()
 
 # Start a new file if the time limit is reached
 #
 def video_split():
 
+    split_timer = Timer(vid_length * 60, video_split).start()
     if camera.recording:
         print ("Split recording")
         dt = datetime.now().isoformat()
         filename = vid_dir + 'vid%s.h264' % dt
         print ("Filename is: " + filename)
         camera.split_recording(filename)
-        split_timer.start()
 
 # Update video annotation with current time and date
 #
 def update_annotation():
 
+    annotation_timer = Timer(0.5, update_annotation).start()
     if camera.recording:
         camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-        # Wait for a delay time
-        # The wait_recording function should be called so 
-        # that all camera errors are shown on screen
+        # The wait_recording function is called so that all camera errors are shown on screen
         camera.wait_recording(0.2)
-    annotation_timer.start()
 
 # Main program
 #
@@ -85,8 +79,8 @@ led.on()
 button = Button(buttonGPIO)
 button.when_pressed = when_pressed
 
-split_timer = Timer(vid_length * 60, video_split)
-annotation_timer = Timer(0.5, update_annotation)
+update_annotation()
+video_split()
 
 print ("Waiting for a button press")
 
