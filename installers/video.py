@@ -19,7 +19,7 @@ hc_vflip = False
 
 # File parameters
 vid_length = 5          # Video file length in minutes
-vid_dir = '/etc/pihelmetcam/video/processing'
+vid_dir = '/etc/pihelmetcam/video/processing/'
 
 # GPIO parameters
 buttonGPIO = 10         # Pushbutton is connected to GPIO 10 (pin 19)
@@ -31,8 +31,8 @@ def when_pressed():
 
     if not camera.recording:
         print ("Starting recording")
-        datetime = datetime.now().isoformat()
-        filename = vid_dir + 'vid%s.h264' % datetime
+        dt = datetime.now().isoformat()
+        filename = vid_dir + 'vid%s.h264' % dt
         print ("Filename is: " + filename)
         camera.start_recording(filename, format='h264', quality=hc_quality, bitrate=hc_bitrate)
         led.on()
@@ -50,8 +50,8 @@ def video_split():
 
     if camera.recording:
         print ("Split recording")
-        datetime = datetime.now().isoformat()
-        filename = vid_dir + 'vid%s.h264' % datetime
+        dt = datetime.now().isoformat()
+        filename = vid_dir + 'vid%s.h264' % dt
         print ("Filename is: " + filename)
         camera.split_recording(filename)
         split_timer.start()
