@@ -29,32 +29,6 @@ function install_error() {
     exit 1
 }
 
-# Sets a variable in a config file
-# Copied directly from raspi-config
-# to ensure that changes made by this
-# script are identical to manually changing
-# settings using raspi-config
-set_config_var() {
-  lua - "$1" "$2" "$3" <<EOF > "$3.bak"
-local key=assert(arg[1])
-local value=assert(arg[2])
-local fn=assert(arg[3])
-local file=assert(io.open(fn))
-local made_change=false
-for line in file:lines() do
-  if line:match("^#?%s*"..key.."=.*$") then
-    line=key.."="..value
-    made_change=true
-  end
-  print(line)
-end
-if not made_change then
-  print(key.."="..value)
-end
-EOF
-mv "$3.bak" "$3"
-}
-
 # Outputs a welcome message
 function display_welcome() {
     red='\033[0;31m'
