@@ -371,11 +371,14 @@ function patch_system_files() {
 }
 
 function enable_camera() {
-    [ -e /boot/config.txt ] || touch /boot/config.txt
-    set_config_var start_x 1 /boot/config.txt
-    set_config_var gpu_mem 128 /boot/config.txt
-    sed /boot/config.txt -i -e "s/^startx/#startx/"
-    sed /boot/config.txt -i -e "s/^fixup_file/#fixup_file/"
+    sed $CONFIG -i -e "s/^startx/#startx/"
+    sed $CONFIG -i -e "s/^fixup_file/#fixup_file/"
+    set_config_var start_x 1 $CONFIG
+    CUR_GPU_MEM=$(get_config_var gpu_mem $CONFIG)
+    if [ -z "$CUR_GPU_MEM" ] || [ "$CUR_GPU_MEM" -lt 128 ]; then
+      set_config_var gpu_mem 128 $CONFIG
+    fi
+}
 }
 
 function install_complete() {
