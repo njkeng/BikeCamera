@@ -55,6 +55,32 @@ EOF
 mv "$3.bak" "$3"
 }
 
+
+# Gets a variable in a config file
+# Copied directly from raspi-config
+# to ensure that changes made by this
+# script are identical to manually changing
+# settings using raspi-config
+get_config_var() {
+  lua - "$1" "$2" <<EOF
+local key=assert(arg[1])
+local fn=assert(arg[2])
+local file=assert(io.open(fn))
+local found=false
+for line in file:lines() do
+  local val = line:match("^%s*"..key.."=(.*)$")
+  if (val ~= nil) then
+    print(val)
+    found=true
+    break
+  end
+end
+if not found then
+   print(0)
+end
+EOF
+}
+
 # Outputs a welcome message
 function display_welcome() {
     red='\033[0;31m'
