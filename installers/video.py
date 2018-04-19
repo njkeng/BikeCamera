@@ -39,13 +39,13 @@ def output_files():
 #
 def when_pressed():
 
-    if ! camera.recording():
+    if not camera.recording:
         print ("Starting recording")
         camera.start_recording(output_files(), quality=hc_quality, bitrate=hc_bitrate)
         led.on()
         split_timer.start()
 
-    if camera.recording():
+    if camera.recording:
         print ("Stopping recording")
         camera.stop_recording()
         led.off()
@@ -55,15 +55,14 @@ def when_pressed():
 #
 def video_split():
 
-    if camera.recording():
-        camera.split_recording(output_files())
+    if camera.recording:
         split_timer.start()
 
 # Update video annotation with current time and date
 #
 def update_annotation():
 
-    if camera.recording():
+    if camera.recording:
         camera.annotate_text = datetime.now().isoformat()
         annotation_timer.start()
 
@@ -86,7 +85,6 @@ button = Button(buttonGPIO)
 button.when_pressed = when_pressed
 
 split_timer = Timer(vid_length * 60, video_split)
-annotation_timer = Timer(1, update_annotation)
 
 print ("Waiting for a button press")
 
