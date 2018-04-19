@@ -31,10 +31,10 @@ function install_error() {
 
 # Outputs a welcome message
 function display_welcome() {
-    raspberry='\033[0;35m'
+    red='\033[0;31m'
     green='\033[1;32m'
 
-    echo -e "${raspberry}\n"
+    echo -e "${red}\n"
     echo -e " __________________________________________________________________________"
     echo -e "    ____         _     _                                 __                "
     echo -e "    /    )   ,   /    /          /                     /    )              "
