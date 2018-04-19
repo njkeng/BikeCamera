@@ -2,7 +2,7 @@
 
 # Python script to record video
 #
-from picamera import PiCamera
+import picamera
 from gpiozero import Button, LED
 from threading import Timer
 from signal import pause
@@ -31,7 +31,7 @@ def when_pressed():
 
     if not camera.recording:
         print ("Starting recording")
-        dt = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+        dt = datetime.now().strftime('%Y-%m-%d_%H%M%S')
         filename = vid_dir + 'vid%s.h264' % dt
         print ("Filename is: " + filename)
         camera.start_recording(filename, format='h264', quality=hc_quality, bitrate=hc_bitrate)
@@ -48,7 +48,7 @@ def video_split():
     split_timer = Timer(vid_length * 60, video_split).start()
     if camera.recording:
         print ("Split recording")
-        dt = datetime.now().isoformat()
+        dt = datetime.now().strftime('%Y-%m-%d_%H%M%S')
         filename = vid_dir + 'vid%s.h264' % dt
         print ("Filename is: " + filename)
         camera.split_recording(filename)
@@ -65,13 +65,16 @@ def update_annotation():
 
 # Main program
 #
-camera = PiCamera()
+camera = picamera.PiCamera()
 camera.resolution = (hc_hres, hc_vres)
 camera.framerate = hc_framerate
 camera.hflip = hc_hflip
 camera.vflip = hc_vflip
-camera.start_preview()
 camera.annotate_background = picamera.Color('black')
+camera.annotate_text_size = 15
+
+# Usually don't want this.  The preview pops up over the whole desktop.
+#camera.start_preview()
 
 led = LED(ledGPIO)
 led.on()
