@@ -25,23 +25,16 @@ vid_dir = '/etc/pihelmetcam/video/processing'
 buttonGPIO = 10         # Pushbutton is connected to GPIO 10 (pin 19)
 ledGPIO = 7             # LED is connected to GPIO 7 (pin 26)
 
-
-# Create an infinite supply of output files for video recording
-#
-def output_files():
-
-    datetime = datetime.now().isoformat()
-    filename = vid_dir + 'vid%s.jpg' % datetime
-    print (filename)
-    yield io.open(filename)
-
 # Toggle start / stop recording wshen the button is pressed
 #
 def when_pressed():
 
     if not camera.recording:
         print ("Starting recording")
-        camera.start_recording(output_files(), quality=hc_quality, bitrate=hc_bitrate)
+        datetime = datetime.now().isoformat()
+        filename = vid_dir + 'vid%s.h264' % datetime
+        print ("Filename is: " + filename)
+        camera.start_recording(filename, format='h264', quality=hc_quality, bitrate=hc_bitrate)
         led.on()
         split_timer.start()
 
@@ -56,6 +49,11 @@ def when_pressed():
 def video_split():
 
     if camera.recording:
+        print ("Split recording")
+        datetime = datetime.now().isoformat()
+        filename = vid_dir + 'vid%s.h264' % datetime
+        print ("Filename is: " + filename)
+        camera.split_recording(filename)
         split_timer.start()
 
 # Update video annotation with current time and date
@@ -64,14 +62,15 @@ def update_annotation():
 
     if camera.recording:
         camera.annotate_text = datetime.now().isoformat()
-        annotation_timer.start()
 
         # Wait for a delay time
         # The wait_recording function should be called so 
         # that all camera errors are shown on screen
         camera.wait_recording(0.2)
+    annotation_timer.start()
 
-
+# Main program
+#
 camera = PiCamera()
 camera.resolution = (hc_hres, hc_vres)
 camera.framerate = hc_framerate
@@ -85,6 +84,7 @@ button = Button(buttonGPIO)
 button.when_pressed = when_pressed
 
 split_timer = Timer(vid_length * 60, video_split)
+annotation_timer = Timer(0.5, update_annotation)
 
 print ("Waiting for a button press")
 
