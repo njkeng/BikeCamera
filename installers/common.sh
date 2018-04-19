@@ -2,8 +2,6 @@ pihelmetcam_hostname="pihelmetcam"
 pihelmetcam_dir="/etc/pihelmetcam"
 pihelmetcam_user="www-data"
 version=`sed 's/\..*//' /etc/debian_version`
-BLACKLIST=/etc/modprobe.d/raspi-blacklist.conf
-CONFIG=/boot/config.txt
 
 # Determine version, set default home location for lighttpd and 
 # php package to install 
