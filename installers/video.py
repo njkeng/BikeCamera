@@ -61,7 +61,7 @@ def video_split():
 def update_annotation():
 
     if camera.recording:
-        camera.annotate_text = datetime.now().isoformat()
+        camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         # Wait for a delay time
         # The wait_recording function should be called so 
@@ -76,6 +76,8 @@ camera.resolution = (hc_hres, hc_vres)
 camera.framerate = hc_framerate
 camera.hflip = hc_hflip
 camera.vflip = hc_vflip
+camera.start_preview()
+camera.annotate_background = picamera.Color('black')
 
 led = LED(ledGPIO)
 led.on()
