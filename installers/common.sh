@@ -379,6 +379,19 @@ function enable_camera() {
       set_config_var gpu_mem 128 $CONFIG
     fi
 }
+
+function enable_I2C() {
+      set_config_var dtparam=i2c_arm on $CONFIG &&
+  if ! [ -e $BLACKLIST ]; then
+    touch $BLACKLIST
+  fi
+  sed $BLACKLIST -i -e "s/^\(blacklist[[:space:]]*i2c[-_]bcm2708\)/#\1/"
+  sed /etc/modules -i -e "s/^#[[:space:]]*\(i2c[-_]dev\)/\1/"
+  if ! grep -q "^i2c[-_]dev" /etc/modules; then
+    printf "i2c-dev\n" >> /etc/modules
+  fi
+  dtparam i2c_arm=$SETTING
+  modprobe i2c-dev
 }
 
 function install_complete() {
@@ -414,5 +427,6 @@ function install_pihelmetcam() {
     sudo_add
     patch_system_files
     enable_camera
+    enable_I2C
     install_complete
 }
