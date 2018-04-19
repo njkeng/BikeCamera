@@ -342,14 +342,6 @@ function patch_system_files() {
     fi
 }
 
-function enable_camera() {
-    [ -e /boot/config.txt ] || touch /boot/config.txt
-    set_config_var start_x 1 /boot/config.txt
-    set_config_var gpu_mem 128 /boot/config.txt
-    sed /boot/config.txt -i -e "s/^startx/#startx/"
-    sed /boot/config.txt -i -e "s/^fixup_file/#fixup_file/"
-}
-
 function install_complete() {
     install_log "Installation completed!"
 
@@ -382,6 +374,5 @@ function install_pihelmetcam() {
     default_configuration
     sudo_add
     patch_system_files
-    enable_camera
     install_complete
 }
