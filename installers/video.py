@@ -31,7 +31,7 @@ def when_pressed():
 
     if not camera.recording:
         print ("Starting recording")
-        dt = datetime.now().isoformat()
+        dt = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         filename = vid_dir + 'vid%s.h264' % dt
         print ("Filename is: " + filename)
         camera.start_recording(filename, format='h264', quality=hc_quality, bitrate=hc_bitrate)
