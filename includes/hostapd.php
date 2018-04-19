@@ -10,7 +10,7 @@ function DisplayHostAPDConfig(){
 
   $status = new StatusMessages();
 
-  $arrHostapdConf = parse_ini_file('/etc/raspap/hostapd.ini');
+  $arrHostapdConf = parse_ini_file('/etc/pihelmetcam/hostapd.ini');
 
   $arrConfig = array();
   $arrChannel = array('a','b','g');
@@ -465,19 +465,19 @@ function SaveHostAPDConfig($wpa_array, $enc_types, $modes, $interfaces, $status)
         if(isset($_POST['logEnable'])) {
             // Need code to enable logfile logging here
             $logEnable = 1;
-            exec('sudo /etc/raspap/hostapd/enablelog.sh');
+            exec('sudo /etc/pihelmetcam/hostapd/enablelog.sh');
         } else {
-            exec('sudo /etc/raspap/hostapd/disablelog.sh');
+            exec('sudo /etc/pihelmetcam/hostapd/disablelog.sh');
         }
     } else {
         if(isset($_POST['logEnable'])) {
             $logEnable = 1;
-            exec('sudo /etc/raspap/hostapd/enablelog.sh');
+            exec('sudo /etc/pihelmetcam/hostapd/enablelog.sh');
         } else {
-            exec('sudo /etc/raspap/hostapd/disablelog.sh');
+            exec('sudo /etc/pihelmetcam/hostapd/disablelog.sh');
         }
     }
-    write_php_ini(["LogEnable" => $logEnable],'/etc/raspap/hostapd.ini');
+    write_php_ini(["LogEnable" => $logEnable],'/etc/pihelmetcam/hostapd.ini');
 
   // Verify input
   if (strlen($_POST['ssid']) == 0 || strlen($_POST['ssid']) > 32) {

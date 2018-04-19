@@ -1,8 +1,8 @@
 <?php
 
-define('RASPI_CONFIG', '/etc/raspap');
+define('RASPI_CONFIG', '/etc/pihelmetcam');
 define('RASPI_CONFIG_NETWORKING',RASPI_CONFIG.'/networking');
-define('RASPI_ADMIN_DETAILS', RASPI_CONFIG.'/raspap.auth');
+define('RASPI_ADMIN_DETAILS', RASPI_CONFIG.'/pihelmetcam.auth');
 define('RASPI_WIFI_CLIENT_INTERFACE', 'wlan0');
 
 // Constants for configuration file paths.
@@ -21,7 +21,7 @@ define('RASPI_TORPROXY_CONFIG', '/etc/tor/torrc');
 define('RASPI_PAGETITLE_NAME', 'Raspbian WiFi Configuration Portal');
 
 //Menu navbar text
-define('RASPI_NAVBAR_NAME', 'RaspAP Wifi Portal v1.3.0');
+define('RASPI_NAVBAR_NAME', 'PiHelmetCam Wifi Portal v1.0');
 
 // Optional services, set to true to enable.
 define('RASPI_DASHBOARD_ENABLED', true );

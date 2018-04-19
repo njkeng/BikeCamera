@@ -5,7 +5,7 @@ from signal import pause
 import os, sys
 
 # Define the location of the script to restore default configuration
-defaultsscriptlocation = "/etc/raspap/hostapd/reset.sh"
+defaultsscriptlocation = "/etc/pihelmetcam/hostapd/reset.sh"
 scriptlocation = sys.argv[1] if len(sys.argv) >= 2 else defaultsscriptlocation
 
 buttonGPIO = 21         # Pushbutton is connected to GPIO 21 (pin 40)
@@ -13,7 +13,7 @@ ledGPIO = 20            # LED is connected to GPIO 20 (pin 38)
 
 restarttime = 1         # restart if held for greater than restarttime seconds
 offtime = 6             # shut down if held for greater than offtime seconds
-defaultstime = 15       # reset RaspAP to default config if held for greater than defaultstime seconds
+defaultstime = 15       # reset PiHelmetCam to default config if held for greater than defaultstime seconds
 
 restartready = False     # Flag for reset time exceeded
 shutdownready = False     # Flag for shutdown time exceeded
@@ -69,7 +69,7 @@ def when_released():
         os.system("sudo poweroff")
 
     if defaultsready:
-        print ("System restoring RaspAP defaults")
+        print ("System restoring PiHelmetCam defaults")
         os.system("sudo bash " + scriptlocation)
         os.system("sudo reboot")
 

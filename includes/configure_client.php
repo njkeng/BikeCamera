@@ -233,7 +233,7 @@ function DisplayWPAConfig(){
 
           </form>
         </div><!-- ./ Panel body -->
-        <div class="panel-footer"><strong>Note:</strong> WEP access points appear as 'Open'. RaspAP does not currently support connecting to WEP.</div>
+        <div class="panel-footer"><strong>Note:</strong> WEP access points appear as 'Open'. PiHelmetCam does not currently support connecting to WEP.</div>
       </div><!-- /.panel-primary -->
     </div><!-- /.col-lg-12 -->
   </div><!-- /.row -->

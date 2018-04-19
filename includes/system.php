@@ -82,16 +82,16 @@ function DisplaySystem(){
 
 
   # Check for RasAP defaults or user saved defaults upon system factory reset
-  if ( ! $arrDefaultsConf = parse_ini_file('/etc/raspap/hostapd/reset.ini')) {
+  if ( ! $arrDefaultsConf = parse_ini_file('/etc/pihelmetcam/hostapd/reset.ini')) {
     $status->addMessage('Could not read the configuration file', 'warning');
   }
 
-  # Write preference for RaspAP defaults to reset.ini
-  if( isset($_POST['select_raspap_defaults']) ) {
+  # Write preference for PiHelmetCam defaults to reset.ini
+  if( isset($_POST['select_pihelmetcam_defaults']) ) {
     if (CSRFValidate()) {
       $arrDefaultsConf["user_reset_files"] = "0";
-      if ( write_php_ini($arrDefaultsConf,'/etc/raspap/hostapd/reset.ini')) {
-        $status->addMessage('Successfully saved preference for RaspAP defaults', 'success');
+      if ( write_php_ini($arrDefaultsConf,'/etc/pihelmetcam/hostapd/reset.ini')) {
+        $status->addMessage('Successfully saved preference for PiHelmetCam defaults', 'success');
       } else {
         $status->addMessage('Unable to save configuration preferences', 'danger');
       }
@@ -105,7 +105,7 @@ function DisplaySystem(){
   if( isset($_POST['select_user_defaults']) ) {
     if (CSRFValidate()) {
       $arrDefaultsConf["user_reset_files"] = "1";
-      if ( write_php_ini($arrDefaultsConf,'/etc/raspap/hostapd/reset.ini')) {
+      if ( write_php_ini($arrDefaultsConf,'/etc/pihelmetcam/hostapd/reset.ini')) {
         $status->addMessage('Successfully saved preference for user-saved defaults', 'success');
       } else {
         $status->addMessage('Unable to save configuration preferences', 'danger');
@@ -115,12 +115,12 @@ function DisplaySystem(){
     }
   }
 
-  # Copy current RaspAP settings into user preference files
+  # Copy current PiHelmetCam settings into user preference files
   if( isset($_POST['save_user_settings']) ) {
     if (CSRFValidate()) {
       SaveUserSettings($status);
       $arrDefaultsConf["user_files_saved"] = "1";
-      write_php_ini($arrDefaultsConf,'/etc/raspap/hostapd/reset.ini');
+      write_php_ini($arrDefaultsConf,'/etc/pihelmetcam/hostapd/reset.ini');
     } else {
       error_log('CSRF violation');
     }
@@ -128,10 +128,10 @@ function DisplaySystem(){
 
   # Use values from reset.ini for correct display of buttons on "defaults" tab
   if ( $arrDefaultsConf['user_reset_files'] == "0") {
-    $raspapDefaults = " active";
+    $pihelmetcamDefaults = " active";
     $userDefaults = "";
   } else {
-    $raspapDefaults = "";
+    $pihelmetcamDefaults = "";
     $userDefaults = " active";
   }
   if ( $arrDefaultsConf['user_files_saved'] == "0") {
@@ -205,7 +205,7 @@ function DisplaySystem(){
             <h4>Source for reset data</h4>
             <h5>Settings that will be written in if a factory reset is performed</h5>
             <form action="?page=system_info" method="POST"><?php CSRFToken() ?>
-              <input type="submit" class="btn btn-primary<?php echo $raspapDefaults ?>" name="select_raspap_defaults" value="RaspAP defaults" />
+              <input type="submit" class="btn btn-primary<?php echo $pihelmetcamDefaults ?>" name="select_pihelmetcam_defaults" value="PiHelmetCam defaults" />
               <input type="submit" class="btn btn-primary<?php echo $userDefaults ?>"<?php echo $disableUserSettings ?> name="select_user_defaults" value="User settings" />
             </form>
             <br>
@@ -333,23 +333,23 @@ function SaveUserSettings($status) {
     }
   }
 
-  # Update RaspAP authentication configuration
-  if (file_exists('/etc/raspap/raspap.auth')) {
-    exec( 'cp /etc/raspap/raspap.auth config/user_raspap.auth', $output, $return );
+  # Update PiHelmetCam authentication configuration
+  if (file_exists('/etc/pihelmetcam/pihelmetcam.auth')) {
+    exec( 'cp /etc/pihelmetcam/pihelmetcam.auth config/user_pihelmetcam.auth', $output, $return );
     if ($return) {
-      $status->addMessage('Unable to save RaspAP authentication configuration', 'warning');
+      $status->addMessage('Unable to save PiHelmetCam authentication configuration', 'warning');
       $fail = True;
     } else {
-      $status->addMessage('Successfully saved RaspAP authentication configuration', 'success');
+      $status->addMessage('Successfully saved PiHelmetCam authentication configuration', 'success');
     }
   } else {
-    if (file_exists('config/user_raspap.auth')) {
-      exec( 'rm config/user_raspap.auth', $output, $return );
+    if (file_exists('config/user_pihelmetcam.auth')) {
+      exec( 'rm config/user_pihelmetcam.auth', $output, $return );
       if ($return) {
-        $status->addMessage('Unable to remove old RaspAP authentication configuration', 'warning');
+        $status->addMessage('Unable to remove old PiHelmetCam authentication configuration', 'warning');
         $fail = True;
       } else {
-        $status->addMessage('Successfully removed old RaspAP authentication configuration', 'success');
+        $status->addMessage('Successfully removed old PiHelmetCam authentication configuration', 'success');
       }
     }
   }

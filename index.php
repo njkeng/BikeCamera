@@ -16,7 +16,7 @@
  */
 
 include_once( 'includes/config.php' );
-include_once( RASPI_CONFIG.'/raspap.php' );
+include_once( RASPI_CONFIG.'/pihelmetcam.php' );
 include_once( 'includes/functions.php' );
 include_once( 'includes/dashboard.php' );
 include_once( 'includes/authenticate.php' );
@@ -256,7 +256,7 @@ $theme_url = 'dist/css/' . $theme;
       </div><!-- /#page-wrapper --> 
     </div><!-- /#wrapper -->
 
-    <!-- RaspAP JavaScript -->
+    <!-- PiHelmetCam JavaScript -->
     <script src="dist/js/functions.js"></script>
 
     <!-- jQuery -->
@@ -276,7 +276,7 @@ $theme_url = 'dist/css/' . $theme;
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
 
-    <!-- Custom RaspAP JS -->
+    <!-- Custom PiHelmetCam JS -->
     <script src="js/custom.js"></script>
   </body>
 </html>

@@ -237,12 +237,12 @@ function default_configuration() {
     fi
 
     # Generate required lines for Rasp AP to place into rc.local file.
-    # #RASPAP is for removal script
+    # #PiHelmetCam is for removal script
     lines=(
-    'echo 1 > /proc/sys/net/ipv4/ip_forward #RASPAP'
-    'iptables -t nat -A POSTROUTING -j MASQUERADE #RASPAP'
-    "python3 $pihelmetcam_dir/hostapd/button.py \&  #RASPAP"
-    "python3 $pihelmetcam_dir/video/video.py \&  #RASPAP"
+    'echo 1 > /proc/sys/net/ipv4/ip_forward #PiHelmetCam'
+    'iptables -t nat -A POSTROUTING -j MASQUERADE #PiHelmetCam'
+    "python3 $pihelmetcam_dir/hostapd/button.py \&  #PiHelmetCam"
+    "python3 $pihelmetcam_dir/video/video.py \&  #PiHelmetCam"
     )
     
     for line in "${lines[@]}"; do
