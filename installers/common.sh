@@ -1,6 +1,7 @@
 pihelmetcam_hostname="pihelmetcam"
 pihelmetcam_dir="/etc/pihelmetcam"
 pihelmetcam_user="www-data"
+pihelmetcam_output_dir="/boot/video"
 version=`sed 's/\..*//' /etc/debian_version`
 
 # Determine version, set default home location for lighttpd and 
@@ -137,9 +138,9 @@ function create_video_files() {
     sudo mkdir -p $pihelmetcam_dir/video/processing || install_error "Unable to create directory '$pihelmetcam_dir/video/processing'"
     sudo chmod a+r $pihelmetcam_dir/video/processing || install_error "Unable to set read permissions for '$pihelmetcam_dir/video/processing'"
     sudo chmod a+w $pihelmetcam_dir/video/processing || install_error "Unable to set write permissions for '$pihelmetcam_dir/video/processing'"
-    sudo mkdir -p /boot/video || install_error "Unable to create directory '/boot/video'"
-    sudo chmod a+r /boot/video || install_error "Unable to set read permissions for '/boot/video'"
-    sudo chmod a+w /boot/video || install_error "Unable to set write permissions for '/boot/video'"
+    sudo mkdir -p $pihelmetcam_output_dir || install_error "Unable to create directory '$pihelmetcam_output_dir'"
+    sudo chmod a+r $pihelmetcam_output_dir || install_error "Unable to set read permissions for '$pihelmetcam_output_dir'"
+    sudo chmod a+w $pihelmetcam_output_dir || install_error "Unable to set write permissions for '$pihelmetcam_output_dir'"
 }
 
 # Fetches latest files from github to webroot
@@ -210,11 +211,31 @@ function configuration_for_reset() {
     sudo mv /tmp/reset.ini /etc/pihelmetcam/hostapd/ || install_error "Unable to move files to '$pihelmetcam_dir'"
 }
 
+# Set up configuration for the video functions
+function configuration_for_video() {
+    install_log "Setting up configuration for the video function"
+    sudo echo "ffmpeg_transpose = \"none\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "ffmpeg_output_format = \"mp4\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "ffmpeg_output_dir = \"$pihelmetcam_output_dir\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "ffmpeg_input_dir = \"$pihelmetcam_dir/video/processing\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "cull_free_space = 500" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "picamera_hflip = 0" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "picamera_vflip = 0" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "picamera_hres = 640" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "picamera_vres = 360" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "picamera_framerate = 24" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "picamera_quality = 20" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "picamera_bitrate = 750000" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_length = 5" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_datetime_enable = 1" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_datetime_size = 15" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo mv /tmp/video.ini $pihelmetcam_dir/video/ || install_error "Unable to move files to '$pihelmetcam_dir'"
+}
+
 # Set permissions for all PiHelmetCam directories and folders
 function set_permissions() {
     sudo chown -R $pihelmetcam_user:$pihelmetcam_user "$pihelmetcam_dir" || install_error "Unable to change file ownership for '$pihelmetcam_dir'"
 }
-
 
 # Set up default configuration
 function default_configuration() {
@@ -344,6 +365,7 @@ function install_pihelmetcam() {
     create_video_files
     move_config_file
     configuration_for_reset
+    configuration_for_video
     set_permissions
     default_configuration
     sudo_add
