@@ -3,6 +3,7 @@
 # Python script to record video
 #
 import picamera
+import shutil
 from gpiozero import Button, LED
 from threading import Timer
 from signal import pause
@@ -14,12 +15,12 @@ hc_vres = 360
 hc_framerate = 24
 hc_quality = 20
 hc_bitrate = 750000
-hc_hflip = True
+hc_hflip = False
 hc_vflip = False
 
 # File parameters
 vid_length = 5          # Video file length in minutes
-vid_dir = '/etc/pihelmetcam/video/processing/'
+vid_dir = '/etc/pihelmetcam/video/'
 
 # GPIO parameters
 buttonGPIO = 10         # Pushbutton is connected to GPIO 10 (pin 19)
@@ -29,29 +30,51 @@ ledGPIO = 7             # LED is connected to GPIO 7 (pin 26)
 #
 def when_pressed():
 
+    global current_file
+
     if not camera.recording:
         print ("Starting recording")
         dt = datetime.now().strftime('%Y-%m-%d_%H%M%S')
-        filename = vid_dir + 'vid%s.h264' % dt
+        vid_file_name = 'vid%s.h264' % dt
+        filename = vid_dir + '/raw/' + vid_file_name
         print ("Filename is: " + filename)
         camera.start_recording(filename, format='h264', quality=hc_quality, bitrate=hc_bitrate)
         led.blink(on_time=0.5, off_time=0.5)
+        current_file = vid_file_name
+
     else:
         print ("Stopping recording")
         camera.stop_recording()
         led.on()
 
+        # Move the previously recorded file
+        source = vid_dir + '/raw/' + current_file
+        destination = vid_dir + '/processing/' + current_file        
+        shutil.move(destination, source)
+
+
 # Start a new file if the time limit is reached
 #
 def video_split():
+
+    global current_file
 
     split_timer = Timer(vid_length * 60, video_split).start()
     if camera.recording:
         print ("Split recording")
         dt = datetime.now().strftime('%Y-%m-%d_%H%M%S')
-        filename = vid_dir + 'vid%s.h264' % dt
+        vid_file_name = 'vid%s.h264' % dt
+        filename = vid_dir + '/raw/' + vid_file_name
         print ("Filename is: " + filename)
         camera.split_recording(filename)
+
+        # Move the previously recorded file
+        source = vid_dir + '/raw/' + current_file
+        destination = vid_dir + '/processing/' + current_file        
+        shutil.move(destination, source)
+        current_file = vid_file_name
+
+
 
 # Update video annotation with current time and date
 #
