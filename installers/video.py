@@ -9,24 +9,31 @@ from threading import Timer
 from signal import pause
 from datetime import datetime
 
-# Video parameters
-hc_hres = 640
-hc_vres = 360
-hc_framerate = 24
-hc_quality = 20
-hc_bitrate = 750000
-hc_hflip = False
-hc_vflip = False
-
-# File parameters
-vid_length = 5          # Video file length in minutes
-vid_dir = '/etc/pihelmetcam/video/'
-vid_datetime_enable = True
-vid_datetime_size = 15
-
 # GPIO parameters
 buttonGPIO = 10         # Pushbutton is connected to GPIO 10 (pin 19)
 ledGPIO = 7             # LED is connected to GPIO 7 (pin 26)
+
+# Read key-value pairs from the ini file
+myvars = {}
+with open("video.ini") as myfile:
+    for line in myfile:
+        name, var = line.partition(" = ")[::2]
+        myvars[name.strip()] = var.strip()
+
+# Video parameters
+hc_hflip = myvars["picamera_hflip"]
+hc_vflip = myvars["picamera_vflip"]
+hc_hres = myvars["picamera_hres"]
+hc_vres = myvars["picamera_vres"]
+hc_framerate = myvars["picamera_framerate"]
+hc_quality = myvars["picamera_quality"]
+hc_bitrate = myvars["picamera_bitrate"]
+
+# File parameters
+vid_length = myvars["vid_length"]          # Video file length in minutes
+vid_dir = myvars["vid_dir"]
+vid_datetime_enable = myvars["vid_datetime_enable"]
+vid_datetime_size = myvars["vid_datetime_size"]
 
 # Toggle start / stop recording wshen the button is pressed
 #
