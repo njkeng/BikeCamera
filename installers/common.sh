@@ -277,6 +277,37 @@ function default_configuration() {
     done
 }
 
+# Set up cron configuration
+function process_vid_crontab() {
+    install_log "Setting up cron for post-processing video files"
+
+    # Read crontab into a temporary file
+    sudo crontab -l > /tmp/current_crontab
+
+    # Check if process_vid is already in crontab
+    process_vid_exists=$(cat /tmp/current_crontab | grep 'process_vid.sh')
+    if [ "$process_vid_exists" == "" ]; then
+
+        # Assemble new line for crontab file
+        # Run processing script every 2 minutes
+        crontab_line="2 * * * * sudo $pihelmetcam_dir/video/process_vid.sh"
+
+        # Check of crontab is empty
+        crontab_exists=$(cat /tmp/current_crontab | grep 'no crontab')
+        if [ "$crontab_exists" != "" ]; then
+            # If crontab is empty, write a new crontab file
+            echo "$crontab_line" >  /tmp/new_crontab
+        else
+            # If crontab exists, append video processing to the end
+            cp /tmp/current_crontab /tmp/new_crontab
+            echo "$crontab_line" >>  /tmp/new_crontab
+        fi
+        # Intitalise crontab with the updated configuration file
+        sudo crontab /tmp/new_crontab
+    fi
+}
+
+
 # Add a single entry to the sudoers file
 function sudo_add() {
     sudo bash -c "echo \"www-data ALL=(ALL) NOPASSWD:$1\" | (EDITOR=\"tee -a\" visudo)" \
@@ -369,6 +400,7 @@ function install_pihelmetcam() {
     configuration_for_video
     set_permissions
     default_configuration
+    process_vid_crontab
     sudo_add
     patch_system_files
     install_complete
