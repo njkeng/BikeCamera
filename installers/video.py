@@ -21,6 +21,8 @@ hc_vflip = False
 # File parameters
 vid_length = 5          # Video file length in minutes
 vid_dir = '/etc/pihelmetcam/video/'
+vid_datetime_enable = True
+vid_datetime_size = 15
 
 # GPIO parameters
 buttonGPIO = 10         # Pushbutton is connected to GPIO 10 (pin 19)
@@ -82,7 +84,8 @@ def update_annotation():
 
     annotation_timer = Timer(0.5, update_annotation).start()
     if camera.recording:
-        camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if vid_datetime_enable:
+            camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         # The wait_recording function is called so that all camera errors are shown on screen
         camera.wait_recording(0.2)
 
@@ -93,8 +96,9 @@ camera.resolution = (hc_hres, hc_vres)
 camera.framerate = hc_framerate
 camera.hflip = hc_hflip
 camera.vflip = hc_vflip
-camera.annotate_background = picamera.Color('black')
-camera.annotate_text_size = 15
+if vid_datetime_enable:
+    camera.annotate_background = picamera.Color('black')
+    camera.annotate_text_size = vid_datetime_size
 
 # Usually don't want this.  The preview pops up over the whole desktop.
 #camera.start_preview()
