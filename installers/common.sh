@@ -121,15 +121,16 @@ function create_logging_scripts() {
 
 # Generate configuration reset files for pihelmetcam
 function create_reset_scripts() {
-    sudo mv /var/www/html/installers/reset.sh /etc/pihelmetcam/hostapd
-    sudo mv /var/www/html/installers/button.py /etc/pihelmetcam/hostapd
+    sudo mv /var/www/html/installers/reset.sh $pihelmetcam_dir/hostapd
+    sudo mv /var/www/html/installers/button.py $pihelmetcam_dir/hostapd
 }
 
 # Move video files for pihelmetcam
 function create_video_files() {
     install_log "Preparing video recording scripts"
     sudo mkdir -p $pihelmetcam_dir/video || install_error "Unable to create directory '$pihelmetcam_dir/video'"
-    sudo mv /var/www/html/installers/video.py /etc/pihelmetcam/video
+    sudo mv /var/www/html/installers/video.py $pihelmetcam_dir/video
+    sudo mv /var/www/html/installers/process_vid.sh $pihelmetcam_dir/video
     #
     # Need to move other video processing scripts HERE
     # After I have written them of course
