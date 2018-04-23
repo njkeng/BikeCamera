@@ -292,7 +292,7 @@ function process_vid_crontab() {
 
         # Assemble new line for crontab file
         # Run processing script every 2 minutes
-        crontab_line="2 * * * * sudo $pihelmetcam_dir/video/process_vid.sh"
+        crontab_line="*/2 * * * * sudo $pihelmetcam_dir/video/process_vid.sh >/dev/null 2>&1"
 
         # Check of crontab is empty
         crontab_exists=$(cat /tmp/current_crontab | grep 'no crontab')
