@@ -21,19 +21,19 @@ with open("video.ini") as myfile:
         myvars[name.strip()] = var.strip()
 
 # Video parameters
-hc_hflip = myvars["picamera_hflip"]
-hc_vflip = myvars["picamera_vflip"]
-hc_hres = myvars["picamera_hres"]
-hc_vres = myvars["picamera_vres"]
-hc_framerate = myvars["picamera_framerate"]
-hc_quality = myvars["picamera_quality"]
-hc_bitrate = myvars["picamera_bitrate"]
+hc_hflip = int(myvars["picamera_hflip"])
+hc_vflip = int(myvars["picamera_vflip"])
+hc_hres = int(myvars["picamera_hres"])
+hc_vres = int(myvars["picamera_vres"])
+hc_framerate = int(myvars["picamera_framerate"])
+hc_quality = int(myvars["picamera_quality"])
+hc_bitrate = int(myvars["picamera_bitrate"])
 
 # File parameters
-vid_length = myvars["vid_length"]          # Video file length in minutes
-vid_dir = myvars["vid_dir"]
-vid_datetime_enable = myvars["vid_datetime_enable"]
-vid_datetime_size = myvars["vid_datetime_size"]
+vid_length = int(myvars["vid_length"])          # Video file length in minutes
+vid_dir = myvars["vid_dir"].strip('"')
+vid_datetime_enable = int(myvars["vid_datetime_enable"])
+vid_datetime_size = int(myvars["vid_datetime_size"])
 
 # Toggle start / stop recording wshen the button is pressed
 #
@@ -59,7 +59,7 @@ def when_pressed():
         # Move the previously recorded file
         source = vid_dir + '/raw/' + current_file
         destination = vid_dir + '/processing/' + current_file        
-        shutil.move(destination, source)
+        shutil.move(source, destination)
 
 
 # Start a new file if the time limit is reached
@@ -80,7 +80,7 @@ def video_split():
         # Move the previously recorded file
         source = vid_dir + '/raw/' + current_file
         destination = vid_dir + '/processing/' + current_file        
-        shutil.move(destination, source)
+        shutil.move(source, destination)
         current_file = vid_file_name
 
 
