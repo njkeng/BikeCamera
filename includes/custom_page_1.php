@@ -11,9 +11,45 @@ function DisplayCustomPage1(){
 
   $status = new StatusMessages();
 
-  # Definition of dropdown list options
-  $arrUpperBound = array('20','18','16','14','12');
-  $arrLowerBound = array('11','9','7','5','3','1');
+  # Video resolutions for raspberry pi camera
+  # 1080p widescreen 1920x1080 30fps
+  # 1080p SD 1440x1080 30fps
+  # 720p widescreen 1280x720 40fps
+  # 720p SD 960x720 40fps
+  # VGA 640x480 60fps
+  $picamera_resolution = array('1080p_HD','1080p_SD','720p_HD','720p_SD','VGA');
+  $video_settings = array( 
+    "1080p_HD" => array (
+       "picamera_hres" => 1920,
+       "picamera_vres" => 1080, 
+       "picamera_framerate" => 30
+    ),
+    
+    "1080p_SD" => array (
+       "picamera_hres" => 1440,
+       "picamera_vres" => 1080, 
+       "picamera_framerate" => 30
+    ),
+
+    "720p_HD" => array (
+       "picamera_hres" => 1280,
+       "picamera_vres" => 720, 
+       "picamera_framerate" => 40
+    ),
+
+    "720p_SD" => array (
+       "picamera_hres" => 960,
+       "picamera_vres" => 720, 
+       "picamera_framerate" => 40
+    ),
+
+    "VGA" => array (
+       "picamera_hres" => 640,
+       "picamera_vres" => 480, 
+       "picamera_framerate" => 60
+    )
+
+  );
 
 
   if( isset($_POST['saveCP1settings']) ) {
@@ -42,10 +78,10 @@ function DisplayCustomPage1(){
               <!-- Nav tabs -->
               <ul class="nav nav-tabs">
                 <li class="active">
-                    <a href="#url" data-toggle="tab">URL</a>
+                    <a href="#url" data-toggle="tab">Quality</a>
                 </li>
                 <li>
-                  <a href="#bounds" data-toggle="tab">Bounds</a>
+                  <a href="#bounds" data-toggle="tab">Storage</a>
                 </li>
               </ul>
 
@@ -53,7 +89,7 @@ function DisplayCustomPage1(){
               <div class="tab-content">
 
                 <div class="tab-pane fade in active" id="url">
-                  <h4>Resource location settings</h4>
+                  <h4>Video quality</h4>
                   <?php CSRFToken() ?>
                   <div class="row">
                     <div class="form-group col-md-4">
@@ -102,6 +138,9 @@ function SaveCustomPage1($status) {
   }
 
   if ($good_input) {
+
+    # Break down resolution into hres, vres and frame rate
+
 
     $ini_data = ["url" => $_POST['url'], "upper_bound" => $_POST['upper_bound'], "lower_bound" => $_POST['lower_bound']];
 

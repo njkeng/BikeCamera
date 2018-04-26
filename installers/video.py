@@ -75,7 +75,9 @@ def video_split():
         vid_file_name = 'vid%s.h264' % dt
         filename = vid_dir + '/raw/' + vid_file_name
         print ("Filename is: " + filename)
-        camera.split_recording(filename)
+#        camera.split_recording(filename)
+        camera.stop_recording()
+        camera.start_recording(filename)
 
         # Move the previously recorded file
         source = vid_dir + '/raw/' + current_file

@@ -36,7 +36,7 @@ function process_video_files() {
 	    full_ffmpeg=$ffmpeg_command_start$ffmpeg_command_input$ffmpeg_command_transpose$ffmpeg_command_body$ffmpeg_command_output
 	    echo "Executing $full_ffmpeg"
 	    # Execute the conversion command
-	    sudo $ffmpeg_command_start$ffmpeg_command_input$ffmpeg_command_transpose$ffmpeg_command_body$ffmpeg_command_output
+	    sudo $full_ffmpeg
 
 	    # Remove the file after it has been processed
 	    sudo rm $ffmpeg_input_dir/$input_file.h264
