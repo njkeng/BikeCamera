@@ -196,9 +196,9 @@ $theme_url = 'dist/css/' . $theme;
               <h1 class="page-header">
                 <img class="logo" src="img/<?php echo RASPI_CUSTOMHEADERIMAGE_NAME; ?>" width="45" height="45"> <?php echo RASPI_CUSTOMHEADERTEXT_NAME; ?>
               </h1>
-              <h3>
+              <h5>
                 <img class="logo" src="img/raspAP-logo.png" width="15" height="15"> Powered by RaspAP
-              </h3>
+              </h5>
             <?php } else { ?>
               <h1 class="page-header">
                 <img class="logo" src="img/raspAP-logo.png" width="45" height="45">RaspAP

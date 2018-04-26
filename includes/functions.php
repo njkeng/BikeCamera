@@ -90,7 +90,7 @@ function isAssoc($arr) {
 *
 */
 function SelectorOptions($name, $options, $selected = null) {
-  echo "<select class=\"form-control\" name=\"$name\">";
+  echo "<select class=\"form-control\" id=\"$name\" name=\"$name\">";
   foreach ( $options as $opt => $label) {
     $select = '';
     $key = isAssoc($options) ? $opt : $label;

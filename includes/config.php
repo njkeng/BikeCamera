@@ -40,16 +40,16 @@ define('RASPI_SYSTEM_ENABLED', true );
 // Image and text to display in the custom page header
 define('RASPI_CUSTOMHEADER_ENABLED', true );
 define('RASPI_CUSTOMHEADERIMAGE_NAME', 'custom_logo.png');
-define('RASPI_CUSTOMHEADERTEXT_NAME', 'Custom config');
+define('RASPI_CUSTOMHEADERTEXT_NAME', 'Bike Camera');
 
 // Custom configuration page names and icons
 // Display names for custom pages
-define('RASPI_CUSTOMPAGE1_NAME', 'Camera settings');
-define('RASPI_CUSTOMPAGE2_NAME', 'Advanced');
+define('RASPI_CUSTOMPAGE1_NAME', 'Video settings');
+define('RASPI_CUSTOMPAGE2_NAME', 'Time and date');
 // Icon names for custom page menu items.  These names represent characters from the font "fontawesome-webfont"
 // The full list of available icon names is in bower_components/font-awesome/css/font-awesome.css
 // The font is stored in the directory bower_components/font-awesome/fonts
-define('RASPI_CUSTOMPAGE1_ICON', 'fa-gear');
-define('RASPI_CUSTOMPAGE2_ICON', 'fa-star');
+define('RASPI_CUSTOMPAGE1_ICON', 'fa-video-camera');
+define('RASPI_CUSTOMPAGE2_ICON', 'fa-clock-o');
 
 ?>
