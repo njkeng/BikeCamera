@@ -27,6 +27,7 @@ hc_hres = int(myvars["picamera_hres"])
 hc_vres = int(myvars["picamera_vres"])
 hc_framerate = int(myvars["picamera_framerate"])
 hc_quality = int(myvars["picamera_quality"])
+hc_bitrate = int(myvars["picamera_bitrate"]) * 1000000
 
 # File parameters
 vid_length = int(myvars["vid_length"])          # Video file length in minutes

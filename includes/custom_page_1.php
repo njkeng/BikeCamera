@@ -15,6 +15,9 @@ function DisplayCustomPage1(){
   $cull_free_space = array(100, 200, 500, 1000);
   $vid_datetime_size = array(12, 15, 20, 25, 32, 45);
   $ffmpeg_output_format = array('mp4', 'mkv');
+  $picamera_quality = array(10, 15, 20, 25, 30, 35);
+  $picamera_bitrate = array(17, 20, 24);
+
 
   # Video resolutions for raspberry pi camera
   # 1080p widescreen 1920x1080 30fps
@@ -24,17 +27,22 @@ function DisplayCustomPage1(){
   # VGA 640x480 60fps
   $picamera_resolution = array('1080p_HD','1080p_SD','720p_HD','720p_SD','VGA');
 
-  # Read existing configuration data, else use default data
-  if ( ! $video_ini = parse_ini_file('/etc/pihelmetcam/video/video.ini')) {
-    $status->addMessage('Could not find an existing configuration file', 'warning');
-  }
 
   if( isset($_POST['saveCP1settings']) ) {
     if (CSRFValidate()) {
+      # Read existing configuration data, else use default data
+      if ( ! $video_ini = parse_ini_file('/etc/pihelmetcam/video/video.ini')) {
+        $status->addMessage('Could not find an existing configuration file', 'warning');
+      }
       SaveCustomPage1($status, $video_ini);
     } else {
       error_log('CSRF violation');
     }
+  }
+
+  # Read existing configuration data, else use default data
+  if ( ! $video_ini = parse_ini_file('/etc/pihelmetcam/video/video.ini')) {
+    $status->addMessage('Could not find an existing configuration file', 'warning');
   }
 
   ?>
@@ -51,30 +59,47 @@ function DisplayCustomPage1(){
             <?php CSRFToken() ?>
             <input type="hidden" name="video_settings" ?>
    
-          <div class="col-md-6">  <!-- for CAPTURE SETTINGS -->
-            <div class="panel panel-default">
-              <div class="panel-body">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#capture" data-toggle="tab">Capture</a>
+                </li>
+                <li>
+                  <a href="#storage" data-toggle="tab">Storage</a>
+                </li>
+                <li>
+                  <a href="#overlay" data-toggle="tab">Overlay</a>
+                </li>
+                <li>
+                  <a href="#advanced" data-toggle="tab">Advanced</a>
+                </li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+
+                <div class="tab-pane fade in active" id="capture">
                   <h4>Capture settings</h4>
                   <br>
 
                   <div class="form-group">
                     <label for="picamera_resolution" class="col-sm-4 control-label">Quality</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-3">
                       <?php SelectorOptions('picamera_resolution', $picamera_resolution, $video_ini['picamera_resolution']); ?>
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="ffmpeg_output_format" class="col-sm-4 control-label">Output format</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-3">
                       <?php SelectorOptions('ffmpeg_output_format', $ffmpeg_output_format, $video_ini['ffmpeg_output_format']); ?>
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="picamera_hflip" class="col-sm-4 control-label">Flip horizontally</label>
-                    <div class="radio" id="picamera_hflip">
-                      <div class="col-sm-2">
+                    <div class="radio col-sm-5" id="picamera_hflip">
+                      <div class="col-sm-3">
                         <input type="radio" name="picamera_hflip" value="0" <?php if($video_ini['picamera_hflip']==0) { echo "checked"; } ?>>
                     Normal
                       </div>
@@ -87,8 +112,8 @@ function DisplayCustomPage1(){
 
                   <div class="form-group">
                     <label for="picamera_vflip" class="col-sm-4 control-label">Flip vertically</label>
-                    <div class="radio" id="picamera_vflip">
-                      <div class="col-sm-2">
+                    <div class="radio col-sm-5" id="picamera_vflip">
+                      <div class="col-sm-3">
                         <input type="radio" name="picamera_vflip" value="0" <?php if($video_ini['picamera_vflip']==0) { echo "checked"; } ?>>
                     Normal
                       </div>
@@ -98,20 +123,15 @@ function DisplayCustomPage1(){
                       </div>
                     </div>
                   </div>
+                </div><!-- /.tab-pane  -->
 
-              </div><!-- /.panel-body -->
-            </div><!-- /.panel-default -->
-          </div><!-- /.col-md-6 for CAPTURE SETTINGS -->
-
-          <div class="col-md-6"> <!-- for STORAGE SETTINGS -->
-            <div class="panel panel-default">
-              <div class="panel-body">
+                <div class="tab-pane fade" id="storage">
                   <h4>Storage settings</h4>
                   <br>
 
                   <div class="form-group">
                     <label for="vid_length" class="col-sm-4 control-label">Video clip length </label>
-                    <div class="input-group">
+                    <div class="input-group col-sm-3">
                       <?php SelectorOptions('vid_length', $vid_length, $video_ini['vid_length']); ?>
                       <div class="input-group-addon">minutes</div>
                     </div>
@@ -119,26 +139,21 @@ function DisplayCustomPage1(){
 
                   <div class="form-group">
                     <label for="cull_free_space" class="col-sm-4 control-label">SD card keep free </label>
-                    <div class="input-group">
+                    <div class="input-group col-sm-3">
                       <?php SelectorOptions('cull_free_space', $cull_free_space, $video_ini['cull_free_space']); ?>
                       <div class="input-group-addon">MB</div>
                     </div>
                   </div>
+                </div><!-- /.tab-pane  -->
 
-              </div><!-- /.panel-body -->
-            </div><!-- /.panel-default -->
-          </div><!-- /.col-md-6 for STORAGE SETTINGS -->
-
-          <div class="col-md-6"> <!-- for OVERLAY SETTINGS -->
-            <div class="panel panel-default">
-              <div class="panel-body">
+                <div class="tab-pane fade" id="overlay">
                   <h4>Overlay settings</h4>
                   <br>
 
                   <div class="form-group">
                     <label for="vid_datetime_enable" class="col-sm-4 control-label">Time and date</label>
-                    <div class="radio" id="vid_datetime_enable">
-                      <div class="col-sm-2">
+                    <div class="radio col-sm-5" id="vid_datetime_enable">
+                      <div class="col-sm-3">
                         <input type="radio" name="vid_datetime_enable" value="1" <?php if($video_ini['vid_datetime_enable']==1) { echo "checked"; } ?>>
                     Enable
                       </div>
@@ -151,16 +166,35 @@ function DisplayCustomPage1(){
 
                   <div class="form-group">
                     <label for="vid_datetime_size" class="col-sm-4 control-label">Text height</label>
-                    <div class="input-group">
+                    <div class="input-group col-sm-3">
                       <?php SelectorOptions('vid_datetime_size', $vid_datetime_size, $video_ini['vid_datetime_size']); ?>
                       <div class="input-group-addon">Pixels</div>
                     </div>
                   </div>
+                </div><!-- /.tab-pane  -->
 
-              </div><!-- /.panel-body -->
-            </div><!-- /.panel-default -->
-          </div><!-- /.col-md-6 for OVERLAY SETTINGS -->
+                <div class="tab-pane fade" id="advanced">
+                  <h4>Advanced settings</h4>
+                  <br>
 
+                  <div class="form-group">
+                    <label for="picamera_quality" class="col-sm-4 control-label">Video quality</label>
+                    <div class="input-group col-sm-3">
+                      <?php SelectorOptions('picamera_quality', $picamera_quality, $video_ini['picamera_quality']); ?>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="picamera_bitrate" class="col-sm-4 control-label">Video bitrate</label>
+                    <div class="input-group col-sm-3">
+                      <?php SelectorOptions('picamera_bitrate', $picamera_bitrate, $video_ini['picamera_bitrate']); ?>
+                      <div class="input-group-addon">Mb/s</div>
+                    </div>
+                  </div>
+
+                </div><!-- /.tab-pane  -->
+
+              </div><!-- /.tab-content  -->
 
           <input type="submit" class="btn btn-outline btn-primary" name="saveCP1settings" value="Save settings" />
           </form>
@@ -187,6 +221,8 @@ function SaveCustomPage1($status, $video_ini) {
     $ini_data ['picamera_hflip']        = $_POST['picamera_hflip'];
     $ini_data ['picamera_vflip']        = $_POST['picamera_vflip'];
     $ini_data ['ffmpeg_output_format']  = $_POST['ffmpeg_output_format'];
+    $ini_data ['picamera_quality']      = $_POST['picamera_quality'];
+    $ini_data ['picamera_bitrate']      = $_POST['picamera_bitrate'];
 
     switch($_POST['picamera_resolution']){
 
