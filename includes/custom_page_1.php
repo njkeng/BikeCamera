@@ -12,7 +12,7 @@ function DisplayCustomPage1(){
 
   # Options for video clip length
   $vid_length = array(2, 5, 10, 15);
-  $cull_free_space = array(100, 200, 500, 1000);
+  $cull_free_space = array(500, 1000);
   $vid_datetime_size = array(12, 15, 20, 25, 32, 45);
   $ffmpeg_output_format = array('mp4', 'mkv');
   $picamera_quality = array(10, 15, 20, 25, 30, 35);

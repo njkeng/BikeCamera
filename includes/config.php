@@ -21,7 +21,7 @@ define('RASPI_TORPROXY_CONFIG', '/etc/tor/torrc');
 define('RASPI_PAGETITLE_NAME', 'PiHelmetCam Configuration Portal');
 
 //Menu navbar text
-define('RASPI_NAVBAR_NAME', 'PiHelmetCam Configuration Portal v1.0');
+define('RASPI_NAVBAR_NAME', 'BikeCamera Configuration Portal v1.0');
 
 // Optional services, set to true to enable.
 define('RASPI_DASHBOARD_ENABLED', true );
@@ -39,8 +39,8 @@ define('RASPI_SYSTEM_ENABLED', true );
 
 // Image and text to display in the custom page header
 define('RASPI_CUSTOMHEADER_ENABLED', true );
-define('RASPI_CUSTOMHEADERIMAGE_NAME', 'custom_logo.png');
-define('RASPI_CUSTOMHEADERTEXT_NAME', 'Bike Camera');
+define('RASPI_CUSTOMHEADERIMAGE_NAME', 'BikeCamera_logo_simple.png');
+define('RASPI_CUSTOMHEADERTEXT_NAME', 'BikeCamera');
 
 // Custom configuration page names and icons
 // Display names for custom pages
