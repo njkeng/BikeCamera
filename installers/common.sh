@@ -51,16 +51,21 @@ function display_welcome() {
 ### NOTE: some of the below functions MUST be overloaded due to system-specific installs
 
 function config_installation() {
-    install_log "Configure installation"
+    install_log "Configure device name"
     echo "Detected ${version_msg}" 
-    echo "Install directory: ${pihelmetcam_dir}"
-    echo "Lighttpd directory: ${webroot_dir}"
-    echo -n "Complete installation with these values? [y/N]: "
+    echo "Device name: $pihelmetcam_hostname"
+    echo "IMPORTANT: If you have more than one BikeCamera then this name must be changed."
+    echo -n "Complete installation with this device name? [Y/n]: "
     read answer
-    if [[ $answer != "y" ]]; then
-        echo "Installation aborted."
-        exit 0
-    fi
+    while [[ $answer == "n" ]]
+    do
+        echo "Enter a new device name"
+        read device_name
+        echo "Confirm that you want the device name to be $device_name? [Y/n]: "
+        read answer
+    done
+    $pihelmetcam_hostname = $device_name
+    install_log "Installation continuing with device name: $pihelmetcam_hostname"
 }
 
 # Runs a system software update to make sure we're using all fresh packages
