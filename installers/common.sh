@@ -372,6 +372,27 @@ function patch_system_files() {
     fi
 }
 
+# Check if Samba config needs updating
+function samba_settings() {
+    samba_updated=$(cat /etc/samba/smb.conf | grep bikecamera)
+    if [ $samba_updated == ""]; then
+        install_log "Updating samba config"
+        # The following words in square brackets will be the name of the share
+        sudo echo "[$pihelmetcam_hostname]" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "path = /media/usbhdd1/download" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "comment = Bike video folder" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "valid users = @users" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "force group = users" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "create mask = 0660" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "directory mask = 0771" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "read only = no" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
+    }
+    else
+        install_log "Samba configuration already updated"
+    fi
+
+}
+
 function install_complete() {
     install_log "Installation completed!"
 
@@ -406,5 +427,6 @@ function install_pihelmetcam() {
     process_vid_crontab
     sudo_add
     patch_system_files
+    samba_settings
     install_complete
 }
