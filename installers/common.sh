@@ -35,17 +35,20 @@ function display_welcome() {
     green='\033[1;32m'
 
     echo -e "${red}\n"
-    echo -e " __________________________________________________________________________"
-    echo -e "    ____         _     _                                 __                "
-    echo -e "    /    )   ,   /    /          /                     /    )              "
-    echo -e "   /____/       /___ /     __   /   _  _    __  _/_   /         __   _  _  "
-    echo -e "  /        /   /    /    /___) /   / /  ) /___) /    /        /   ) / /  ) "
-    echo -e "_/________/___/____/____(___ _/___/_/__/_(___ _(_ __(____/___(___(_/_/__/_ "
+    echo -e "   mmmmmmmmmmmmdsssssssssssyhmmm                  "
+    echo -e "  mmmmmmmmmmmmm.             .+d     MMMMMMMMMMMMM"
+    echo -e " mmmmmmmmmmmmmm`  -osssssso+.  :m  mmmm           "
+    echo -e "mmmmmmmmmmmmmmm`  ommmmmmmmm+  -d mmm             "
+    echo -e "mmmmmmmmmmmmmmm`  omms-       -smmmm              "
+    echo -e "mmmmmmmmmmmmmmm`  omms......  :h mmm              "
+    echo -e " mmmmmmmmmmmmmm`  ommmmmmmmm/  :d mmm             "
+    echo -e " mmmmmmmmmmmmmm`  -osssssoo+.  :m  mmm            "
+    echo -e "  mmmmmmmmmmmmm.              +d     MMMMMMMMMMMMM"
+    echo -e "   mmmmmmmmmmmmhsooooooooosyhdmmm                 "
     echo -e ""
     echo -e "${green}"
     echo -e "The Quick Installer will guide you through a few easy steps\n\n"
 }
-
 
 ### NOTE: all the below functions are overloadable for system-specific installs
 ### NOTE: some of the below functions MUST be overloaded due to system-specific installs
