@@ -401,6 +401,37 @@ function samba_settings() {
 
 }
 
+# Enable i2c RTC kernel module
+function rtc_kernel_module() {
+
+    install_log "Enabling real-time clock kernel module"
+
+    # Check if /boot/config.txt needs patching
+    if [ $(sudo grep -c DS3231 /boot/config.txt) -ne 1 ]
+    then
+        # Didn't find existing line for DS3231 support
+        install_log "Patching /boot/config.txt"
+        sudo echo "dtoverlay=i2c-rtc,ds3231" >> /boot/config.txt || install_error "Unable to write to boot/config.txt"
+    else
+        install_log "RTC kernel module already enabled"
+    fi
+
+    # Remove fake hardware clock which uses NTP
+    sudo apt-get -y remove fake-hwclock || install_error "Unable to remove module fake-hwclock"
+    sudo update-rc.d -f fake-hwclock remove || install_error "Unable to remove fake-hwclock from rc-d"
+
+    # Enable original hw-clock script
+    line_number=$(grep -n "if \[ -e /run/systemd/system \]" /lib/udev/hwclock-s$
+    line_1=$line_number"s/.*/\#if \[ \-e \/run\/systemd\/system \] \; then/"
+    line_2=$((line_number + 1))"s/.*/\#    exit 0/"
+    line_3=$((line_number + 2))"s/.*/\#fi/"
+    sudo sed -i "$line_1" /lib/udev/hwclock-set || install_error "Unable to write to /lib/udev/hwclock-set"
+    sudo sed -i "$line_2" /lib/udev/hwclock-set || install_error "Unable to write to /lib/udev/hwclock-set"
+    sudo sed -i "$line_3" /lib/udev/hwclock-set || install_error "Unable to write to /lib/udev/hwclock-set"
+    # Set the time on the RTC
+    sudo hwclock -w  || install_error "Unable to set the time on the real-time clock"
+}
+
 function install_complete() {
     install_log "Installation completed!"
 
@@ -436,5 +467,6 @@ function install_pihelmetcam() {
     sudo_add
     patch_system_files
     samba_settings
+    rtc_kernel_module
     install_complete
 }
