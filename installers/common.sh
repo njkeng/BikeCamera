@@ -435,9 +435,9 @@ function rtc_kernel_module() {
 function install_complete() {
     install_log "Installation completed!"
 
-    echo -n "The system needs to be rebooted as a final step. Reboot now? [y/N]: "
+    echo -n "The system needs to be rebooted as a final step. Reboot now? [Y/n]: "
     read answer
-    if [[ $answer != "y" ]]; then
+    if [[ $answer == "n" ]]; then
         echo "Installation aborted."
         exit 0
     fi
