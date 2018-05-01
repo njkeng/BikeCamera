@@ -394,7 +394,6 @@ function samba_settings() {
         sudo echo "create mask = 0660" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "directory mask = 0771" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "read only = no" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
-    }
     else
         install_log "Samba configuration already updated"
     fi
@@ -421,7 +420,7 @@ function rtc_kernel_module() {
     sudo update-rc.d -f fake-hwclock remove || install_error "Unable to remove fake-hwclock from rc-d"
 
     # Enable original hw-clock script
-    line_number=$(grep -n "if \[ -e /run/systemd/system \]" /lib/udev/hwclock-s$
+    line_number=$(grep -n "if \[ -e /run/systemd/system \]" /lib/udev/hwclock-set)
     line_1=$line_number"s/.*/\#if \[ \-e \/run\/systemd\/system \] \; then/"
     line_2=$((line_number + 1))"s/.*/\#    exit 0/"
     line_3=$((line_number + 2))"s/.*/\#fi/"
