@@ -23,6 +23,10 @@ var themes = {
     "default": "custom.css",
     "hackernews" : "hackernews.css",
     "terminal" : "terminal.css",
+    "business" : "business-casual.css",
+    "opw" : "one-page-wonder.css",
+    "admin" : "sb-admin-2.css",
+    "timeline" : "timeline.css",
 }
 
 //Loads the correct sidebar on window load,

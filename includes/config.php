@@ -34,7 +34,7 @@ define('RASPI_CUSTOMPAGE2_ENABLED', true );
 define('RASPI_OPENVPN_ENABLED', false );
 define('RASPI_TORPROXY_ENABLED', false );
 define('RASPI_CONFAUTH_ENABLED', true );
-define('RASPI_CHANGETHEME_ENABLED', false );
+define('RASPI_CHANGETHEME_ENABLED', true );
 define('RASPI_SYSTEM_ENABLED', true );
 
 // Image and text to display in the custom page header

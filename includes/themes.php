@@ -19,6 +19,18 @@ function DisplayThemeConfig(){
     case "terminal.css":
       $tselected = "selected";
       break;
+    case "business-casual.css":
+      $bselected = "selected";
+      break;
+    case "one-page-wonder.css":
+      $oselected = "selected";
+      break;
+    case "sb-admin-2.css":
+      $aselected = "selected";
+      break;
+    case "timeline.css":
+      $tlselected = "selected";
+      break;
   }
 
   ?>
@@ -40,6 +52,10 @@ function DisplayThemeConfig(){
                 <option value="default" class="theme-link" <?php echo $cselected; ?>>PiHelmetCam (default)</option>
                 <option value="hackernews" class="theme-link"<?php echo $hselected; ?>>HackerNews</option>
                 <option value="terminal" class="theme-link" <?php echo $tselected; ?>>Terminal</option>
+                <option value="business" class="theme-link" <?php echo $bselected; ?>>Business casual</option>
+                <option value="opw" class="theme-link" <?php echo $oselected; ?>>One page wonder</option>
+                <option value="admin" class="theme-link" <?php echo $aselected; ?>>Start Bootstrap Admin 2</option>
+                <option value="timeline" class="theme-link" <?php echo $tlselected; ?>>Timeline</option>
               </select>
           </div>
         </div>
