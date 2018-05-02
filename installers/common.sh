@@ -67,7 +67,7 @@ function config_installation() {
         echo "Confirm that you want the device name to be $device_name? [Y/n]: "
         read answer
     done
-    $pihelmetcam_devicename = "$device_name"
+    pihelmetcam_devicename = "$device_name"
     install_log "Installation continuing with device name: $pihelmetcam_devicename"
 }
 
