@@ -56,7 +56,7 @@ function display_welcome() {
 function config_installation() {
     install_log "Configure device name"
     echo "Detected ${version_msg}" 
-    echo "Device name: $pihelmetcam_devicename"
+    echo "Device name: $bc_devicename"
     install_log "IMPORTANT:" 
     echo "If you have more than one BikeCamera then this name must be changed."
     user_devicename=""
