@@ -1,4 +1,4 @@
-pihelmetcam_hostname="pihelmetcam"
+pihelmetcam_devicename="pihelmetcam"
 pihelmetcam_dir="/etc/pihelmetcam"
 pihelmetcam_user="www-data"
 version=`sed 's/\..*//' /etc/debian_version`
@@ -56,7 +56,7 @@ function display_welcome() {
 function config_installation() {
     install_log "Configure device name"
     echo "Detected ${version_msg}" 
-    echo "Device name: $pihelmetcam_hostname"
+    echo "Device name: $pihelmetcam_devicename"
     echo "IMPORTANT: If you have more than one BikeCamera then this name must be changed."
     echo -n "Complete installation with this device name? [Y/n]: "
     read answer
@@ -67,8 +67,8 @@ function config_installation() {
         echo "Confirm that you want the device name to be $device_name? [Y/n]: "
         read answer
     done
-    $pihelmetcam_hostname = $device_name
-    install_log "Installation continuing with device name: $pihelmetcam_hostname"
+    $pihelmetcam_devicename = $device_name
+    install_log "Installation continuing with device name: $pihelmetcam_devicename"
 }
 
 # Runs a system software update to make sure we're using all fresh packages
@@ -85,9 +85,9 @@ function install_dependencies() {
 
 # Sets the hostname of the Pi
 function set_hostname() {
-    echo $pihelmetcam_hostname | sudo tee  /etc/hostname || install_error "Unable to set /etc/hostname"
+    echo $pihelmetcam_devicename | sudo tee  /etc/hostname || install_error "Unable to set /etc/hostname"
     sudo sed -i -e 's/^.*pihelmetcam-installer.*$//g' /etc/hosts
-    echo "127.0.1.1      " $pihelmetcam_hostname " ### Set by pihelmetcam-installer"  | sudo tee -a /etc/hosts || install_error "Unable to set /etc/hosts"
+    echo "127.0.1.1      " $pihelmetcam_devicename " ### Set by pihelmetcam-installer"  | sudo tee -a /etc/hosts || install_error "Unable to set /etc/hosts"
 }
 
 # Enables PHP for lighttpd and restarts service for settings to take effect
@@ -382,14 +382,14 @@ function patch_system_files() {
 
 # Check if Samba config needs updating
 function samba_settings() {
-    samba_updated=$(cat /etc/samba/smb.conf | grep $pihelmetcam_hostname)
+    samba_updated=$(cat /etc/samba/smb.conf | grep $pihelmetcam_devicename)
     if [ $samba_updated == ""]; then
         install_log "Updating samba config"
         sudo cp /etc/samba/smb.conf "/etc/samba/smb.conf.`date +%F-%R`" || install_error "Unable to move old /etc/samba/smb.conf out of the way"
         sudo cp /etc/samba/smb.conf /tmp/new_smb.conf  || install_error "Unable to create temporary smb.conf"
         sudo echo "" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         # The following words in square brackets will be the name of the share
-        sudo echo "[$pihelmetcam_hostname]" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "[$pihelmetcam_devicename]" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "path = $pihelmetcam_dir/completed" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "comment = Bike video folder" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "valid users = @users" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
