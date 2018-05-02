@@ -382,18 +382,22 @@ function patch_system_files() {
 
 # Check if Samba config needs updating
 function samba_settings() {
-    samba_updated=$(cat /etc/samba/smb.conf | grep bikecamera)
+    samba_updated=$(cat /etc/samba/smb.conf | grep $pihelmetcam_hostname)
     if [ $samba_updated == ""]; then
         install_log "Updating samba config"
+        sudo cp /etc/samba/smb.conf "/etc/samba/smb.conf.`date +%F-%R`" || install_error "Unable to move old /etc/samba/smb.conf out of the way"
+        sudo cp /etc/samba/smb.conf /tmp/new_smb.conf  || install_error "Unable to create temporary smb.conf"
+        sudo echo "" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         # The following words in square brackets will be the name of the share
-        sudo echo "[$pihelmetcam_hostname]" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
-        sudo echo "path = /media/usbhdd1/download" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
-        sudo echo "comment = Bike video folder" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
-        sudo echo "valid users = @users" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
-        sudo echo "force group = users" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
-        sudo echo "create mask = 0660" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
-        sudo echo "directory mask = 0771" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
-        sudo echo "read only = no" >> /etc/samba/smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "[$pihelmetcam_hostname]" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "path = $pihelmetcam_dir/completed" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "comment = Bike video folder" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "valid users = @users" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "force group = users" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "create mask = 0660" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "directory mask = 0771" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "read only = no" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo mv /tmp/new_smb.conf /etc/samba/smb.conf || install_error "Unable to move new samba configuration file into place"
     else
         install_log "Samba configuration already updated"
     fi
