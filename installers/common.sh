@@ -387,6 +387,7 @@ function samba_settings() {
         install_log "Updating samba config"
         sudo cp /etc/samba/smb.conf "/etc/samba/smb.conf.`date +%F-%R`" || install_error "Unable to move old /etc/samba/smb.conf out of the way"
         sudo cp /etc/samba/smb.conf /tmp/new_smb.conf  || install_error "Unable to create temporary smb.conf"
+        sudo chmod a+w /tmp/new_smb.conf  || install_error "Unable to change permissions of temporary smb.conf"
         sudo echo "" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         # The following words in square brackets will be the name of the share
         sudo echo "[$pihelmetcam_devicename]" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
@@ -397,6 +398,7 @@ function samba_settings() {
         sudo echo "create mask = 0660" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "directory mask = 0771" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "read only = no" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo chmod g-w,o-w /tmp/new_smb.conf  || install_error "Unable to change permissions of temporary smb.conf"
         sudo mv /tmp/new_smb.conf /etc/samba/smb.conf || install_error "Unable to move new samba configuration file into place"
     else
         install_log "Samba configuration already updated"
