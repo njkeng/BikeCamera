@@ -1,4 +1,4 @@
-pihelmetcam_devicename="pihelmetcam"
+bc_devicename="pihelmetcam"
 pihelmetcam_dir="/etc/pihelmetcam"
 pihelmetcam_user="www-data"
 version=`sed 's/\..*//' /etc/debian_version`
@@ -57,17 +57,23 @@ function config_installation() {
     install_log "Configure device name"
     echo "Detected ${version_msg}" 
     echo "Device name: $pihelmetcam_devicename"
-    echo "IMPORTANT: If you have more than one BikeCamera then this name must be changed."
+    install_log "IMPORTANT:" 
+    echo "If you have more than one BikeCamera then this name must be changed."
+    user_devicename=""
     echo -n "Complete installation with this device name? [Y/n]: "
     read answer
     while [[ $answer == "n" ]]
     do
         echo "Enter a new device name"
-        read device_name
-        echo "Confirm that you want the device name to be $device_name? [Y/n]: "
+        read user_devicename
+        echo "Confirm that you want the device name to be $user_devicename [Y/n]: "
         read answer
     done
-    let pihelmetcam_devicename = "$device_name"
+    if [ $user_devicename == "" ]; then
+    	pihelmetcam_devicename = "$bc_devicename"
+    else
+    	pihelmetcam_devicename = "$user_devicename"
+    fi
     install_log "Installation continuing with device name: $pihelmetcam_devicename"
 }
 
