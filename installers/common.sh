@@ -422,7 +422,10 @@ function rtc_kernel_module() {
     then
         # Didn't find existing line for DS3231 support
         install_log "Patching /boot/config.txt"
-        sudo echo "dtoverlay=i2c-rtc,ds3231" >> /boot/config.txt || install_error "Unable to write to boot/config.txt"
+	    sudo cp /boot/config.txt "/boot/config.txt.`date +%F-%R`" || install_error "Unable to move old /tmp/new_boot.config.txt out of the way"
+    	sudo cp /boot/config.txt /tmp/new_boot.config.txt  || install_error "Unable to create temporary boot.config.txt"
+        sudo echo "dtoverlay=i2c-rtc,ds3231" >> /tmp/new_boot.config.txt || install_error "Unable to write to /tmp/new_boot.config.txt"
+	    sudo mv /tmp/new_boot.config.txt /boot/config.txt || install_error "Unable to move new /boot/config.txt file into place"
     else
         install_log "RTC kernel module already enabled"
     fi
@@ -433,15 +436,15 @@ function rtc_kernel_module() {
 
     # Enable original hw-clock script
     sudo cp /lib/udev/hwclock-set "/lib/udev/hwclock-set.`date +%F-%R`" || install_error "Unable to move old /lib/udev/hwclock-set out of the way"
-    sudo cp /lib/udev/hwclock-set /tmp/new_smb.hwclock-set  || install_error "Unable to create temporary hwclock-set"
-    line_number=$(grep -n "if \[ -e /run/systemd/system \]" /tmp/new_smb.hwclock-set)
+    sudo cp /lib/udev/hwclock-set /tmp/new_hwclock-set  || install_error "Unable to create temporary hwclock-set"
+    line_number=$(grep -n "if \[ -e /run/systemd/system \]" /tmp/new_hwclock-set)
     line_1=$line_number"s/.*/\#if \[ \-e \/run\/systemd\/system \] \; then/"
     line_2=$((line_number + 1))"s/.*/\#    exit 0/"
     line_3=$((line_number + 2))"s/.*/\#fi/"
-    sudo sed -i "$line_1" /tmp/new_smb.hwclock-set || install_error "Unable to write to /tmp/new_smb.hwclock-set"
-    sudo sed -i "$line_2" /tmp/new_smb.hwclock-set || install_error "Unable to write to /tmp/new_smb.hwclock-set"
-    sudo sed -i "$line_3" /tmp/new_smb.hwclock-set || install_error "Unable to write to /tmp/new_smb.hwclock-set"
-    sudo mv /tmp/new_smb.hwclock-set /lib/udev/hwclock-set || install_error "Unable to move new samba configuration file into place"
+    sudo sed -i "$line_1" /tmp/new_hwclock-set || install_error "Unable to write to /tmp/new_hwclock-set"
+    sudo sed -i "$line_2" /tmp/new_hwclock-set || install_error "Unable to write to /tmp/new_hwclock-set"
+    sudo sed -i "$line_3" /tmp/new_hwclock-set || install_error "Unable to write to /tmp/new_hwclock-set"
+    sudo mv /tmp/new_hwclock-set /lib/udev/hwclock-set || install_error "Unable to move new hwclock-set file into place"
     # Set the time on the RTC
     sudo hwclock -w  || install_error "Unable to set the time on the real-time clock"
 }
