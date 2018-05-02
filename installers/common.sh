@@ -424,13 +424,16 @@ function rtc_kernel_module() {
     sudo update-rc.d -f fake-hwclock remove || install_error "Unable to remove fake-hwclock from rc-d"
 
     # Enable original hw-clock script
-    line_number=$(grep -n "if \[ -e /run/systemd/system \]" /lib/udev/hwclock-set)
+    sudo cp /lib/udev/hwclock-set "/lib/udev/hwclock-set.`date +%F-%R`" || install_error "Unable to move old /lib/udev/hwclock-set out of the way"
+    sudo cp /lib/udev/hwclock-set /tmp/new_smb.hwclock-set  || install_error "Unable to create temporary hwclock-set"
+    line_number=$(grep -n "if \[ -e /run/systemd/system \]" /tmp/new_smb.hwclock-set)
     line_1=$line_number"s/.*/\#if \[ \-e \/run\/systemd\/system \] \; then/"
     line_2=$((line_number + 1))"s/.*/\#    exit 0/"
     line_3=$((line_number + 2))"s/.*/\#fi/"
-    sudo sed -i "$line_1" /lib/udev/hwclock-set || install_error "Unable to write to /lib/udev/hwclock-set"
-    sudo sed -i "$line_2" /lib/udev/hwclock-set || install_error "Unable to write to /lib/udev/hwclock-set"
-    sudo sed -i "$line_3" /lib/udev/hwclock-set || install_error "Unable to write to /lib/udev/hwclock-set"
+    sudo sed -i "$line_1" /tmp/new_smb.hwclock-set || install_error "Unable to write to /tmp/new_smb.hwclock-set"
+    sudo sed -i "$line_2" /tmp/new_smb.hwclock-set || install_error "Unable to write to /tmp/new_smb.hwclock-set"
+    sudo sed -i "$line_3" /tmp/new_smb.hwclock-set || install_error "Unable to write to /tmp/new_smb.hwclock-set"
+    sudo mv /tmp/new_smb.hwclock-set /lib/udev/hwclock-set || install_error "Unable to move new samba configuration file into place"
     # Set the time on the RTC
     sudo hwclock -w  || install_error "Unable to set the time on the real-time clock"
 }
