@@ -436,10 +436,10 @@ function rtc_kernel_module() {
     # Enable original hw-clock script
     sudo cp /lib/udev/hwclock-set "/lib/udev/hwclock-set.`date +%F-%R`" || install_error "Unable to move old /lib/udev/hwclock-set out of the way"
     sudo cp /lib/udev/hwclock-set /tmp/new_hwclock-set  || install_error "Unable to create temporary hwclock-set"
-    line_number=$(grep -n "if \[ -e /run/systemd/system \]" /tmp/new_hwclock-set)
+    line_number=$(grep -n "if \[ -e /run/systemd/system \]" /tmp/new_hwclock-set  | cut -d : -f 1 )
     line_1=$line_number"s/.*/\#if \[ \-e \/run\/systemd\/system \] \; then/"
-    line_2=$((line_number + 1))"s/.*/\#    exit 0/"
-    line_3=$((line_number + 2))"s/.*/\#fi/"
+    line_2=$(( line_number + 1 ))"s/.*/\#    exit 0/"
+    line_3=$(( line_number + 2 ))"s/.*/\#fi/"
     sudo sed -i "$line_1" /tmp/new_hwclock-set || install_error "Unable to write to /tmp/new_hwclock-set"
     sudo sed -i "$line_2" /tmp/new_hwclock-set || install_error "Unable to write to /tmp/new_hwclock-set"
     sudo sed -i "$line_3" /tmp/new_hwclock-set || install_error "Unable to write to /tmp/new_hwclock-set"
