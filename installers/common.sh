@@ -389,7 +389,7 @@ function patch_system_files() {
 # Check if Samba config needs updating
 function samba_settings() {
     samba_updated=$(cat /etc/samba/smb.conf | grep $pihelmetcam_devicename)
-    if [ "$samba_updated" == ""]; then
+    if [ "$samba_updated" == "" ]; then
         install_log "Updating samba config"
         sudo cp /etc/samba/smb.conf "/etc/samba/smb.conf.`date +%F-%R`" || install_error "Unable to move old /etc/samba/smb.conf out of the way"
         sudo cp /etc/samba/smb.conf /tmp/new_smb.conf  || install_error "Unable to create temporary smb.conf"
@@ -421,11 +421,10 @@ function rtc_kernel_module() {
     if [ $(sudo grep -c DS3231 /boot/config.txt) -ne 1 ]
     then
         # Didn't find existing line for DS3231 support
+        config_plus_date="$pihelmetcam_dir/boot.config.txt.`date +%F-%R`"
         install_log "Patching /boot/config.txt"
-	    sudo cp /boot/config.txt "/boot/config.txt.`date +%F-%R`" || install_error "Unable to move old /tmp/new_boot.config.txt out of the way"
-    	sudo cp /boot/config.txt /tmp/new_boot.config.txt  || install_error "Unable to create temporary boot.config.txt"
-        sudo echo "dtoverlay=i2c-rtc,ds3231" >> /tmp/new_boot.config.txt || install_error "Unable to write to /tmp/new_boot.config.txt"
-	    sudo mv /tmp/new_boot.config.txt /boot/config.txt || install_error "Unable to move new /boot/config.txt file into place"
+	    sudo sh -c "echo 'cp /boot/config.txt $config_plus_date'" || install_error "Unable to copy /boot/config.txt to $pihelmetcam_dir"
+    	sudo sh -c "echo 'dtoverlay=i2c-rtc,ds3231' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
     else
         install_log "RTC kernel module already enabled"
     fi
