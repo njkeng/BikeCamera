@@ -70,9 +70,9 @@ function config_installation() {
         read answer
     done
     if [ $user_devicename == "" ]; then
-    	pihelmetcam_devicename = "$bc_devicename"
+    	pihelmetcam_devicename="$bc_devicename"
     else
-    	pihelmetcam_devicename = "$user_devicename"
+    	pihelmetcam_devicename="$user_devicename"
     fi
     install_log "Installation continuing with device name: $pihelmetcam_devicename"
 }
