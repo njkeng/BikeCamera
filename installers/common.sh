@@ -69,7 +69,7 @@ function config_installation() {
         echo "Confirm that you want the device name to be $user_devicename [Y/n]: "
         read answer
     done
-    if [ $user_devicename == "" ]; then
+    if [ "$user_devicename" == "" ]; then
     	pihelmetcam_devicename="$bc_devicename"
     else
     	pihelmetcam_devicename="$user_devicename"
@@ -389,7 +389,7 @@ function patch_system_files() {
 # Check if Samba config needs updating
 function samba_settings() {
     samba_updated=$(cat /etc/samba/smb.conf | grep $pihelmetcam_devicename)
-    if [ $samba_updated == ""]; then
+    if [ "$samba_updated" == ""]; then
         install_log "Updating samba config"
         sudo cp /etc/samba/smb.conf "/etc/samba/smb.conf.`date +%F-%R`" || install_error "Unable to move old /etc/samba/smb.conf out of the way"
         sudo cp /etc/samba/smb.conf /tmp/new_smb.conf  || install_error "Unable to create temporary smb.conf"
