@@ -309,7 +309,7 @@ function process_vid_crontab() {
         # Run processing script every 2 minutes
         crontab_line="*/2 * * * * sudo $pihelmetcam_dir/video/process_vid.sh >/dev/null 2>&1"
 
-        # Check of crontab is empty
+        # Check if crontab is empty
         crontab_exists=$(cat /tmp/current_crontab | grep 'no crontab')
         if [ "$crontab_exists" != "" ]; then
             # If crontab is empty, write a new crontab file
@@ -409,7 +409,6 @@ function samba_settings() {
     else
         install_log "Samba configuration already updated"
     fi
-
 }
 
 # Enable i2c RTC kernel module
@@ -444,8 +443,14 @@ function rtc_kernel_module() {
     sudo sed -i "$line_2" /tmp/new_hwclock-set || install_error "Unable to write to /tmp/new_hwclock-set"
     sudo sed -i "$line_3" /tmp/new_hwclock-set || install_error "Unable to write to /tmp/new_hwclock-set"
     sudo mv /tmp/new_hwclock-set /lib/udev/hwclock-set || install_error "Unable to move new hwclock-set file into place"
+
     # Set the time on the RTC
-    sudo hwclock -w  || install_error "Unable to set the time on the real-time clock"
+    time_set=$(sudo hwclock -w)
+    if [ "$time_set" == "" ]; then
+        install_log "The time has been set on the Real Time Clock"
+    else
+        install_log "The Real Time Clock could not be set.  Is there one installed?"
+    fi
 }
 
 function install_complete() {
