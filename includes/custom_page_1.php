@@ -254,7 +254,7 @@ function SaveCustomPage1($status, $video_ini) {
       case "VGA":
         $ini_data ['picamera_hres']       = 640;
         $ini_data ['picamera_vres']       = 480; 
-        $ini_data ['picamera_framerate']  = 60;
+        $ini_data ['picamera_framerate']  = 40;
         break;
 
     }
