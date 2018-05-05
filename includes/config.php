@@ -28,7 +28,7 @@ define('RASPI_DASHBOARD_ENABLED', true );
 define('RASPI_CUSTOMPAGE1_ENABLED', true );
 define('RASPI_CLIENT_ENABLED', true );
 define('RASPI_HOTSPOT_ENABLED', false );
-define('RASPI_NETWORK_ENABLED', false );
+define('RASPI_NETWORK_ENABLED', true );
 define('RASPI_DHCP_ENABLED', false );
 define('RASPI_CUSTOMPAGE2_ENABLED', true );
 define('RASPI_OPENVPN_ENABLED', false );
