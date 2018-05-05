@@ -11,7 +11,7 @@ from datetime import datetime
 
 # GPIO parameters
 buttonGPIO = 10         # Pushbutton is connected to GPIO 10 (pin 19)
-ledGPIO = 7             # LED is connected to GPIO 7 (pin 26)
+ledGPIO = 24            # LED is connected to GPIO 24 (pin 18)
 
 # Read key-value pairs from the ini file
 myvars = {}
