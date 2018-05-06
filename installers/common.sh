@@ -242,7 +242,7 @@ function configuration_for_video() {
     sudo echo "picamera_framerate = 40" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_quality = 20" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_bitrate = 17" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo echo "picamera_resolution = \"720p_SD\""> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "picamera_resolution = \"720p_SD\"">> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_length = 5" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_dir = \"$pihelmetcam_dir/video\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_datetime_enable = 1" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
