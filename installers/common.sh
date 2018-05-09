@@ -185,10 +185,10 @@ function change_file_ownership() {
 function update_config_files() {
 	# Update AP interface definition with this device's MAC address
 	mac_address=$(cat /sys/class/net/wlan0/address)
-	sed -i "s/b8:27:eb:ff:ff:ff/$mac_address/g" $webroot_dir/config/70-persistent-net.rules
+	sed -i "s/b8:27:eb:ff:ff:ff/$mac_address/g" $webroot_dir/config/70-persistent-net.rules || install_error "Unable to write mac address to rules"
 
 	# Update hostapd config with this device's hostname
-	sed -i "s/bikecamera/$pihelmetcam_devicename/g" $webroot_dir/config/hostapd.conf
+	sed -i "s/bikecamera/$pihelmetcam_devicename/g" $webroot_dir/config/hostapd.conf || install_error "Unable to write hostname to AP config"
 }
 
 # Check for existing /etc/network/interfaces and /etc/hostapd/hostapd.conf files
