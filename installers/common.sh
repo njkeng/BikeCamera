@@ -181,6 +181,16 @@ function change_file_ownership() {
     sudo chown -R $pihelmetcam_user:$pihelmetcam_user "$webroot_dir" || install_error "Unable to change file ownership for '$webroot_dir'"
 }
 
+# Update default config files with hostname and ethernet MAC for this device
+function update_config_files() {
+	# Update AP interface definition with this device's MAC address
+	mac_address=$(cat /sys/class/net/wlan0/address)
+	sed -i "s/b8:27:eb:ff:ff:ff/$mac_address/g" $webroot_dir/config/70-persistent-net.rules
+
+	# Update hostapd config with this device's hostname
+	sed -i "s/bikecamera/$pihelmetcam_devicename/g" $webroot_dir/config/hostapd.conf
+}
+
 # Check for existing /etc/network/interfaces and /etc/hostapd/hostapd.conf files
 function check_for_old_configs() {
     if [ -f /etc/network/interfaces ]; then
@@ -261,6 +271,7 @@ function default_configuration() {
     if [ -f /etc/default/hostapd ]; then
         sudo mv /etc/default/hostapd /tmp/default_hostapd.old || install_error "Unable to remove old /etc/default/hostapd file"
     fi
+    sudo cp $webroot_dir/config/70-persistent-net.rules /etc/udev/rules.d || install_error "Unable to copy ap0 inteface definition file"
     sudo cp $webroot_dir/config/default_hostapd /etc/default/hostapd || install_error "Unable to copy hostapd defaults file"
     sudo cp $webroot_dir/config/hostapd.conf /etc/hostapd/hostapd.conf || install_error "Unable to copy hostapd configuration file"
     sudo cp $webroot_dir/config/dnsmasq.conf /etc/dnsmasq.conf || install_error "Unable to copy dnsmasq configuration file"
@@ -476,6 +487,7 @@ function install_pihelmetcam() {
     check_for_old_configs
     download_latest_files
     change_file_ownership
+    update_config_files
     create_logging_scripts
     create_reset_scripts
     create_video_files
