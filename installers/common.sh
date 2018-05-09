@@ -275,7 +275,9 @@ function default_configuration() {
     sudo cp $webroot_dir/config/default_hostapd /etc/default/hostapd || install_error "Unable to copy hostapd defaults file"
     sudo cp $webroot_dir/config/hostapd.conf /etc/hostapd/hostapd.conf || install_error "Unable to copy hostapd configuration file"
     sudo cp $webroot_dir/config/dnsmasq.conf /etc/dnsmasq.conf || install_error "Unable to copy dnsmasq configuration file"
-    sudo cp $webroot_dir/config/dhcpcd.conf /etc/dhcpcd.conf || install_error "Unable to copy dhcpcd configuration file"
+    sudo cp $webroot_dir/config/interfaces /etc/network/interfaces || install_error "Unable to copy interfaces configuration file"
+#    sudo cp $webroot_dir/config/dhcpcd.conf /etc/dhcpcd.conf || install_error "Unable to copy dhcpcd configuration file"
+
     if [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then
         sudo cp /etc/wpa_supplicant/wpa_supplicant.conf $webroot_dir/config/wpa_supplicant.conf || install_error "Unable to copy original wpa_supplicant configuration"
     fi
