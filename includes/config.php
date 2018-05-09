@@ -27,14 +27,14 @@ define('RASPI_NAVBAR_NAME', 'BikeCamera Configuration Portal v1.0');
 define('RASPI_DASHBOARD_ENABLED', true );
 define('RASPI_CUSTOMPAGE1_ENABLED', true );
 define('RASPI_CLIENT_ENABLED', true );
-define('RASPI_HOTSPOT_ENABLED', false );
-define('RASPI_NETWORK_ENABLED', true );
+define('RASPI_HOTSPOT_ENABLED', true );
+define('RASPI_NETWORK_ENABLED', false );
 define('RASPI_DHCP_ENABLED', false );
 define('RASPI_CUSTOMPAGE2_ENABLED', true );
 define('RASPI_OPENVPN_ENABLED', false );
 define('RASPI_TORPROXY_ENABLED', false );
 define('RASPI_CONFAUTH_ENABLED', true );
-define('RASPI_CHANGETHEME_ENABLED', true );
+define('RASPI_CHANGETHEME_ENABLED', false );
 define('RASPI_SYSTEM_ENABLED', true );
 
 // Image and text to display in the custom page header
