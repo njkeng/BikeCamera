@@ -208,11 +208,6 @@ function check_for_old_configs() {
         sudo ln -sf "$pihelmetcam_dir/backups/dnsmasq.conf.`date +%F-%R`" "$pihelmetcam_dir/backups/dnsmasq.conf"
     fi
 
-    if [ -f /etc/dhcpcd.conf ]; then
-        sudo cp /etc/dhcpcd.conf "$pihelmetcam_dir/backups/dhcpcd.conf.`date +%F-%R`"
-        sudo ln -sf "$pihelmetcam_dir/backups/dhcpcd.conf.`date +%F-%R`" "$pihelmetcam_dir/backups/dhcpcd.conf"
-    fi
-
     if [ -f /etc/rc.local ]; then
         sudo cp /etc/rc.local "$pihelmetcam_dir/backups/rc.local.`date +%F-%R`"
         sudo ln -sf "$pihelmetcam_dir/backups/rc.local.`date +%F-%R`" "$pihelmetcam_dir/backups/rc.local"
@@ -275,6 +270,11 @@ function default_configuration() {
     sudo cp $webroot_dir/config/hostapd.conf /etc/hostapd/hostapd.conf || install_error "Unable to copy hostapd configuration file"
     sudo cp $webroot_dir/config/dnsmasq.conf /etc/dnsmasq.conf || install_error "Unable to copy dnsmasq configuration file"
     sudo cp $webroot_dir/config/interfaces /etc/network/interfaces || install_error "Unable to copy interface configuration file"
+
+    # After these configuration files are installed, dhcpcd is no linger needed, so disable
+    sudo update-rc.d dhcpcd disable
+
+    # Backup original wifi client configuration files
     if [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then
         sudo cp /etc/wpa_supplicant/wpa_supplicant.conf $webroot_dir/config/wpa_supplicant.conf || install_error "Unable to copy original wpa_supplicant configuration"
     fi
@@ -455,11 +455,11 @@ function rtc_kernel_module() {
     sudo mv /tmp/new_hwclock-set /lib/udev/hwclock-set || install_error "Unable to move new hwclock-set file into place"
 
     # Set the time on the RTC
-    time_set=$(sudo hwclock -w)
-    if [ "$time_set" == "" ]; then
+    if [ -f /dev/rtc ]; then
+    	sudo hwclock -w
         install_log "The time has been set on the Real Time Clock"
     else
-        install_log "The Real Time Clock could not be set.  Is there one installed?"
+        install_log "Could not set the Real Time Clock.  Is there one installed?"
     fi
 }
 
