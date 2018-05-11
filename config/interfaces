@@ -7,20 +7,39 @@
 source-directory /etc/network/interfaces.d
 
 
-auto lo
-auto ap0
-auto wlan0
-iface lo inet loopback
+#auto lo
+#auto ap0
+#auto wlan0
+#iface lo inet loopback
 
-allow-hotplug ap0
-iface ap0 inet static
-    address 10.3.141.1
-    netmask 255.255.255.0
-    hostapd /etc/hostapd/hostapd.conf
+#allow-hotplug ap0
+#iface ap0 inet static
+#    address 10.3.141.1
+#    netmask 255.255.255.0
+#    hostapd /etc/hostapd/hostapd.conf
+
+#allow-hotplug wlan0
+#iface wlan0 inet manual
+#    wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+
+#iface default inet dhcp
+
 
 allow-hotplug wlan0
 iface wlan0 inet manual
-    wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
-
+        pre-up ifup ap0
+        wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+        pre-down ifdown ap0
 iface default inet dhcp
+#iface AP2 inet dhcp
+
+
+allow-hotplug ap0
+iface ap0 inet static
+        pre-up iw phy phy0 interface add ap0 type __ap
+        post-down iw dev ap0 del
+        address 10.3.141.1
+        netmask 255.255.255.0
+        hostapd /etc/hostapd/hostapd.conf
+
 

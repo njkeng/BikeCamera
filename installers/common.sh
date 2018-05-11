@@ -185,10 +185,10 @@ function change_file_ownership() {
 function update_config_files() {
 	# Update AP interface definition with this device's MAC address
 	mac_address=$(cat /sys/class/net/wlan0/address)
-	sed -i "s/b8:27:eb:ff:ff:ff/$mac_address/g" $webroot_dir/config/70-persistent-net.rules || install_error "Unable to write mac address to rules"
+	sudo sed -i "s/b8:27:eb:ff:ff:ff/$mac_address/g" $webroot_dir/config/dnsmasq.conf || install_error "Unable to write mac address to dnsmasq"
 
 	# Update hostapd config with this device's hostname
-	sed -i "s/bikecamera/$pihelmetcam_devicename/g" $webroot_dir/config/hostapd.conf || install_error "Unable to write hostname to AP config"
+	sudo sed -i "s/bikecamera/$pihelmetcam_devicename/g" $webroot_dir/config/hostapd.conf || install_error "Unable to write hostname to AP config"
 }
 
 # Check for existing /etc/network/interfaces and /etc/hostapd/hostapd.conf files
@@ -271,12 +271,10 @@ function default_configuration() {
     if [ -f /etc/default/hostapd ]; then
         sudo mv /etc/default/hostapd /tmp/default_hostapd.old || install_error "Unable to remove old /etc/default/hostapd file"
     fi
-    sudo cp $webroot_dir/config/70-persistent-net.rules /etc/udev/rules.d || install_error "Unable to copy ap0 inteface definition file"
     sudo cp $webroot_dir/config/default_hostapd /etc/default/hostapd || install_error "Unable to copy hostapd defaults file"
     sudo cp $webroot_dir/config/hostapd.conf /etc/hostapd/hostapd.conf || install_error "Unable to copy hostapd configuration file"
     sudo cp $webroot_dir/config/dnsmasq.conf /etc/dnsmasq.conf || install_error "Unable to copy dnsmasq configuration file"
     sudo cp $webroot_dir/config/interfaces /etc/network/interfaces || install_error "Unable to copy interface configuration file"
-#    sudo cp $webroot_dir/config/dhcpcd.conf /etc/dhcpcd.conf || install_error "Unable to copy dhcpcd configuration file"
     if [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then
         sudo cp /etc/wpa_supplicant/wpa_supplicant.conf $webroot_dir/config/wpa_supplicant.conf || install_error "Unable to copy original wpa_supplicant configuration"
     fi
