@@ -29,6 +29,11 @@ function install_error() {
     exit 1
 }
 
+# Outputs a PiHelmetCam Install attention line
+function install_attn() {
+    echo -e "\033[1;33mPiHelmetCam Attention: $*\033[m"
+}
+
 # Outputs a welcome message
 function display_welcome() {
     red='\033[0;31m'
