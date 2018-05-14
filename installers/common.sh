@@ -426,6 +426,29 @@ function samba_settings() {
     fi
 }
 
+# Check if camera and I2C are enabled
+function check_camera_i2c_enabled() {
+
+	# Check for camera enabled
+	if grep "start_x=1" /boot/config.txt
+	then
+        install_log "The camera interface is already enabled"
+	else
+        sudo sed -i "s/start_x=0/start_x=1/g" /boot/config.txt  || install_error "Unable to enable the camera interface"
+    	install_log "The camera interface has been enabled"
+	fi
+
+	# Check for I2C enabled
+    if [ -f /dev/i2c-1 ]; then
+        install_log "I2C is enabled"
+    else
+        install_attn "I2C is not enabled"
+        echo "I2C is required to use a Real Time Clock"
+        echo "I2C can be enabled using the Raspberry Pi Configuration tool or raspi-config"
+    fi
+
+}
+
 # Enable i2c RTC kernel module
 function rtc_kernel_module() {
 
@@ -504,6 +527,7 @@ function install_pihelmetcam() {
     sudo_add
     patch_system_files
     samba_settings
+    check_camera_i2c_enabled
     rtc_kernel_module
     install_complete
 }
