@@ -62,7 +62,7 @@ function config_installation() {
     install_log "Configure device name"
     echo "Detected ${version_msg}" 
     echo "Device name: $bc_devicename"
-    install_log "IMPORTANT:" 
+    install_attn "IMPORTANT:" 
     echo "If you have more than one BikeCamera then this name must be changed."
     user_devicename=""
     echo -n "Complete installation with this device name? [Y/n]: "
@@ -79,7 +79,7 @@ function config_installation() {
     else
     	pihelmetcam_devicename="$user_devicename"
     fi
-    install_log "Installation continuing with device name: $pihelmetcam_devicename"
+    install_attn "Installation continuing with device name: $pihelmetcam_devicename"
 }
 
 # Runs a system software update to make sure we're using all fresh packages
@@ -462,9 +462,9 @@ function rtc_kernel_module() {
     # Set the time on the RTC
     if [ -f /dev/rtc ]; then
     	sudo hwclock -w
-        install_log "The time has been set on the Real Time Clock"
+        install_attn "The time has been set on the Real Time Clock"
     else
-        install_log "Could not set the Real Time Clock.  Is there one installed?"
+        install_attn "Could not set the Real Time Clock.  Is there one installed?"
     fi
 }
 
