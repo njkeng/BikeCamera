@@ -29,6 +29,7 @@ include_once( 'includes/networking.php' );
 include_once( 'includes/themes.php' );
 include_once( 'includes/custom_page_1.php' );
 include_once( 'includes/custom_page_2.php' );
+include_once( 'includes/video_files.php' );
 
 # Enable PHP error reporting.  TURN THIS ON FOR DEVELOPMENT, OFF FOR PRODUCTION
 #error_reporting(E_ALL);
@@ -132,6 +133,11 @@ $theme_url = 'dist/css/' . $theme;
                 <a href="index.php?page=custompage1_conf"><i class="fa <?php echo RASPI_CUSTOMPAGE1_ICON; ?> fa-fw"></i> <?php echo RASPI_CUSTOMPAGE1_NAME; ?></a>
               </li>
               <?php endif; ?>
+              <?php if ( RASPI_VIDEOFILES_ENABLED ) : ?>
+              <li>
+                <a href="index.php?page=video_files_conf"><i class="fa fa-signal fa-fw"></i> Manage video files</a>
+              </li>
+              <?php endif; ?>              
               <?php if ( RASPI_CLIENT_ENABLED ) : ?>
               <li>
                 <a href="index.php?page=wpa_conf"><i class="fa fa-signal fa-fw"></i> Configure WiFi Client</a>
@@ -216,6 +222,9 @@ $theme_url = 'dist/css/' . $theme;
           case "custompage1_conf":
             DisplayCustomPage1();
             break;
+          case "video_files_conf":
+            DisplayVideoFiles();
+            break;
           case "dhcpd_conf":
             DisplayDHCPConfig();
             break;
@@ -239,6 +248,9 @@ $theme_url = 'dist/css/' . $theme;
             break;
           case "auth_conf":
             DisplayAuthConfig($config['admin_user'], $config['admin_pass']);
+            break;
+          case "video_files":
+            DisplayVideoFiles();
             break;
           case "save_hostapd_conf":
             SaveTORAndVPNConfig();

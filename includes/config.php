@@ -26,6 +26,7 @@ define('RASPI_NAVBAR_NAME', 'BikeCamera Configuration Portal v1.0');
 // Optional services, set to true to enable.
 define('RASPI_DASHBOARD_ENABLED', true );
 define('RASPI_CUSTOMPAGE1_ENABLED', true );
+define('RASPI_VIDEOFILES_ENABLED', true );
 define('RASPI_CLIENT_ENABLED', true );
 define('RASPI_HOTSPOT_ENABLED', true );
 define('RASPI_NETWORK_ENABLED', false );

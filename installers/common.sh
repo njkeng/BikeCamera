@@ -163,6 +163,10 @@ function create_video_files() {
     sudo mkdir -p $pihelmetcam_dir/video/raw || install_error "Unable to create directory '$pihelmetcam_dir/video/raw'"
     sudo chmod a+r $pihelmetcam_dir/video/raw || install_error "Unable to set read permissions for '$pihelmetcam_dir/video/raw'"
     sudo chmod a+w $pihelmetcam_dir/video/raw || install_error "Unable to set write permissions for '$pihelmetcam_dir/video/raw'"
+    #
+    # Link the video directory so the web server can create live links to the video files
+    #
+    sudo ln -s $pihelmetcam_dir/video /var/www/html
 }
 
 # Fetches latest files from github to webroot
