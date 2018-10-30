@@ -20,37 +20,55 @@ function DisplayVideoFiles($username, $password){
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-primary">
-        <div class="panel-heading"><i class="fa fa-lock fa-fw"></i>Video files</div>
-        <div class="panel-body">
-          <p><?php $status->showMessages(); ?></p>
-          <form role="form" action="?page=auth_conf" method="POST">
-            <?php CSRFToken() ?>
-            <div class="row">
-              <div class="form-group col-md-4">
-                <label for="username">Video file listing</label>
-                <?php foreach ($files as &$value) {echo "<a href='".$completed_path.$value."' target='_black' >".$value."</a><br/>";} ?>    <?php foreach ($files as &$value) {echo "<a href='".$raw_path.$value."' target='_black' >".$value."</a><br/>";} ?>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-md-4">
-                <label for="password">Old password</label>
-                <input type="password" class="form-control" name="oldpass"/>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-md-4">
-                <label for="password">New password</label>
-                <input type="password" class="form-control" name="newpass"/>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-md-4">
-                <label for="password">Repeat new password</label>
-                <input type="password" class="form-control" name="newpassagain"/>
-              </div>
-            </div>
-            <input type="submit" class="btn btn-outline btn-primary" name="UpdateAdminPassword" value="Save settings" />
-          </form>
+        <div class="panel-heading"><i class="fa file-movie-o fa-fw"></i>Video files</div>
+          <div class="panel-body">
+            <form role="form" action="?page=video_files_conf" method="POST">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#completed" data-toggle="tab">Processed files</a>
+                </li>
+                <li>
+                  <a href="#raw" data-toggle="tab">Raw files</a>
+                </li>
+              </ul>
+
+              <input type="submit" class="btn btn-outline btn-primary" name="download_zip" value="Download zip of selected video files" />
+              <!-- Tab panes -->
+              <div class="tab-content">
+
+                <div class="tab-pane fade in active" id="completed">
+                  <h4>Processed video files</h4>
+                  <?php CSRFToken() ?>
+                  <div class="row">
+                    <div class="form-group col-md-4">
+                      <label for="checkbox">Files</label>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox">                 
+                          <?php foreach ($files as &$value) {echo "<a href='".$completed_path.$value."' target='_black' >".$value."</a><br/>";} ?>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="tab-pane fade" id="raw">
+                  <h4>Raw video files</h4>
+                  <div class="row">
+                    <div class="form-group col-md-4">
+                      <label for="checkbox">Files</label>
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox">                 
+                          <?php foreach ($files as &$value) {echo "<a href='".$raw_path.$value."' target='_black' >".$value."</a><br/>";} ?>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- /.tab-content  -->
+            </form>
         </div><!-- /.panel-body -->
       </div><!-- /.panel-default -->
     </div><!-- /.col-lg-12 -->
