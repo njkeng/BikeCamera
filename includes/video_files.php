@@ -2,11 +2,17 @@
 
 include_once( 'includes/status_messages.php' );
 
-function DisplayVideoFiles($username, $password){
+/**
+*
+* Display and manage recorded video files
+*
+*/
+
+function DisplayVideoFiles(){
   $status = new StatusMessages();  
 
   # Read video files
-  $base_dir = "/var/www/html/"
+  $base_dir = "/var/www/html/";
   $completed_path = "video/completed/";
   if ( ! $completed_files = scandir($base_dir.$completed_path)) {
     $status->addMessage('Could not read video files from "Completed" directory', 'warning');
@@ -20,7 +26,7 @@ function DisplayVideoFiles($username, $password){
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-primary">
-        <div class="panel-heading"><i class="fa file-movie-o fa-fw"></i>Video files</div>
+        <div class="panel-heading"><i class="fa fa-file-movie-o fa-fw"></i>Video files</div>
           <div class="panel-body">
             <form role="form" action="?page=video_files_conf" method="POST">
               <!-- Nav tabs -->
@@ -45,8 +51,7 @@ function DisplayVideoFiles($username, $password){
                       <label for="checkbox">Files</label>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox">                 
-                          <?php foreach ($files as &$value) {echo "<a href='".$completed_path.$value."' target='_black' >".$value."</a><br/>";} ?>
+                          <?php foreach ($completed_files as &$value) {echo "<input type='checkbox'> <a href='".$completed_path.$value."' target='_black' >".$value."</a><br/>";} ?>
                         </label>
                       </div>
                     </div>
@@ -60,8 +65,7 @@ function DisplayVideoFiles($username, $password){
                       <label for="checkbox">Files</label>
                       <div class="checkbox">
                         <label>
-                          <input type="checkbox">                 
-                          <?php foreach ($files as &$value) {echo "<a href='".$raw_path.$value."' target='_black' >".$value."</a><br/>";} ?>
+                          <?php foreach ($raw_files as &$value) {echo "<input type='checkbox'> <a href='".$raw_path.$value."' target='_black' >".$value."</a><br/>";} ?>
                         </label>
                       </div>
                     </div>

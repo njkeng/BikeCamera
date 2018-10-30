@@ -135,7 +135,7 @@ $theme_url = 'dist/css/' . $theme;
               <?php endif; ?>
               <?php if ( RASPI_VIDEOFILES_ENABLED ) : ?>
               <li>
-                <a href="index.php?page=video_files_conf"><i class="fa file-movie-o fa-fw"></i> Manage video files</a>
+                <a href="index.php?page=video_files_conf"><i class="fa fa-file-movie-o fa-fw"></i> Manage video files</a>
               </li>
               <?php endif; ?>              
               <?php if ( RASPI_CLIENT_ENABLED ) : ?>
