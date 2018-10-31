@@ -17,10 +17,18 @@ function DisplayVideoFiles(){
   if ( ! $completed_files = scandir($base_dir.$completed_path)) {
     $status->addMessage('Could not read video files from "Completed" directory', 'warning');
   }
+  # Remove unwanted . and .. files from the array
+  unset($completed_files[0]);
+  unset($completed_files[1]);
+
   $raw_path = "video/raw/";
   if ( ! $raw_files = scandir($base_dir.$raw_path)) {
     $status->addMessage('Could not read video files from "Raw" directory', 'warning');
   }
+  # Remove unwanted . and .. files from the array
+  unset($raw_files[0]);
+  unset($raw_files[1]);
+
 
 ?>
   <div class="row">
@@ -51,7 +59,10 @@ function DisplayVideoFiles(){
                       <label for="checkbox">Files</label>
                       <div class="checkbox">
                         <label>
-                          <?php foreach ($completed_files as &$value) {echo "<input type='checkbox'> <a href='".$completed_path.$value."' target='_black' >".$value."</a><br/>";} ?>
+                          <?php foreach ($completed_files as &$value) {
+                            echo "<input type='checkbox' name='completed_file[]' value='".$completed_path.$value."'> <a href='".$completed_path.$value."' target='_black' >".$value."</a>   ".formatSizeUnits(filesize($completed_path.$value))."<br/>";
+                            } 
+                          ?>
                         </label>
                       </div>
                     </div>
@@ -65,7 +76,7 @@ function DisplayVideoFiles(){
                       <label for="checkbox">Files</label>
                       <div class="checkbox">
                         <label>
-                          <?php foreach ($raw_files as &$value) {echo "<input type='checkbox'> <a href='".$raw_path.$value."' target='_black' >".$value."</a><br/>";} ?>
+                          <?php foreach ($raw_files as &$value) {echo "<input type='checkbox' name='raw_file[]' value='".$raw_path.$value."'> <a href='".$raw_path.$value."' target='_black' >".$value."</a>   ".formatSizeUnits(filesize($raw_path.$value))."<br/>";} ?>
                         </label>
                       </div>
                     </div>

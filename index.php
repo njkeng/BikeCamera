@@ -59,6 +59,45 @@ if(!isset($_COOKIE['theme'])) {
     $theme = $_COOKIE['theme'];
 }
 $theme_url = 'dist/css/' . $theme;
+
+# Check if any video file checkboxes have been selected
+if(isset($_POST['completed_file'])){
+  # Create a zip file containing the selected completed video files
+  $completed_zip = '/var/www/html/completed_files.zip';
+  if ( ! create_zip($_POST['completed_file'],$completed_zip)) {
+    die ("Can't create ".$completed_zip." file");
+  } else {
+    header('Content-type: application/zip');
+    header('Content-Disposition: attachment; filename="'.basename($completed_zip).'"');
+    header("Content-length: " . filesize($completed_zip));
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    ob_clean();
+    flush();
+    readfile($completed_zip);
+    unlink($completed_zip);
+    exit;
+  }
+}
+if(isset($_POST['raw_file'])){
+  # Create a zip file containing the selected raw video files
+  $raw_zip = '/var/www/html/raw_files.zip';
+  if ( ! create_zip($_POST['raw_file'],$raw_zip)) {
+    die ("Can't create ".$raw_zip." file");
+  } else {
+    header('Content-type: application/zip');
+    header('Content-Disposition: attachment; filename="'.basename($raw_zip).'"');
+    header("Content-length: " . filesize($raw_zip));
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    ob_clean();
+    flush();
+    readfile($raw_zip);
+    unlink($raw_zip);
+    exit;
+  }
+}
+
 ?>
 
 <!DOCTYPE html>

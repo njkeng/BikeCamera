@@ -101,6 +101,13 @@ function set_hostname() {
     echo "127.0.1.1      " $pihelmetcam_devicename " ### Set by pihelmetcam-installer"  | sudo tee -a /etc/hosts || install_error "Unable to set /etc/hosts"
 }
 
+# Install PHP zip file extension
+function install_dependencies() {}
+    sudo apt-get -y update || install_error "Unable to update raspbian package information"
+    sudo apt-get -y upgrade || install_error "Unable to upgrade raspbian packages"
+    sudo apt-get -y install php7.0-zip || install_error "Unable to install PHP zip extension"
+}
+
 # Enables PHP for lighttpd and restarts service for settings to take effect
 function enable_php_lighttpd() {
     install_log "Enabling PHP for lighttpd"
@@ -513,6 +520,7 @@ function install_pihelmetcam() {
     update_system_packages
     install_dependencies
     set_hostname
+    install_dependencies
     enable_php_lighttpd
     create_pihelmetcam_directories
     check_for_old_configs
