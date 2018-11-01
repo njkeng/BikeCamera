@@ -269,6 +269,7 @@ function configuration_for_video() {
     sudo echo "vid_datetime_enable = 1" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_datetime_size = 15" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo mv /tmp/video.ini $pihelmetcam_dir/video/ || install_error "Unable to move files to '$pihelmetcam_dir'"
+    sudo mv /var/www/html/installers/silence*.mp3 $pihelmetcam_dir/video/processing
 }
 
 # Set permissions for all PiHelmetCam directories and folders

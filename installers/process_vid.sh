@@ -6,6 +6,7 @@ function process_video_files() {
 	ffmpeg_output_format=$(sudo cat /etc/pihelmetcam/video/video.ini | grep --only-matching --perl-regexp "(?<=ffmpeg_output_format = \")\S+(?=\")")
 	ffmpeg_output_dir=$(sudo cat /etc/pihelmetcam/video/video.ini | grep --only-matching --perl-regexp "(?<=ffmpeg_output_dir = \")\S+(?=\")")
 	ffmpeg_input_dir=$(sudo cat /etc/pihelmetcam/video/video.ini | grep --only-matching --perl-regexp "(?<=ffmpeg_input_dir = \")\S+(?=\")")
+	ffmpeg_vid_length=$(sudo cat /etc/pihelmetcam/video/video.ini | grep --only-matching --perl-regexp "(?<=vid_length = )\S+")
 
 	# Numeric variables
     cull_free_space=$(sudo cat /etc/pihelmetcam/video/video.ini | grep --only-matching --perl-regexp "(?<=cull_free_space = )\w+")
@@ -34,15 +35,15 @@ function process_video_files() {
 
 	    # Assemble ffmpeg command string
 	    # Add a blank audio track to the file.  Some editing software requires an audio track.
-	    ffmpeg_command_start="ffmpeg -f lavfi -i aevalsrc=0 -r 30 "
+	    ffmpeg_audio_input="ffmpeg -i $ffmpeg_input_dir/silence_$ffmpeg_vid_length.mp3 "
 	    # Specify the input video file
-	    ffmpeg_command_input="-i $ffmpeg_input_dir/$input_file.h264 "
+	    ffmpeg_video_input="-i $ffmpeg_input_dir/$input_file.h264 "
 	    # Copy video and add audio
-	    ffmpeg_command_body="-shortest -c:v copy -c:a aac -strict experimental "
+	    ffmpeg_command_body=" -c:v copy -c:a libmp3lame -strict experimental "
 	    # Specify the output file
 	    ffmpeg_command_output="$ffmpeg_output_dir/$input_file.$ffmpeg_output_format"
 	    # Asemble the whole command string
-	    full_ffmpeg=$ffmpeg_command_start$ffmpeg_command_input$ffmpeg_command_transpose$ffmpeg_command_body$ffmpeg_command_output
+	    full_ffmpeg=$ffmpeg_audio_input$ffmpeg_video_input$ffmpeg_command_body$ffmpeg_command_output
 	    echo "Executing $full_ffmpeg"
 	    # Execute the conversion command
 	    sudo $full_ffmpeg
