@@ -79,24 +79,6 @@ if(isset($_POST['completed_file'])){
     exit;
   }
 }
-if(isset($_POST['raw_file'])){
-  # Create a zip file containing the selected raw video files
-  $raw_zip = '/var/www/html/raw_files.zip';
-  if ( ! create_zip($_POST['raw_file'],$raw_zip)) {
-    die ("Can't create ".$raw_zip." file");
-  } else {
-    header('Content-type: application/zip');
-    header('Content-Disposition: attachment; filename="'.basename($raw_zip).'"');
-    header("Content-length: " . filesize($raw_zip));
-    header("Pragma: no-cache");
-    header("Expires: 0");
-    ob_clean();
-    flush();
-    readfile($raw_zip);
-    unlink($raw_zip);
-    exit;
-  }
-}
 
 ?>
 

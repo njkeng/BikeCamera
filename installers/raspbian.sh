@@ -9,7 +9,7 @@ function update_system_packages() {
 
 function install_dependencies() {
     install_log "Installing required packages"
-    sudo apt-get -y install lighttpd $php_package git hostapd dnsmasq ffmpeg samba samba-common-bin python-smbus i2c-tools || install_error "Unable to install dependencies"
+    sudo apt-get -y install lighttpd $php_package git hostapd dnsmasq samba samba-common-bin python-smbus i2c-tools php7.0-zip || install_error "Unable to install dependencies"
 }
 
 install_pihelmetcam

@@ -21,15 +21,6 @@ function DisplayVideoFiles(){
   unset($completed_files[0]);
   unset($completed_files[1]);
 
-  $raw_path = "video/raw/";
-  if ( ! $raw_files = scandir($base_dir.$raw_path)) {
-    $status->addMessage('Could not read video files from "Raw" directory', 'warning');
-  }
-  # Remove unwanted . and .. files from the array
-  unset($raw_files[0]);
-  unset($raw_files[1]);
-
-
 ?>
   <div class="row">
     <div class="col-lg-12">
@@ -37,52 +28,22 @@ function DisplayVideoFiles(){
         <div class="panel-heading"><i class="fa fa-file-movie-o fa-fw"></i>Video files</div>
           <div class="panel-body">
             <form role="form" action="?page=video_files_conf" method="POST">
-              <!-- Nav tabs -->
-              <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#completed" data-toggle="tab">Processed files</a>
-                </li>
-                <li>
-                  <a href="#raw" data-toggle="tab">Raw files</a>
-                </li>
-              </ul>
-
               <input type="submit" class="btn btn-outline btn-primary" name="download_zip" value="Download zip of selected video files" />
-              <!-- Tab panes -->
-              <div class="tab-content">
-
-                <div class="tab-pane fade in active" id="completed">
-                  <h4>Processed video files</h4>
-                  <?php CSRFToken() ?>
-                  <div class="row">
-                    <div class="form-group col-md-4">
-                      <label for="checkbox">Files</label>
-                      <div class="checkbox">
-                        <label>
-                          <?php foreach ($completed_files as &$value) {
-                            echo "<input type='checkbox' name='completed_file[]' value='".$completed_path.$value."'> <a href='".$completed_path.$value."' target='_black' >".$value."</a>   ".formatSizeUnits(filesize($completed_path.$value))."<br/>";
-                            } 
-                          ?>
-                        </label>
-                      </div>
-                    </div>
+              <h4>Processed video files</h4>
+              <?php CSRFToken() ?>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="checkbox">Files</label>
+                  <div class="checkbox">
+                    <label>
+                      <?php foreach ($completed_files as &$value) {
+                        echo "<input type='checkbox' name='completed_file[]' value='".$completed_path.$value."'> <a href='".$completed_path.$value."' target='_black' >".$value."</a>   ".formatSizeUnits(filesize($completed_path.$value))."<br/>";
+                        } 
+                      ?>
+                    </label>
                   </div>
                 </div>
-
-                <div class="tab-pane fade" id="raw">
-                  <h4>Raw video files</h4>
-                  <div class="row">
-                    <div class="form-group col-md-4">
-                      <label for="checkbox">Files</label>
-                      <div class="checkbox">
-                        <label>
-                          <?php foreach ($raw_files as &$value) {echo "<input type='checkbox' name='raw_file[]' value='".$raw_path.$value."'> <a href='".$raw_path.$value."' target='_black' >".$value."</a>   ".formatSizeUnits(filesize($raw_path.$value))."<br/>";} ?>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- /.tab-content  -->
+              </div>
             </form>
         </div><!-- /.panel-body -->
       </div><!-- /.panel-default -->

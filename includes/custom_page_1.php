@@ -14,7 +14,6 @@ function DisplayCustomPage1(){
   $vid_length = array(2, 5, 10, 15);
   $cull_free_space = array(500, 1000);
   $vid_datetime_size = array(12, 15, 20, 25, 32, 45);
-  $ffmpeg_output_format = array('mp4', 'mkv');
   $picamera_quality = array(10, 15, 20, 25, 30, 35);
   $picamera_bitrate = array(17, 20, 24);
 
@@ -86,13 +85,6 @@ function DisplayCustomPage1(){
                     <label for="picamera_resolution" class="col-sm-4 control-label">Quality</label>
                     <div class="col-sm-3">
                       <?php SelectorOptions('picamera_resolution', $picamera_resolution, $video_ini['picamera_resolution']); ?>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="ffmpeg_output_format" class="col-sm-4 control-label">Output format</label>
-                    <div class="col-sm-3">
-                      <?php SelectorOptions('ffmpeg_output_format', $ffmpeg_output_format, $video_ini['ffmpeg_output_format']); ?>
                     </div>
                   </div>
 
@@ -220,7 +212,6 @@ function SaveCustomPage1($status, $video_ini) {
     $ini_data ['vid_datetime_enable']   = $_POST['vid_datetime_enable'];
     $ini_data ['picamera_hflip']        = $_POST['picamera_hflip'];
     $ini_data ['picamera_vflip']        = $_POST['picamera_vflip'];
-    $ini_data ['ffmpeg_output_format']  = $_POST['ffmpeg_output_format'];
     $ini_data ['picamera_quality']      = $_POST['picamera_quality'];
     $ini_data ['picamera_bitrate']      = $_POST['picamera_bitrate'];
 

@@ -58,7 +58,7 @@ def when_pressed():
 
         # Move the previously recorded file
         source = vid_dir + '/raw/' + current_file
-        destination = vid_dir + '/processing/' + current_file        
+        destination = vid_dir + '/completed/' + current_file        
         shutil.move(source, destination)
 
 
@@ -81,7 +81,7 @@ def video_split():
 
         # Move the previously recorded file
         source = vid_dir + '/raw/' + current_file
-        destination = vid_dir + '/processing/' + current_file        
+        destination = vid_dir + '/completed/' + current_file        
         shutil.move(source, destination)
         current_file = vid_file_name
 

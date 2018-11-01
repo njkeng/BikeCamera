@@ -101,13 +101,6 @@ function set_hostname() {
     echo "127.0.1.1      " $pihelmetcam_devicename " ### Set by pihelmetcam-installer"  | sudo tee -a /etc/hosts || install_error "Unable to set /etc/hosts"
 }
 
-# Install PHP zip file extension
-function install_dependencies() {}
-    sudo apt-get -y update || install_error "Unable to update raspbian package information"
-    sudo apt-get -y upgrade || install_error "Unable to upgrade raspbian packages"
-    sudo apt-get -y install php7.0-zip || install_error "Unable to install PHP zip extension"
-}
-
 # Enables PHP for lighttpd and restarts service for settings to take effect
 function enable_php_lighttpd() {
     install_log "Enabling PHP for lighttpd"
@@ -161,9 +154,6 @@ function create_video_files() {
     # Need to move other video processing scripts HERE
     # After I have written them of course
     #
-    sudo mkdir -p $pihelmetcam_dir/video/processing || install_error "Unable to create directory '$pihelmetcam_dir/video/processing'"
-    sudo chmod a+r $pihelmetcam_dir/video/processing || install_error "Unable to set read permissions for '$pihelmetcam_dir/video/processing'"
-    sudo chmod a+w $pihelmetcam_dir/video/processing || install_error "Unable to set write permissions for '$pihelmetcam_dir/video/processing'"
     sudo mkdir -p $pihelmetcam_dir/video/completed || install_error "Unable to create directory '$pihelmetcam_dir/video/completed'"
     sudo chmod a+r $pihelmetcam_dir/video/completed || install_error "Unable to set read permissions for '$pihelmetcam_dir/video/completed'"
     sudo chmod a+w $pihelmetcam_dir/video/completed || install_error "Unable to set write permissions for '$pihelmetcam_dir/video/completed'"
@@ -252,9 +242,8 @@ function configuration_for_reset() {
 # Set up configuration for the video functions
 function configuration_for_video() {
     install_log "Setting up configuration for the video function"
-    sudo echo "ffmpeg_output_format = \"mp4\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo echo "ffmpeg_output_dir = \"$pihelmetcam_dir/video/completed\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo echo "ffmpeg_input_dir = \"$pihelmetcam_dir/video/processing\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_output_dir = \"$pihelmetcam_dir/video/completed\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_input_dir = \"$pihelmetcam_dir/video/processing\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "cull_free_space = 500" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_hflip = 0" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_vflip = 0" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
@@ -269,7 +258,6 @@ function configuration_for_video() {
     sudo echo "vid_datetime_enable = 1" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_datetime_size = 15" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo mv /tmp/video.ini $pihelmetcam_dir/video/ || install_error "Unable to move files to '$pihelmetcam_dir'"
-    sudo mv /var/www/html/installers/silence*.mp3 $pihelmetcam_dir/video/processing
 }
 
 # Set permissions for all PiHelmetCam directories and folders
