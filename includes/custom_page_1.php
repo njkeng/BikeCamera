@@ -14,8 +14,9 @@ function DisplayCustomPage1(){
   $vid_length = array(2, 5, 10, 15);
   $cull_free_space = array(500, 1000);
   $vid_datetime_size = array(12, 15, 20, 25, 32, 45);
-  $picamera_quality = array(10, 15, 20, 25, 30, 35);
-  $picamera_bitrate = array(17, 20, 24);
+  $picamera_framerate = array(40, 30, 20, 15, 10, 5);
+  $picamera_quality = array(20, 22, 24, 26);
+  $picamera_bitrate = array(1, 3, 5, 7, 9, 11, 13, 15, 17);
 
 
   # Video resolutions for raspberry pi camera
@@ -170,6 +171,13 @@ function DisplayCustomPage1(){
                   <br>
 
                   <div class="form-group">
+                    <label for="picamera_framerate" class="col-sm-4 control-label">Video frame rate</label>
+                    <div class="input-group col-sm-3">
+                      <?php SelectorOptions('picamera_framerate', $picamera_framerate, $video_ini['picamera_framerate']); ?>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
                     <label for="picamera_quality" class="col-sm-4 control-label">Video quality</label>
                     <div class="input-group col-sm-3">
                       <?php SelectorOptions('picamera_quality', $picamera_quality, $video_ini['picamera_quality']); ?>
@@ -212,6 +220,7 @@ function SaveCustomPage1($status, $video_ini) {
     $ini_data ['vid_datetime_enable']   = $_POST['vid_datetime_enable'];
     $ini_data ['picamera_hflip']        = $_POST['picamera_hflip'];
     $ini_data ['picamera_vflip']        = $_POST['picamera_vflip'];
+    $ini_data ['picamera_framerate']      = $_POST['picamera_framerate'];
     $ini_data ['picamera_quality']      = $_POST['picamera_quality'];
     $ini_data ['picamera_bitrate']      = $_POST['picamera_bitrate'];
 
@@ -220,32 +229,27 @@ function SaveCustomPage1($status, $video_ini) {
       case "1080p_HD":
         $ini_data ['picamera_hres']       = 1920;
         $ini_data ['picamera_vres']       = 1080; 
-        $ini_data ['picamera_framerate']  = 30;
         break;
 
         
       case "1080p_SD":
         $ini_data ['picamera_hres']       = 1440;
         $ini_data ['picamera_vres']       = 1080; 
-        $ini_data ['picamera_framerate']  = 30;
         break;
 
       case "720p_HD":
         $ini_data ['picamera_hres']       = 1280;
         $ini_data ['picamera_vres']       = 720;
-        $ini_data ['picamera_framerate']  = 40;
         break;
 
       case "720p_SD":
         $ini_data ['picamera_hres']       = 960;
         $ini_data ['picamera_vres']       = 720; 
-        $ini_data ['picamera_framerate']  = 40;
         break;
 
       case "VGA":
         $ini_data ['picamera_hres']       = 640;
         $ini_data ['picamera_vres']       = 480; 
-        $ini_data ['picamera_framerate']  = 40;
         break;
 
     }

@@ -3,9 +3,7 @@
 include_once( 'includes/status_messages.php' );
 
 /**
-*
 * Display and manage recorded video files
-*
 */
 
 function DisplayVideoFiles(){
