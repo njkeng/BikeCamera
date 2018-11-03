@@ -53,13 +53,6 @@ if (empty($_SESSION['csrf_token'])) {
 }
 $csrf_token = $_SESSION['csrf_token'];
 
-if(!isset($_COOKIE['theme'])) {
-    $theme = "custom.css";
-} else {
-    $theme = $_COOKIE['theme'];
-}
-$theme_url = 'dist/css/' . $theme;
-
 # Check if any video file checkboxes have been selected
 if(isset($_POST['completed_file'])){
   # Create a zip file containing the selected completed video files
@@ -114,7 +107,7 @@ if(isset($_POST['completed_file'])){
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom CSS -->
-    <link href="<?php echo $theme_url; ?>" title="main" rel="stylesheet">
+    <link href="dist/css/custom.css" title="main" rel="stylesheet">
 
     <link rel="shortcut icon" type="image/png" href="../img/favicon.png">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -184,24 +177,9 @@ if(isset($_POST['completed_file'])){
                 <a href="index.php?page=custompage2_conf"><i class="fa <?php echo RASPI_CUSTOMPAGE2_ICON; ?> fa-fw"></i> <?php echo RASPI_CUSTOMPAGE2_NAME; ?></a>
               </li>
               <?php endif; ?>
-              <?php if ( RASPI_OPENVPN_ENABLED ) : ?>
-              <li>
-                <a href="index.php?page=openvpn_conf"><i class="fa fa-lock fa-fw"></i> Configure OpenVPN</a>
-              </li>
-              <?php endif; ?>
-              <?php if ( RASPI_TORPROXY_ENABLED ) : ?>
-              <li>
-                 <a href="index.php?page=torproxy_conf"><i class="fa fa-eye-slash fa-fw"></i> Configure TOR proxy</a>
-              </li>
-              <?php endif; ?>
               <?php if ( RASPI_CONFAUTH_ENABLED ) : ?>
               <li>
                 <a href="index.php?page=auth_conf"><i class="fa fa-lock fa-fw"></i> Configure Auth</a>
-              </li>
-              <?php endif; ?>
-              <?php if ( RASPI_CHANGETHEME_ENABLED ) : ?>
-              <li>
-                <a href="index.php?page=theme_conf"><i class="fa fa-wrench fa-fw"></i> Change Theme</a>
               </li>
               <?php endif; ?>
               <?php if ( RASPI_SYSTEM_ENABLED ) : ?>
@@ -261,23 +239,11 @@ if(isset($_POST['completed_file'])){
           case "custompage2_conf":
             DisplayCustomPage2();
             break;
-          case "openvpn_conf":
-            DisplayOpenVPNConfig();
-            break;
-          case "torproxy_conf":
-            DisplayTorProxyConfig();
-            break;
           case "auth_conf":
             DisplayAuthConfig($config['admin_user'], $config['admin_pass']);
             break;
           case "video_files":
             DisplayVideoFiles();
-            break;
-          case "save_hostapd_conf":
-            SaveTORAndVPNConfig();
-            break;
-          case "theme_conf":
-            DisplayThemeConfig();
             break;
           case "system_info":
             DisplaySystem();

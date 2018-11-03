@@ -13,9 +13,6 @@ define('RASPI_HOSTAPD_CONFIG', '/etc/hostapd/hostapd.conf');
 define('RASPI_WPA_SUPPLICANT_CONFIG', '/etc/wpa_supplicant/wpa_supplicant.conf');
 define('RASPI_HOSTAPD_CTRL_INTERFACE', '/var/run/hostapd');
 define('RASPI_WPA_CTRL_INTERFACE', '/var/run/wpa_supplicant');
-define('RASPI_OPENVPN_CLIENT_CONFIG', '/etc/openvpn/client.conf');
-define('RASPI_OPENVPN_SERVER_CONFIG', '/etc/openvpn/server.conf');
-define('RASPI_TORPROXY_CONFIG', '/etc/tor/torrc');
 
 //Page title text
 define('RASPI_PAGETITLE_NAME', 'PiHelmetCam Configuration Portal');
@@ -32,10 +29,7 @@ define('RASPI_HOTSPOT_ENABLED', true );
 define('RASPI_NETWORK_ENABLED', false );
 define('RASPI_DHCP_ENABLED', false );
 define('RASPI_CUSTOMPAGE2_ENABLED', true );
-define('RASPI_OPENVPN_ENABLED', false );
-define('RASPI_TORPROXY_ENABLED', false );
 define('RASPI_CONFAUTH_ENABLED', true );
-define('RASPI_CHANGETHEME_ENABLED', false );
 define('RASPI_SYSTEM_ENABLED', true );
 
 // Image and text to display in the custom page header
