@@ -2,8 +2,10 @@
 
 include_once( 'includes/status_messages.php' );
 
-/**
+/*
+*
 * Display and manage recorded video files
+*
 */
 
 function DisplayVideoFiles(){
@@ -27,7 +29,6 @@ function DisplayVideoFiles(){
           <div class="panel-body">
             <form role="form" action="?page=video_files_conf" method="POST">
               <input type="submit" class="btn btn-outline btn-primary" name="download_zip" value="Download zip of selected video files" />
-              <h4>Processed video files</h4>
               <?php CSRFToken() ?>
               <div class="row">
                 <div class="form-group col-md-4">
