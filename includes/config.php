@@ -22,29 +22,14 @@ define('RASPI_NAVBAR_NAME', 'BikeCamera Configuration Portal v1.0');
 
 // Optional services, set to true to enable.
 define('RASPI_DASHBOARD_ENABLED', true );
-define('RASPI_CUSTOMPAGE1_ENABLED', true );
+define('RASPI_VIDEOSETTINGS_ENABLED', true );
 define('RASPI_VIDEOFILES_ENABLED', true );
 define('RASPI_CLIENT_ENABLED', true );
 define('RASPI_HOTSPOT_ENABLED', true );
 define('RASPI_NETWORK_ENABLED', false );
 define('RASPI_DHCP_ENABLED', false );
-define('RASPI_CUSTOMPAGE2_ENABLED', true );
+define('RASPI_TIME_ENABLED', true );
 define('RASPI_CONFAUTH_ENABLED', true );
 define('RASPI_SYSTEM_ENABLED', true );
-
-// Image and text to display in the custom page header
-define('RASPI_CUSTOMHEADER_ENABLED', true );
-define('RASPI_CUSTOMHEADERIMAGE_NAME', 'BikeCamera_logo_simple.png');
-define('RASPI_CUSTOMHEADERTEXT_NAME', 'BikeCamera');
-
-// Custom configuration page names and icons
-// Display names for custom pages
-define('RASPI_CUSTOMPAGE1_NAME', 'Video settings');
-define('RASPI_CUSTOMPAGE2_NAME', 'Time and date');
-// Icon names for custom page menu items.  These names represent characters from the font "fontawesome-webfont"
-// The full list of available icon names is in bower_components/font-awesome/css/font-awesome.css
-// The font is stored in the directory bower_components/font-awesome/fonts
-define('RASPI_CUSTOMPAGE1_ICON', 'fa-video-camera');
-define('RASPI_CUSTOMPAGE2_ICON', 'fa-clock-o');
 
 ?>

@@ -27,8 +27,8 @@ include_once( 'includes/system.php' );
 include_once( 'includes/configure_client.php' );
 include_once( 'includes/networking.php' );
 include_once( 'includes/themes.php' );
-include_once( 'includes/custom_page_1.php' );
-include_once( 'includes/custom_page_2.php' );
+include_once( 'includes/video_settings.php' );
+include_once( 'includes/time.php' );
 include_once( 'includes/video_files.php' );
 
 # Enable PHP error reporting.  TURN THIS ON FOR DEVELOPMENT, OFF FOR PRODUCTION
@@ -142,9 +142,9 @@ if(isset($_POST['completed_file'])){
                 <a href="index.php?page=wlan0_info"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
               </li>
               <?php endif; ?>
-              <?php if ( RASPI_CUSTOMPAGE1_ENABLED ) : ?>
+              <?php if ( RASPI_VIDEOSETTINGS_ENABLED ) : ?>
               <li>
-                <a href="index.php?page=custompage1_conf"><i class="fa <?php echo RASPI_CUSTOMPAGE1_ICON; ?> fa-fw"></i> <?php echo RASPI_CUSTOMPAGE1_NAME; ?></a>
+                <a href="index.php?page=videosettings_conf"><i class="fa fa-video-camera fa-fw"></i> Video settings</a>
               </li>
               <?php endif; ?>
               <?php if ( RASPI_VIDEOFILES_ENABLED ) : ?>
@@ -172,9 +172,9 @@ if(isset($_POST['completed_file'])){
                 <a href="index.php?page=dhcpd_conf"><i class="fa fa-exchange fa-fw"></i> Configure DHCP Server</a>
               </li>
               <?php endif; ?>
-              <?php if ( RASPI_CUSTOMPAGE2_ENABLED ) : ?>
+              <?php if ( RASPI_TIME_ENABLED ) : ?>
               <li>
-                <a href="index.php?page=custompage2_conf"><i class="fa <?php echo RASPI_CUSTOMPAGE2_ICON; ?> fa-fw"></i> <?php echo RASPI_CUSTOMPAGE2_NAME; ?></a>
+                <a href="index.php?page=time_conf"><i class="fa fa-clock-o fa-fw"></i> Time and date</a>
               </li>
               <?php endif; ?>
               <?php if ( RASPI_CONFAUTH_ENABLED ) : ?>
@@ -197,18 +197,9 @@ if(isset($_POST['completed_file'])){
         <!-- Page Heading -->
         <div class="row">
           <div class="col-lg-12">
-            <?php if ( RASPI_CUSTOMHEADER_ENABLED ) { ?>
               <h1 class="page-header">
-                <img class="logo" src="img/<?php echo RASPI_CUSTOMHEADERIMAGE_NAME; ?>" height="45"> <?php echo RASPI_CUSTOMHEADERTEXT_NAME; ?>
+                <img class="logo" src="img/BikeCamera_logo_simple.png" width="45" height="45">  BikeCamera
               </h1>
-              <h5>
-                <img class="logo" src="img/raspAP-logo.png" width="15" height="15"> Powered by RaspAP
-              </h5>
-            <?php } else { ?>
-              <h1 class="page-header">
-                <img class="logo" src="img/raspAP-logo.png" width="45" height="45">RaspAP
-              </h1>
-            <?php } ?>
           </div>
         </div><!-- /.row -->
 
@@ -218,8 +209,8 @@ if(isset($_POST['completed_file'])){
           case "wlan0_info":
             DisplayDashboard();
             break;
-          case "custompage1_conf":
-            DisplayCustomPage1();
+          case "videosettings_conf":
+            DisplayVideoSettings();
             break;
           case "video_files_conf":
             DisplayVideoFiles();
@@ -236,8 +227,8 @@ if(isset($_POST['completed_file'])){
           case "hostapd_conf":
             DisplayHostAPDConfig();
             break;
-          case "custompage2_conf":
-            DisplayCustomPage2();
+          case "time_conf":
+            DisplayTime();
             break;
           case "auth_conf":
             DisplayAuthConfig($config['admin_user'], $config['admin_pass']);

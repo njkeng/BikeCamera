@@ -7,7 +7,7 @@ include_once( 'includes/status_messages.php' );
 * Based on includes/hostapd.php script
 *
 */
-function DisplayCustomPage2(){
+function DisplayTime(){
 
   $status = new StatusMessages();
 
@@ -16,9 +16,9 @@ function DisplayCustomPage2(){
   $arrLowerBound = array('11','9','7','5','3','1');
 
 
-  if( isset($_POST['saveCP2settings']) ) {
+  if( isset($_POST['savesettings']) ) {
     if (CSRFValidate()) {
-      SaveSettingsFile($status);
+      SaveTime($status);
     } else {
       error_log('CSRF violation');
     }
@@ -34,11 +34,11 @@ function DisplayCustomPage2(){
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-primary">
-        <div class="panel-heading"><i class="fa <?php echo RASPI_CUSTOMPAGE2_ICON; ?> fa-fw"></i> <?php echo RASPI_CUSTOMPAGE2_NAME; ?></div>
+        <div class="panel-heading"><i class="fa fa-clock-o fa-fw"></i> Time and date</div>
         <!-- /.panel-heading -->
           <div class="panel-body">
   	        <p><?php $status->showMessages(); ?></p>
-            <form role="form" action="?page=custompage2_conf" method="POST">
+            <form role="form" action="?page=time_conf" method="POST">
               <!-- Nav tabs -->
               <ul class="nav nav-tabs">
                 <li class="active">
@@ -81,17 +81,17 @@ function DisplayCustomPage2(){
 
 
               </div><!-- /.tab-content  -->
-              <input type="submit" class="btn btn-outline btn-primary" name="saveCP2settings" value="Save settings" />
+              <input type="submit" class="btn btn-outline btn-primary" name="savesettings" value="Save settings" />
             </form>
           </div><!-- /.panel-body -->
-          <div class="panel-footer"> Custom page 2 footer</div>
+          <div class="panel-footer"></div>
         </div><!-- /.panel-primary -->
     </div><!-- /.col-lg-12 -->
   </div><!-- /.row -->
 <?php 
 }
 
-function SaveCustomPage2($status) {
+function SaveTime($status) {
 
   $good_input = true;
 

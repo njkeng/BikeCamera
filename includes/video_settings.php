@@ -6,7 +6,7 @@ include_once( 'includes/status_messages.php' );
 * UI for setting video parameters
 *
 */
-function DisplayCustomPage1(){
+function DisplayVideoSettings(){
 
   $status = new StatusMessages();
 
@@ -34,7 +34,7 @@ function DisplayCustomPage1(){
       if ( ! $video_ini = parse_ini_file('/etc/pihelmetcam/video/video.ini')) {
         $status->addMessage('Could not find an existing configuration file', 'warning');
       }
-      SaveCustomPage1($status, $video_ini);
+      SaveVideoSettings($status, $video_ini);
     } else {
       error_log('CSRF violation');
     }
@@ -50,12 +50,12 @@ function DisplayCustomPage1(){
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-primary">           
-        <div class="panel-heading"><i class="fa <?php echo RASPI_CUSTOMPAGE1_ICON; ?> fa-fw"></i> Video settings</div>
+        <div class="panel-heading"><i class="fa fa-video-camera fa-fw"></i> Video settings</div>
         <!-- /.panel-heading -->
         <div class="panel-body">
           <p><?php $status->showMessages(); ?></p>
 
-          <form method="POST" action="?page=custompage1_conf" name="video_conf_form" class="form-horizontal">
+          <form method="POST" action="?page=videosettings_conf" name="video_conf_form" class="form-horizontal">
             <?php CSRFToken() ?>
             <input type="hidden" name="video_settings" ?>
    
@@ -207,7 +207,7 @@ function DisplayCustomPage1(){
 <?php 
 }
 
-function SaveCustomPage1($status, $video_ini) {
+function SaveVideoSettings($status, $video_ini) {
 
     # Copy original video.ini data
     $ini_data = $video_ini;
