@@ -85,15 +85,17 @@ function DisplayHostAPDConfig(){
 
                 <div class="row">
                   <div class="form-group col-md-4">
-                    <label for="code">SSID</label>
+                    <label for="code">Hotspot Name (SSID)</label>
                     <input type="text" class="form-control" name="ssid" value="<?php echo $arrConfig['ssid']; ?>" />
                   </div>
                 </div>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label for="code">Hotspot Password</label>
+                    <input type="text" class="form-control" name="wpa_passphrase" value="<?php echo $arrConfig['wpa_passphrase'] ?>" />
+                  </div>
+                </div>
               </div>
-
-
-
-
               <div class="tab-pane fade" id="security">
                 <h4>Security settings</h4>
                 <div class="row">
@@ -106,12 +108,6 @@ function DisplayHostAPDConfig(){
                   <div class="form-group col-md-4">
                     <label for="code">Encryption Type</label>
                     <?php SelectorOptions('wpa_pairwise', $arrEncType, $arrConfig['wpa_pairwise']); ?>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-md-4">
-                    <label for="code">PSK</label>
-                    <input type="text" class="form-control" name="wpa_passphrase" value="<?php echo $arrConfig['wpa_passphrase'] ?>" />
                   </div>
                 </div>
               </div>
