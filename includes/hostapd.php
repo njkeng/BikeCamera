@@ -10,8 +10,6 @@ function DisplayHostAPDConfig(){
 
   $status = new StatusMessages();
 
-  $arrHostapdConf = parse_ini_file('/etc/pihelmetcam/hostapd.ini');
-
   $arrConfig = array();
   $arrChannel = array('a','b','g');
   $arrSecurity = array( 1 => 'WPA', 2 => 'WPA2',3=> 'WPA+WPA2');
@@ -76,7 +74,6 @@ function DisplayHostAPDConfig(){
               <li class="active"><a href="#basic" data-toggle="tab">Basic</a></li>
               <li><a href="#security" data-toggle="tab">Security</a></li>
               <li><a href="#advanced" data-toggle="tab">Advanced</a></li>
-              <li><a href="#logoutput" data-toggle="tab">Logfile Output</a></li>
             </ul>
 
             <!-- Tab panes -->
@@ -85,33 +82,18 @@ function DisplayHostAPDConfig(){
 
                 <h4>Basic settings</h4>
                 <?php CSRFToken() ?>
-                <div class="row">
-                  <div class="form-group col-md-4">
-                    <label for="code">Interface</label>
-                    <?php
-                      SelectorOptions('interface', $interfaces, $arrConfig['interface']);
-                    ?>
-                  </div>
-                </div>
+
                 <div class="row">
                   <div class="form-group col-md-4">
                     <label for="code">SSID</label>
                     <input type="text" class="form-control" name="ssid" value="<?php echo $arrConfig['ssid']; ?>" />
                   </div>
                 </div>
-                <div class="row">
-                  <div class="form-group col-md-4">
-                    <label for="code">Wireless Mode</label>
-                    <?php SelectorOptions('hw_mode', $arrChannel, $arrConfig['hw_mode']); ?>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-md-4">
-                    <label for="code">Channel</label>
-                    <?php SelectorOptions('channel', range(1, 14), intval($arrConfig['channel'])) ?>
-                  </div>
-                </div>
               </div>
+
+
+
+
               <div class="tab-pane fade" id="security">
                 <h4>Security settings</h4>
                 <div class="row">
@@ -133,33 +115,31 @@ function DisplayHostAPDConfig(){
                   </div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="logoutput">
-                <h4>Logfile output</h4>
-                  <div class="row">
-                    <div class="form-group col-md-8">
-                      <?php
-                          if($arrHostapdConf['LogEnable'] == 1) {
-                              $log = file_get_contents('/tmp/hostapd.log');
-                              echo '<br /><textarea class="logoutput">'.$log.'</textarea>';
-                          } else {
-                              echo "<br />Logfile output not enabled";
-                          }
-                      ?>
-                   </div>
-                </div>
-              </div>
               <div class="tab-pane fade" id="advanced">
                 <h4>Advanced settings</h4>
+
                 <div class="row">
-                  <div class="col-md-4">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                        Enable Logging <?php $checked = ''; if($arrHostapdConf['LogEnable'] == 1) { $checked = 'checked'; } ?>
-                        <input id="logEnable" name ="logEnable" type="checkbox" class="form-check-input" value="1" <?php echo $checked; ?> />
-                    </label>
-                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="code">Interface</label>
+                    <?php
+                      SelectorOptions('interface', $interfaces, $arrConfig['interface']);
+                    ?>
                   </div>
                 </div>
+
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label for="code">Wireless Mode</label>
+                    <?php SelectorOptions('hw_mode', $arrChannel, $arrConfig['hw_mode']); ?>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label for="code">Channel</label>
+                    <?php SelectorOptions('channel', range(1, 14), intval($arrConfig['channel'])) ?>
+                  </div>
+                </div>
+
                 <div class="row">
                   <div class="form-group col-md-4">
                   <label for="code">Country Code</label>
@@ -458,27 +438,6 @@ function SaveHostAPDConfig($wpa_array, $enc_types, $modes, $interfaces, $status)
   }
 
   $good_input = true;
-
-  // Check for Logging Checkbox
-    $logEnable = 0;
-    if($arrHostapdConf['LogEnable'] == 0) {
-        if(isset($_POST['logEnable'])) {
-            // Need code to enable logfile logging here
-            $logEnable = 1;
-            exec('sudo /etc/pihelmetcam/hostapd/enablelog.sh');
-        } else {
-            exec('sudo /etc/pihelmetcam/hostapd/disablelog.sh');
-        }
-    } else {
-        if(isset($_POST['logEnable'])) {
-            $logEnable = 1;
-            exec('sudo /etc/pihelmetcam/hostapd/enablelog.sh');
-        } else {
-            exec('sudo /etc/pihelmetcam/hostapd/disablelog.sh');
-        }
-    }
-    write_php_ini(["LogEnable" => $logEnable],'/etc/pihelmetcam/hostapd.ini');
-
   // Verify input
   if (strlen($_POST['ssid']) == 0 || strlen($_POST['ssid']) > 32) {
     // Not sure of all the restrictions of SSID
