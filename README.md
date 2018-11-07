@@ -1,3 +1,28 @@
+
+** Needs a complete re-write for BikeCamera **
+
+Apart from covering the topics already included . . . .
+Items to add:
+- Estimating battery life
+- Choice of camera.  Mention odd camera cable size for Pi Zero
+- Choice of RTC
+- SD card corruption and how to avoid
+- Video modes and file size
+- Installation preparation i.e.camera and i2c interfaces, localisation inc WiFi country etc.
+- Turn off bluetooth on desktop
+- Why BikeCamera only provides raw .h264
+- Playing video on the Bike Camera. Playback rate.
+- Converting video.  On BikeCamera or on PC
+
+ffmpeg -f lavfi -i aevalsrc=0 -r 30 -i input_file.h264 -shortest -c:v copy -c:a aac -strict experimental output_file.mp4
+
+- Rotate or flip
+- Playing video on PC
+
+
+
+
+
 ![](http://i.imgur.com/xeKD93p.png)
 # `$ raspap-webgui` [![Release 1.3.1](https://img.shields.io/badge/Release-1.3.1-green.svg)](https://github.com/billz/raspap-webgui/releases)
 A simple, responsive web interface to control wifi, hostapd and related services on the Raspberry Pi.

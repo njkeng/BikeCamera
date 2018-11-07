@@ -47,22 +47,6 @@ function RPiVersion() {
 */
 function DisplaySystem(){
   $status = new StatusMessages();
-  // hostname
-  exec("hostname -f", $hostarray);
-  $hostname = $hostarray[0];
-
-  // uptime
-  $uparray = explode(" ", exec("cat /proc/uptime"));
-  $seconds = round($uparray[0], 0);
-  $minutes = $seconds / 60;
-  $hours   = $minutes / 60;
-  $days    = floor($hours / 24);
-  $hours   = floor($hours   - ($days * 24));
-  $minutes = floor($minutes - ($days * 24 * 60) - ($hours * 60));
-  $uptime= '';
-  if ($days    != 0) { $uptime .= $days    . ' day'    . (($days    > 1)? 's ':' '); }
-  if ($hours   != 0) { $uptime .= $hours   . ' hour'   . (($hours   > 1)? 's ':' '); }
-  if ($minutes != 0) { $uptime .= $minutes . ' minute' . (($minutes > 1)? 's ':' '); }
 
   // mem used
   $memused_status = "primary";
@@ -74,287 +58,114 @@ function DisplaySystem(){
 
   // cpu load
   $cores   = exec("grep -c ^processor /proc/cpuinfo");
-        $loadavg = exec("awk '{print $1}' /proc/loadavg");
+  $loadavg = exec("awk '{print $1}' /proc/loadavg");
   $cpuload = floor(($loadavg * 100) / $cores);
   if     ($cpuload > 90) { $cpuload_status = "danger";  }
   elseif ($cpuload > 75) { $cpuload_status = "warning"; }
   elseif ($cpuload >  0) { $cpuload_status = "success"; }
 
+  // SD card space
+  $sparebytes   = (disk_total_space("/") - disk_free_space("/")) / disk_total_space("/");
+  $sparespace = floor($sparebytes * 100);
+  if     ($sparespace > 95) { $space_status = "danger";  }
+  elseif ($sparespace > 90) { $space_status = "warning"; }
+  elseif ($sparespace >  0) { $space_status = "success"; }
 
-  # Check for RasAP defaults or user saved defaults upon system factory reset
-  if ( ! $arrDefaultsConf = parse_ini_file('/etc/pihelmetcam/hostapd/reset.ini')) {
-    $status->addMessage('Could not read the configuration file', 'warning');
-  }
+  // Get WiFi information
+  exec("hostname -f", $hostarray);
+  $hostname = $hostarray[0];
+  exec( 'ip a s ' . RASPI_WIFI_CLIENT_INTERFACE , $return );
+  exec( 'iwconfig ' . RASPI_WIFI_CLIENT_INTERFACE, $return );
 
-  # Write preference for PiHelmetCam defaults to reset.ini
-  if( isset($_POST['select_pihelmetcam_defaults']) ) {
-    if (CSRFValidate()) {
-      $arrDefaultsConf["user_reset_files"] = "0";
-      if ( write_php_ini($arrDefaultsConf,'/etc/pihelmetcam/hostapd/reset.ini')) {
-        $status->addMessage('Successfully saved preference for PiHelmetCam defaults', 'success');
-      } else {
-        $status->addMessage('Unable to save configuration preferences', 'danger');
-      }
-    } else {
-      $status->addMessage('Unable to save configuration preferences', 'danger');
-      error_log('CSRF violation');
-    }
-  }
+  $strWlan0 = implode( " ", $return );
+  $strWlan0 = preg_replace( '/\s\s+/', ' ', $strWlan0 );
 
-  # Write preference for user-saved defaults to reset.ini
-  if( isset($_POST['select_user_defaults']) ) {
-    if (CSRFValidate()) {
-      $arrDefaultsConf["user_reset_files"] = "1";
-      if ( write_php_ini($arrDefaultsConf,'/etc/pihelmetcam/hostapd/reset.ini')) {
-        $status->addMessage('Successfully saved preference for user-saved defaults', 'success');
-      } else {
-        $status->addMessage('Unable to save configuration preferences', 'danger');
-      }
-    } else {
-      error_log('CSRF violation');
-    }
+  // Parse results from ifconfig/iwconfig
+  preg_match_all( '/inet ([0-9.]+)/i',$strWlan0,$result ) || $result[1] = 'No IP Address Found';
+  $strIPAddress = '';
+  foreach($result[1] as $ip) {
+      $strIPAddress .= $ip." ";
   }
+  preg_match( '/ESSID:\"([a-zA-Z0-9\s].+)\"/i',$strWlan0,$result ) || $result[1] = 'Not connected';
+  $strSSID = str_replace( '"','',$result[1] );
 
-  # Copy current PiHelmetCam settings into user preference files
-  if( isset($_POST['save_user_settings']) ) {
-    if (CSRFValidate()) {
-      SaveUserSettings($status);
-      $arrDefaultsConf["user_files_saved"] = "1";
-      write_php_ini($arrDefaultsConf,'/etc/pihelmetcam/hostapd/reset.ini');
-    } else {
-      error_log('CSRF violation');
-    }
-  }
-
-  # Use values from reset.ini for correct display of buttons on "defaults" tab
-  if ( $arrDefaultsConf['user_reset_files'] == "0") {
-    $pihelmetcamDefaults = " active";
-    $userDefaults = "";
-  } else {
-    $pihelmetcamDefaults = "";
-    $userDefaults = " active";
-  }
-  if ( $arrDefaultsConf['user_files_saved'] == "0") {
-    $disableUserSettings = '  disabled="disabled"';
-  }
-
-  ?>
+?>
   <div class="row">
-  <div class="col-lg-12">
-  <div class="panel panel-primary">
-  <div class="panel-heading"><i class="fa fa-cube fa-fw"></i> System</div>
-  <div class="panel-body">
-
-    <?php
-    if (isset($_POST['system_reboot'])) {
-      echo '<div class="alert alert-warning">System Rebooting Now!</div>';
-      $result = shell_exec("sudo /sbin/reboot");
-    }
-    if (isset($_POST['system_shutdown'])) {
-      echo '<div class="alert alert-warning">System Shutting Down Now!</div>';
-      $result = shell_exec("sudo /sbin/shutdown -h now");
-    }
-    ?>
-    <p><?php $status->showMessages(); ?></p>
-    <div class="row">
-    <div class="col-md-12">
-    <div class="panel panel-default">
-    <div class="panel-body">
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="systemtab active"><a href="#system" aria-controls="system" role="tab" data-toggle="tab">System</a></li>
-        <li role="presentation" class="defaultstab"><a href="#defaults" aria-controls="defaults" role="tab" data-toggle="tab">Defaults</a></li>
-        <li role="presentation" class="consoletab"><a href="#console" aria-controls="console" role="tab" data-toggle="tab">Console</a></li>
-    </ul>
-
-    <div class="systemtabcontent tab-content">
-        <div role="tabpanel" class="tab-pane active" id="system">
+    <div class="col-lg-12">
+      <div class="panel panel-primary"> 
+		<div class="panel-heading"><i class="fa fa-cube fa-fw"></i> System</div>
+		<div class="panel-body">
+		    <?php
+		    if (isset($_POST['system_reboot'])) {
+		      echo '<div class="alert alert-warning">System Rebooting Now!</div>';
+		      $result = shell_exec("sudo /sbin/reboot");
+		    }
+		    if (isset($_POST['system_shutdown'])) {
+		      echo '<div class="alert alert-warning">System Shutting Down Now!</div>';
+		      $result = shell_exec("sudo /sbin/shutdown -h now");
+		    }
+		    ?>
+		    <p><?php $status->showMessages(); ?></p>
             <div class="row">
-                <div class="col-lg-6">
-                        <h4>System Information</h4>
-                        <div class="info-item">Hostname</div> <?php echo $hostname ?></br>
-                        <div class="info-item">Pi Revision</div> <?php echo RPiVersion() ?></br>
-                        <div class="info-item">Uptime</div>   <?php echo $uptime ?></br></br>
-                        <div class="info-item">Memory Used</div>
-                        <div class="progress">
-                        <div class="progress-bar progress-bar-<?php echo $memused_status ?> progress-bar-striped active"
-                        role="progressbar"
-                        aria-valuenow="<?php echo $memused ?>" aria-valuemin="0" aria-valuemax="100"
-                        style="width: <?php echo $memused ?>%;"><?php echo $memused ?>%
-                        </div>
-                        </div>
-                        <div class="info-item">CPU Load</div>
-                        <div class="progress">
-                        <div class="progress-bar progress-bar-<?php echo $cpuload_status ?> progress-bar-striped active"
-                        role="progressbar"
-                        aria-valuenow="<?php echo $cpuload ?>" aria-valuemin="0" aria-valuemax="100"
-                        style="width: <?php echo $cpuload ?>%;"><?php echo $cpuload ?>%
-                        </div>
-                        </div>
+              <div class="col-md-6">
+              	<div class="panel panel-default">
+                  <div class="panel-body">
+		            <h4>WiFi Information</h4>
+		            <div class="info-item">Hostname</div> <?php echo $hostname ?></br>
+          			<div class="info-item">Connected To</div>   <?php echo $strSSID ?></br>
+		      		<div class="info-item">IP address</div> <?php echo $strIPAddress ?></br>
+                  </div><!-- /.panel-body -->
+	            </div><!-- /.panel-default -->
+              </div><!-- /.col-md-6 -->
+            </div><!-- /.row -->
 
-                        <form action="?page=system_info" method="POST">
-                        <input type="submit" class="btn btn-warning" name="system_reboot"   value="Reboot" />
-                        <input type="submit" class="btn btn-warning" name="system_shutdown" value="Shutdown" />
-                        <input type="button" class="btn btn-outline btn-primary" value="Refresh" onclick="document.location.reload(true)" />
-                        </form>
-                </div>
-            </div>
-        </div>
-      <div role="tabpanel" class="tab-pane" id="defaults">
-        <div class="row">
-          <div class="col-lg-6">
-            <h4>Source for reset data</h4>
-            <h5>Settings that will be written in if a factory reset is performed</h5>
-            <form action="?page=system_info" method="POST"><?php CSRFToken() ?>
-              <input type="submit" class="btn btn-primary<?php echo $pihelmetcamDefaults ?>" name="select_pihelmetcam_defaults" value="PiHelmetCam defaults" />
-              <input type="submit" class="btn btn-primary<?php echo $userDefaults ?>"<?php echo $disableUserSettings ?> name="select_user_defaults" value="User settings" />
-            </form>
-            <br>
-            <h4>Save user settings</h4>
-            <h5>Save current settings as user defaults</h5>
-            <form action="?page=system_info" method="POST"><?php CSRFToken() ?>
-              <input type="submit" class="btn btn-success" name="save_user_settings" value="Save" />
-            </form>
-          </div>
-        </div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="console">
-      <iframe src="includes/webconsole.php" class="webconsole"></iframe>
-      </div>
+            <div class="row">
+              <div class="col-md-6">
+              	<div class="panel panel-default">
+                  <div class="panel-body">
+		            <h4>System Information</h4>
+		            <div class="info-item">Pi Revision</div> <?php echo RPiVersion() ?></br></br>
+		            <div class="info-item">SD Card Capacity</div>
+		            <div class="progress">
+		                <div class="progress-bar progress-bar-<?php echo $space_status ?> progress-bar-striped active"
+		                role="progressbar"
+		                aria-valuenow="<?php echo $sparespace ?>" aria-valuemin="0" aria-valuemax="100"
+		                style="width: <?php echo $sparespace ?>%;"><?php echo $sparespace ?>%
+		                </div>
+		            </div>
+		            <div class="info-item">Memory Used</div>
+		            <div class="progress">
+		                <div class="progress-bar progress-bar-<?php echo $memused_status ?> progress-bar-striped active"
+		                role="progressbar"
+		                aria-valuenow="<?php echo $memused ?>" aria-valuemin="0" aria-valuemax="100"
+		                style="width: <?php echo $memused ?>%;"><?php echo $memused ?>%
+		                </div>
+		            </div>
+		            <div class="info-item">CPU Load</div>
+		            <div class="progress">
+		                <div class="progress-bar progress-bar-<?php echo $cpuload_status ?> progress-bar-striped active"
+		                role="progressbar"
+		                aria-valuenow="<?php echo $cpuload ?>" aria-valuemin="0" aria-valuemax="100"
+		                style="width: <?php echo $cpuload ?>%;"><?php echo $cpuload ?>%
+		                </div>
+		            </div>
 
-    </div><!-- /.panel-body -->
-    </div><!-- /.panel-default -->
-    </div><!-- /.col-md-6 -->
-    </div><!-- /.row -->
-  </div><!-- /.panel-body -->
-  </div><!-- /.panel-primary -->
-  </div><!-- /.col-lg-12 -->
+		            <form action="?page=system_info" method="POST">
+		                <input type="submit" class="btn btn-warning" name="system_reboot"   value="Reboot" />
+		                <input type="submit" class="btn btn-warning" name="system_shutdown" value="Shutdown" />
+		                <input type="button" class="btn btn-outline btn-primary" value="Refresh" onclick="document.location.reload(true)" />
+		            </form>
+                  </div><!-- /.panel-body -->
+	            </div><!-- /.panel-default -->
+              </div><!-- /.col-md-6 -->
+            </div><!-- /.row -->
+        </div><!-- /.panel-body -->
+      </div><!-- /.panel-default -->
+    </div><!-- /.col-lg-12 -->
   </div><!-- /.row -->
 
+<?php 
 
-
-
-      </div>
-  </div>
-  <?php
-}
-
-
-function SaveUserSettings($status) {
-
-  $fail = False;
-
-  #  WiFi hotspot
-  exec( 'cp /etc/hostapd/hostapd.conf config/user_hostapd.conf', $output, $return );
-  if ($return) {
-    $status->addMessage('Unable to save WiFi hotspot configuration', 'danger');
-    $fail = True;
-  } else {
-    $status->addMessage('Successfully saved WiFi hotspot configuration', 'success');
-  }
-
-  # DHCP server
-  exec( 'cp /etc/dnsmasq.conf config/user_dnsmasq.conf', $output, $return );
-  if ($return) {
-    $status->addMessage('Unable to save DHCP server configuration', 'danger');
-    $fail = True;
-  } else {
-    $status->addMessage('Successfully saved DHCP server configuration', 'success');
-  }
-
-  # DHCP client
-  exec( 'cp /etc/dhcpcd.conf config/user_dhcpcd.conf', $output, $return );
-  if ($return) {
-    $status->addMessage('Unable to save Networking configuration', 'danger');
-    $fail = True;
-  } else {
-    $status->addMessage('Successfully saved Networking configuration', 'success');
-  }
-
-  # Update wifi client configuration
-  if (file_exists('/etc/wpa_supplicant/wpa_supplicant.conf')) {
-    exec( 'sudo cat /etc/wpa_supplicant/wpa_supplicant.conf > config/user_wpa_supplicant.conf', $output, $return );  
-    if ($return) {
-      $status->addMessage('Unable to save WiFi client configuration', 'warning');
-      $fail = True;
-    } else {
-      $status->addMessage('Successfully saved WiFi client configuration', 'success');
-    }
-  } else {
-    if (file_exists('config/user_wpa_supplicant.conf')) {
-      exec( 'rm config/user_wpa_supplicant.conf', $output, $return );
-      if ($return) {
-        $status->addMessage('Unable to remove old WiFi client configuration', 'warning');
-        $fail = True;
-      } else {
-        $status->addMessage('Successfully removed old WiFi client configuration', 'success');
-      }
-    }
-  }
-
-  # Update wlan0 wifi client configuration
-  if (file_exists('/etc/wpa_supplicant/wpa_supplicant-wlan0.conf')) {
-    exec( 'sudo cat /etc/wpa_supplicant/wpa_supplicant-wlan0.conf > config/user_wpa_supplicant-wlan0.conf', $output, $return );
-    if ($return) {
-      $status->addMessage('Unable to save wlan0 WiFi client configuration', 'warning');
-      $fail = True;
-    } else {
-      $status->addMessage('Successfully saved wlan0 WiFi client configuration', 'success');
-    }
-  } else {
-    if (file_exists('config/user_wpa_supplicant-wlan0.conf')) {
-      exec( 'rm config/user_wpa_supplicant-wlan0.conf', $output, $return );
-      if ($return) {
-        $status->addMessage('Unable to remove old wlan0 WiFi client configuration', 'warning');
-        $fail = True;
-      } else {
-        $status->addMessage('Successfully removed old wlan0 WiFi client configuration', 'success');
-      }
-    }
-  }
-
-  # Update wlan1 wifi client configuration
-  if (file_exists('/etc/wpa_supplicant/wpa_supplicant-wlan1.conf')) {
-    exec( 'sudo cat /etc/wpa_supplicant/wpa_supplicant-wlan1.conf > config/user_wpa_supplicant-wlan1.conf', $output, $return );
-    if ($return) {
-      $status->addMessage('Unable to save wlan1 WiFi client configuration', 'warning');
-      $fail = True;
-    } else {
-      $status->addMessage('Successfully saved wlan1 WiFi client configuration', 'success');
-    }
-  } else {
-    if (file_exists('config/user_wpa_supplicant-wlan1.conf')) {
-      exec( 'rm config/user_wpa_supplicant-wlan1.conf', $output, $return );
-      if ($return) {
-        $status->addMessage('Unable to remove old wlan1 WiFi client configuration', 'warning');
-        $fail = True;
-      } else {
-        $status->addMessage('Successfully removed old wlan1 WiFi client configuration', 'success');
-      }
-    }
-  }
-
-  # Update PiHelmetCam authentication configuration
-  if (file_exists('/etc/pihelmetcam/pihelmetcam.auth')) {
-    exec( 'cp /etc/pihelmetcam/pihelmetcam.auth config/user_pihelmetcam.auth', $output, $return );
-    if ($return) {
-      $status->addMessage('Unable to save PiHelmetCam authentication configuration', 'warning');
-      $fail = True;
-    } else {
-      $status->addMessage('Successfully saved PiHelmetCam authentication configuration', 'success');
-    }
-  } else {
-    if (file_exists('config/user_pihelmetcam.auth')) {
-      exec( 'rm config/user_pihelmetcam.auth', $output, $return );
-      if ($return) {
-        $status->addMessage('Unable to remove old PiHelmetCam authentication configuration', 'warning');
-        $fail = True;
-      } else {
-        $status->addMessage('Successfully removed old PiHelmetCam authentication configuration', 'success');
-      }
-    }
-  }
-
-  return $fail;
 }
 
 ?>

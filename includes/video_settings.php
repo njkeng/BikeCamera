@@ -12,7 +12,7 @@ function DisplayVideoSettings(){
 
   # Options for video clip length
   $vid_length = array(2, 5, 10, 15);
-  $cull_free_space = array(500, 1000);
+  $cull_free_space = array(500, 1000, 2000, 3000, 4000);
   $vid_datetime_size = array(12, 15, 20, 25, 32, 45);
   $picamera_framerate = array(40, 30, 20, 15, 10, 5);
   $picamera_quality = array(20, 22, 24, 26);

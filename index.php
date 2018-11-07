@@ -18,7 +18,6 @@
 include_once( 'includes/config.php' );
 include_once( RASPI_CONFIG.'/pihelmetcam.php' );
 include_once( 'includes/functions.php' );
-include_once( 'includes/dashboard.php' );
 include_once( 'includes/authenticate.php' );
 include_once( 'includes/admin.php' );
 include_once( 'includes/dhcp.php' );
@@ -137,11 +136,6 @@ if(isset($_POST['completed_file'])){
         <div class="navbar-default sidebar" role="navigation">
           <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
-              <?php if ( RASPI_DASHBOARD_ENABLED ) : ?>
-              <li>
-                <a href="index.php?page=wlan0_info"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-              </li>
-              <?php endif; ?>
               <?php if ( RASPI_VIDEOSETTINGS_ENABLED ) : ?>
               <li>
                 <a href="index.php?page=videosettings_conf"><i class="fa fa-video-camera fa-fw"></i> Video settings</a>
@@ -206,9 +200,6 @@ if(isset($_POST['completed_file'])){
         <?php 
         // handle page actions
         switch( $page ) {
-          case "wlan0_info":
-            DisplayDashboard();
-            break;
           case "videosettings_conf":
             DisplayVideoSettings();
             break;
@@ -240,7 +231,7 @@ if(isset($_POST['completed_file'])){
             DisplaySystem();
             break;
           default:
-            DisplayDashboard();
+            DisplayVideoSettings();
         }
         ?>
       </div><!-- /#page-wrapper --> 
