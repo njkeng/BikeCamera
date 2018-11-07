@@ -11,22 +11,34 @@ function DisplayTime(){
 
   $status = new StatusMessages();
 
+  exec("date '+%Y'", $curr_year);
+  exec("date '+%b'", $curr_month);
+  exec("date '+%d'", $curr_day);
+  exec("date '+%H'", $curr_hour);
+  exec("date '+%M'", $curr_minute);
+
   # Definition of dropdown list options
-  $arrUpperBound = array('20','18','16','14','12');
-  $arrLowerBound = array('11','9','7','5','3','1');
+  $arrYear = array('2018','2019','2020','2021','2022','2023','2024','2025','2026','2027','2028','2029','2030','2031','2032','2033','2034','2035','2036','2037','2038','2039','2040');
+  $arrMonth = array('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
+  $arrDay = array('01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31');
+  $arrHour = array('00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24');
+  $arrMinute = array('00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59');
 
 
-  if( isset($_POST['savesettings']) ) {
+  if( isset($_POST['setdate']) ) {
     if (CSRFValidate()) {
-      SaveTime($status);
+      SetDate($status);
     } else {
       error_log('CSRF violation');
     }
   }
 
-  # Read existing configuration data, else use default data
-  if ( ! $arrCustomConf = parse_ini_file('config/custompage2.ini')) {
-    $status->addMessage('Could not find an existing configuration file', 'warning');
+  if( isset($_POST['settime']) ) {
+    if (CSRFValidate()) {
+      SetTime($status);
+    } else {
+      error_log('CSRF violation');
+    }
   }
 
   ?>
@@ -38,51 +50,51 @@ function DisplayTime(){
         <!-- /.panel-heading -->
           <div class="panel-body">
   	        <p><?php $status->showMessages(); ?></p>
-            <form role="form" action="?page=time_conf" method="POST">
-              <!-- Nav tabs -->
-              <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#url" data-toggle="tab">URL</a>
-                </li>
-                <li>
-                  <a href="#bounds" data-toggle="tab">Bounds</a>
-                </li>
-              </ul>
 
-              <!-- Tab panes -->
-              <div class="tab-content">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <form role="form" action="?page=time_conf" method="POST">
+                      <h4>Camera Date</h4>
+                      <div class="info-item">Current date</div> <?php echo $curr_day."-".$curr_month."-".$curr_year ?></br>
+                      <div class="row">
+                        <div class="form-group col-md-4">
+                          <label for="code">New date</label>
+                          <?php SelectorOptions('setday', $arrDay, $curr_day); ?>
+                          <?php SelectorOptions('setmonth', $arrMonth, $curr_month); ?>
+                          <?php SelectorOptions('setyear', $arrYear, $curr_year); ?>
+                        </div>
+                      </div>
+                      <input type="submit" class="btn btn-outline btn-primary" name="setdate" value="Set the date" />
+                    </form>
+                  </div><!-- /.panel-body -->
+              </div><!-- /.panel-default -->
+              </div><!-- /.col-md-6 -->
+            </div><!-- /.row -->
 
-                <div class="tab-pane fade in active" id="url">
-                  <h4>Resource location settings</h4>
-                  <?php CSRFToken() ?>
-                  <div class="row">
-                    <div class="form-group col-md-4">
-                      <label for="code">Web page address</label>
-                      <input type="text" class="form-control" name="url" value="<?php echo $arrCustomConf['url']; ?>" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="tab-pane fade" id="bounds">
-                  <h4>Boundary settings</h4>
-                  <div class="row">
-                    <div class="form-group col-md-4">
-                      <label for="code">Upper bound</label>
-                      <?php SelectorOptions('upper_bound', $arrUpperBound, $arrCustomConf['upper_bound']); ?>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="form-group col-md-4">
-                      <label for="code">Lower bound</label>
-                      <?php SelectorOptions('lower_bound', $arrLowerBound, $arrCustomConf['lower_bound']); ?>
-                    </div>
-                  </div>
-                </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <form role="form" action="?page=time_conf" method="POST">
+                      <h4>Camera Time</h4>
+                      <div class="info-item">Current time</div> <?php echo $curr_hour.":".$curr_minute ?></br>
+                      <div class="row">
+                        <div class="form-group col-md-4">
+                          <label for="code">New time</label>
+                          <?php SelectorOptions('sethour', $arrHour, $curr_hour); ?>
+                          <?php SelectorOptions('setminute', $arrMinute, $curr_minute); ?>
+                        </div>
+                      </div>
+                      <input type="submit" class="btn btn-outline btn-primary" name="settime" value="Set the time" />
+                    </form>
+                  </div><!-- /.panel-body -->
+              </div><!-- /.panel-default -->
+              </div><!-- /.col-md-6 -->
+            </div><!-- /.row -->
 
 
-              </div><!-- /.tab-content  -->
-              <input type="submit" class="btn btn-outline btn-primary" name="savesettings" value="Save settings" />
-            </form>
           </div><!-- /.panel-body -->
           <div class="panel-footer"></div>
         </div><!-- /.panel-primary -->
@@ -91,30 +103,58 @@ function DisplayTime(){
 <?php 
 }
 
-function SaveTime($status) {
+function SetDate($status) {
 
-  $good_input = true;
+  $newday = $_POST['setday'];
+  $newmonth = $_POST['setmonth'];
+  $newyear = $_POST['setyear'];
 
-  // Verify input
-  if (strlen($_POST['url']) == 0 ) {
-    $status->addMessage('URL is empty.  Please enter some data.', 'danger');
-    $good_input = false;
-  }
+  $newdate = $newday."-".$newmonth."-".$newyear;
+  exec ("sudo date --set='".$newdate."'", $output, $return);
 
-  if ($good_input) {
-
-    $ini_data = ["url" => $_POST['url'], "upper_bound" => $_POST['upper_bound'], "lower_bound" => $_POST['lower_bound']];
-
-    if ( write_php_ini($ini_data,'config/custompage2.ini')) {
-      $status->addMessage('Successfully saved configuration data', 'success');
+  if( $return == 0 ) {
+    $status->addMessage('New system date has been saved', 'success');
+    exec ("sudo hwclock -w", $output, $return);
+    if( $return == 0 ) {
+      $status->addMessage('New date has been written to the RTC', 'success');
     } else {
-      $status->addMessage('Unable to save configuration data', 'danger');
+      $status->addMessage('Unable to write the new date to the RTC', 'danger');
       return false;
     }
-    
+  } else {
+    $status->addMessage('Unable to save the new system date', 'danger');
+    return false;
   }
+
   return true;
 }
+
+function SetTime($status) {
+
+  $newhour = $_POST['sethour'];
+  $newminute = $_POST['setminute'];
+
+  $newtime = $newhour.":".$newminute;
+  exec ("sudo date --set='".$newtime."'", $output, $return);
+
+  if( $return == 0 ) {
+    $status->addMessage('New system time has been saved', 'success');
+    exec ("sudo hwclock -w", $output, $return);
+    if( $return == 0 ) {
+      $status->addMessage('New time has been written to the RTC', 'success');
+    } else {
+      $status->addMessage('Unable to write the new time to the RTC', 'danger');
+      return false;
+    }
+  } else {
+    $status->addMessage('Unable to save the new system time', 'danger');
+    return false;
+  }
+
+  return true;
+}
+
+
 ?>
 
 
