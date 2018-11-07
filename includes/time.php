@@ -50,20 +50,22 @@ function DisplayTime(){
         <!-- /.panel-heading -->
           <div class="panel-body">
   	        <p><?php $status->showMessages(); ?></p>
-
             <div class="row">
               <div class="col-md-6">
                 <div class="panel panel-default">
                   <div class="panel-body">
                     <form role="form" action="?page=time_conf" method="POST">
+                      <?php CSRFToken() ?>
                       <h4>Camera Date</h4>
-                      <div class="info-item">Current date</div> <?php echo $curr_day."-".$curr_month."-".$curr_year ?></br>
+                      <div class="info-item">Current date</div> <?php echo $curr_day[0]."-".$curr_month[0]."-".$curr_year[0] ?></br>
                       <div class="row">
                         <div class="form-group col-md-4">
                           <label for="code">New date</label>
-                          <?php SelectorOptions('setday', $arrDay, $curr_day); ?>
-                          <?php SelectorOptions('setmonth', $arrMonth, $curr_month); ?>
-                          <?php SelectorOptions('setyear', $arrYear, $curr_year); ?>
+                          <?php 
+                            SelectorOptions('setday', $arrDay, $curr_day[0]);
+                            SelectorOptions('setmonth', $arrMonth, $curr_month[0]);
+                            SelectorOptions('setyear', $arrYear, $curr_year[0]); 
+                          ?>
                         </div>
                       </div>
                       <input type="submit" class="btn btn-outline btn-primary" name="setdate" value="Set the date" />
@@ -78,13 +80,16 @@ function DisplayTime(){
                 <div class="panel panel-default">
                   <div class="panel-body">
                     <form role="form" action="?page=time_conf" method="POST">
+                      <?php CSRFToken() ?>
                       <h4>Camera Time</h4>
-                      <div class="info-item">Current time</div> <?php echo $curr_hour.":".$curr_minute ?></br>
+                      <div class="info-item">Current time</div> <?php echo $curr_hour[0].":".$curr_minute[0] ?></br>
                       <div class="row">
                         <div class="form-group col-md-4">
                           <label for="code">New time</label>
-                          <?php SelectorOptions('sethour', $arrHour, $curr_hour); ?>
-                          <?php SelectorOptions('setminute', $arrMinute, $curr_minute); ?>
+                          <?php 
+                            SelectorOptions('sethour', $arrHour, $curr_hour[0]);
+                            SelectorOptions('setminute', $arrMinute, $curr_minute[0]); 
+                          ?>
                         </div>
                       </div>
                       <input type="submit" class="btn btn-outline btn-primary" name="settime" value="Set the time" />
