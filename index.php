@@ -23,7 +23,6 @@ include_once( 'includes/admin.php' );
 include_once( 'includes/hostapd.php' );
 include_once( 'includes/system.php' );
 include_once( 'includes/configure_client.php' );
-include_once( 'includes/themes.php' );
 include_once( 'includes/video_settings.php' );
 include_once( 'includes/time.php' );
 include_once( 'includes/video_files.php' );

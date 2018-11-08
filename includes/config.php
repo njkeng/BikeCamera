@@ -23,7 +23,7 @@ define('RASPI_VIDEOSETTINGS_ENABLED', true );
 define('RASPI_VIDEOFILES_ENABLED', true );
 define('RASPI_CLIENT_ENABLED', true );
 define('RASPI_HOTSPOT_ENABLED', true );
-define('RASPI_TIME_ENABLED', true );
+define('RASPI_TIME_ENABLED', false );
 define('RASPI_CONFAUTH_ENABLED', true );
 define('RASPI_SYSTEM_ENABLED', true );
 
