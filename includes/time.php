@@ -138,21 +138,41 @@ function SetTime($status) {
 
   $newhour = $_POST['sethour'];
   $newminute = $_POST['setminute'];
+  $newday = $_POST['setday'];
+  $newmonth = $_POST['setmonth'];
+  $newyear = $_POST['setyear'];
 
-  $newtime = $newhour.":".$newminute;
-  exec ("sudo date --set='".$newtime."'", $output, $return);
+  // $newtime = $newhour.":".$newminute;
+  // exec ("sudo date --set='".$newtime."'", $output, $return);
+
+  // if( $return == 0 ) {
+  //   $status->addMessage('New system time has been saved', 'success');
+  //   exec ("sudo hwclock -w", $output, $return);
+  //   if( $return == 0 ) {
+  //     $status->addMessage('New time has been written to the RTC', 'success');
+  //   } else {
+  //     $status->addMessage('Unable to write the new time to the RTC', 'danger');
+  //     return false;
+  //   }
+  // } else {
+  //   $status->addMessage('Unable to save the new system time', 'danger');
+  //   return false;
+  // }
+
+
+  $newtime = $newday."-".$newmonth."-".$newyear." ".$newhour.":".$newminute;
+  exec ("sudo hwclock --set --date='".$newtime."'", $output, $return);
 
   if( $return == 0 ) {
-    $status->addMessage('New system time has been saved', 'success');
-    exec ("sudo hwclock -w", $output, $return);
+    $status->addMessage('New time has been written to the RTC', 'success');
+    exec ("sudo hwclock --r", $output, $return);
     if( $return == 0 ) {
       $status->addMessage('New time has been written to the RTC', 'success');
     } else {
-      $status->addMessage('Unable to write the new time to the RTC', 'danger');
-      return false;
+      $status->addMessage('Unable to write the RTC time to the system', 'danger');
     }
   } else {
-    $status->addMessage('Unable to save the new system time', 'danger');
+    $status->addMessage('Unable to write the new time to the RTC', 'danger');
     return false;
   }
 

@@ -377,8 +377,7 @@ function patch_system_files() {
         "/sbin/ip link set wlan1 up"
         "/sbin/ip -s a f label wlan1"
         "/bin/cp /etc/pihelmetcam/networking/dhcpcd.conf /etc/dhcpcd.conf"
-        "/sbin/hwclock -w"
-        "/bin/date"
+        "/sbin/hwclock"
     )
 
     # Check if sudoers needs patching
