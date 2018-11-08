@@ -129,13 +129,10 @@ function create_pihelmetcam_directories() {
     sudo chown -R $pihelmetcam_user:$pihelmetcam_user "$pihelmetcam_dir" || install_error "Unable to change file ownership for '$pihelmetcam_dir'"
 }
 
-# Generate logging enable/disable files for hostapd
+# Generate logging directories for hostapd
 function create_logging_scripts() {
     install_log "Creating logging scripts"
     sudo mkdir -p $pihelmetcam_dir/hostapd || install_error "Unable to create directory '$pihelmetcam_dir/hostapd'"
-
-    # Move existing shell scripts 
-    sudo mv $webroot_dir/installers/*log.sh $pihelmetcam_dir/hostapd || install_error "Unable to move logging scripts"
 }
 
 # Generate configuration reset files for pihelmetcam
