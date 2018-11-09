@@ -129,40 +129,46 @@ if(isset($_POST['completed_file'])){
           <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
               <?php if ( RASPI_VIDEOSETTINGS_ENABLED ) : ?>
-              <li>
-                <a href="index.php?page=videosettings_conf"><i class="fa fa-video-camera fa-fw"></i> Video settings</a>
-              </li>
+                <li>
+                  <a href="index.php?page=videosettings_conf"><i class="fa fa-video-camera fa-fw"></i> Video settings</a>
+                </li>
               <?php endif; ?>
               <?php if ( RASPI_VIDEOFILES_ENABLED ) : ?>
-              <li>
-                <a href="index.php?page=video_files_conf"><i class="fa fa-file-movie-o fa-fw"></i> Manage video files</a>
-              </li>
+                <li>
+                  <a href="index.php?page=video_files_conf"><i class="fa fa-file-movie-o fa-fw"></i> Manage video files</a>
+                </li>
               <?php endif; ?>              
               <?php if ( RASPI_CLIENT_ENABLED ) : ?>
-              <li>
-                <a href="index.php?page=wpa_conf"><i class="fa fa-signal fa-fw"></i> Configure WiFi Client</a>
-              </li>
+                <li>
+                  <a href="index.php?page=wpa_conf"><i class="fa fa-signal fa-fw"></i> Configure WiFi Client</a>
+                </li>
               <?php endif; ?>
               <?php if ( RASPI_HOTSPOT_ENABLED ) : ?>
-              <li>
-                <a href="index.php?page=hostapd_conf"><i class="fa fa-dot-circle-o fa-fw"></i> Configure Hotspot</a>
-              </li>
+                <li>
+                  <a href="index.php?page=hostapd_conf"><i class="fa fa-dot-circle-o fa-fw"></i> Configure Hotspot</a>
+                </li>
               <?php endif; ?>
               <?php if ( RASPI_TIME_ENABLED ) : ?>
-              <li>
-                <a href="index.php?page=time_conf"><i class="fa fa-clock-o fa-fw"></i> Time and date</a>
-              </li>
+                <li>
+                  <a href="index.php?page=time_conf"><i class="fa fa-clock-o fa-fw"></i> Time and date</a>
+                </li>
               <?php endif; ?>
               <?php if ( RASPI_CONFAUTH_ENABLED ) : ?>
-              <li>
-                <a href="index.php?page=auth_conf"><i class="fa fa-lock fa-fw"></i> Configure Auth</a>
-              </li>
+                <li>
+                  <a href="index.php?page=auth_conf"><i class="fa fa-lock fa-fw"></i> Configure Auth</a>
+                </li>
               <?php endif; ?>
               <?php if ( RASPI_SYSTEM_ENABLED ) : ?>
-              <li>
-                 <a href="index.php?page=system_info"><i class="fa fa-cube fa-fw"></i> System</a>
-              </li>
+                <li>
+                   <a href="index.php?page=system_info"><i class="fa fa-cube fa-fw"></i> System</a>
+                </li>
               <?php endif; ?>
+              <li>
+                 <a target="_blank" rel="noopener noreferrer" href="https://github.com/njkeng/PiHelmetCam/blob/master/README.md"><i class="fa fa-question-circle fa-fw"></i> Software README</a>
+              </li>
+              <li>
+                 <a target="_blank" rel="noopener noreferrer" href="https://instructables.com"><i class="fa fa-info-circle fa-fw"></i> BikeCamera Instructable</a>
+              </li>
             </ul>
           </div><!-- /.navbar-collapse -->
         </div><!-- /.navbar-default -->

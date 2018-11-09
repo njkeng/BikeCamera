@@ -28,6 +28,8 @@ hc_vres = int(myvars["picamera_vres"])
 hc_framerate = int(myvars["picamera_framerate"])
 hc_quality = int(myvars["picamera_quality"])
 hc_bitrate = int(myvars["picamera_bitrate"]) * 1000000
+hc_awb_mode = myvars["picamera_awb_mode"].strip('"')
+hc_exp_mode = myvars["picamera_exp_mode"].strip('"')
 
 # File parameters
 vid_length = int(myvars["vid_length"])          # Video file length in minutes
@@ -105,6 +107,8 @@ camera.resolution = (hc_hres, hc_vres)
 camera.framerate = hc_framerate
 camera.hflip = hc_hflip
 camera.vflip = hc_vflip
+camera.awb_mode = hc_awb_mode
+camera.exposure_mode = hc_exp_mode
 if vid_datetime_enable:
     camera.annotate_background = picamera.Color('black')
     camera.annotate_text_size = vid_datetime_size

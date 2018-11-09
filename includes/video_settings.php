@@ -17,7 +17,8 @@ function DisplayVideoSettings(){
   $picamera_framerate = array(40, 30, 20, 15, 10, 5);
   $picamera_quality = array(20, 22, 24, 26);
   $picamera_bitrate = array(1, 3, 5, 7, 9, 11, 13, 15, 17);
-
+  $picamera_awb_modes = array('auto','sunlight','cloudy','shade','tungsten','fluorescent','incandescent','flash','horizon');
+  $picamera_exp_modes = array('auto','night','nightpreview','backlight','spotlight','sports','snow','beach','verylong','fixedfps','antishake','fireworks');
 
   # Video resolutions for raspberry pi camera
   # 1080p widescreen 1920x1080 30fps
@@ -192,6 +193,20 @@ function DisplayVideoSettings(){
                     </div>
                   </div>
 
+                  <div class="form-group">
+                    <label for="picamera_awb_mode" class="col-sm-4 control-label">Automatic white balance</label>
+                    <div class="input-group col-sm-3">
+                      <?php SelectorOptions('picamera_awb_mode', $picamera_awb_modes, $video_ini['picamera_awb_mode']); ?>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="picamera_exp_mode" class="col-sm-4 control-label">Exposure mode</label>
+                    <div class="input-group col-sm-3">
+                      <?php SelectorOptions('picamera_exp_mode', $picamera_exp_modes, $video_ini['picamera_exp_mode']); ?>
+                    </div>
+                  </div>
+
                 </div><!-- /.tab-pane  -->
 
               </div><!-- /.tab-content  -->
@@ -223,6 +238,8 @@ function SaveVideoSettings($status, $video_ini) {
     $ini_data ['picamera_framerate']      = $_POST['picamera_framerate'];
     $ini_data ['picamera_quality']      = $_POST['picamera_quality'];
     $ini_data ['picamera_bitrate']      = $_POST['picamera_bitrate'];
+    $ini_data ['picamera_awb_mode']      = $_POST['picamera_awb_mode'];
+    $ini_data ['picamera_exp_mode']      = $_POST['picamera_exp_mode'];
 
     switch($_POST['picamera_resolution']){
 
