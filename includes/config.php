@@ -1,8 +1,8 @@
 <?php
 
-define('RASPI_CONFIG', '/etc/pihelmetcam');
+define('RASPI_CONFIG', '/etc/bikecamera');
 define('RASPI_CONFIG_NETWORKING',RASPI_CONFIG.'/networking');
-define('RASPI_ADMIN_DETAILS', RASPI_CONFIG.'/pihelmetcam.auth');
+define('RASPI_ADMIN_DETAILS', RASPI_CONFIG.'/bikecamera.auth');
 define('RASPI_WIFI_CLIENT_INTERFACE', 'wlan0');
 
 // Constants for configuration file paths.

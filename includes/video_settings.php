@@ -31,7 +31,7 @@ function DisplayVideoSettings(){
   if( isset($_POST['saveCP1settings']) ) {
     if (CSRFValidate()) {
       # Read existing configuration data, else use default data
-      if ( ! $video_ini = parse_ini_file('/etc/pihelmetcam/video/video.ini')) {
+      if ( ! $video_ini = parse_ini_file('/etc/bikecamera/video/video.ini')) {
         $status->addMessage('Could not find an existing configuration file', 'warning');
       }
       SaveVideoSettings($status, $video_ini);
@@ -41,7 +41,7 @@ function DisplayVideoSettings(){
   }
 
   # Read existing configuration data, else use default data
-  if ( ! $video_ini = parse_ini_file('/etc/pihelmetcam/video/video.ini')) {
+  if ( ! $video_ini = parse_ini_file('/etc/bikecamera/video/video.ini')) {
     $status->addMessage('Could not find an existing configuration file', 'warning');
   }
 
@@ -267,7 +267,7 @@ function SaveVideoSettings($status, $video_ini) {
 
     }
 
-    if ( write_php_ini($ini_data,'/etc/pihelmetcam/video/video.ini')) {
+    if ( write_php_ini($ini_data,'/etc/bikecamera/video/video.ini')) {
       $status->addMessage('Successfully saved configuration data', 'success');
     } else {
       $status->addMessage('Unable to save configuration data', 'danger');

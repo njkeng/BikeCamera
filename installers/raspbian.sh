@@ -1,6 +1,6 @@
-UPDATE_URL="https://raw.githubusercontent.com/njkeng/PiHelmetCam/master/"
-wget -q ${UPDATE_URL}/installers/common.sh -O /tmp/pihelmetcamcommon.sh
-source /tmp/pihelmetcamcommon.sh && rm -f /tmp/pihelmetcamcommon.sh
+UPDATE_URL="https://raw.githubusercontent.com/njkeng/BikeCamera/master/"
+wget -q ${UPDATE_URL}/installers/common.sh -O /tmp/bikecameracommon.sh
+source /tmp/bikecameracommon.sh && rm -f /tmp/bikecameracommon.sh
 
 function update_system_packages() {
     install_log "Updating sources"
@@ -12,4 +12,4 @@ function install_dependencies() {
     sudo apt-get -y install lighttpd $php_package git hostapd dnsmasq samba samba-common-bin python-smbus i2c-tools php7.0-zip || install_error "Unable to install dependencies"
 }
 
-install_pihelmetcam
+install_bikecamera

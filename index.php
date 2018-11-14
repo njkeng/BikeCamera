@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Raspberry Pi Helmet Camera
+ * Raspberry Pi Bike Camera
  *
  * For a quick run through, the packages required for the WebGUI are:
  * lighttpd (I have version 1.4.31-2 installed via apt)
@@ -11,12 +11,12 @@
  * @author     Nathan Kotzur
  * @license    GNU General Public License, version 3 (GPL-3.0)
  * @version    1.0
- * @link       https://github.com/njkeng/PiHelmetCam
+ * @link       https://github.com/njkeng/BikeCamera
  * @see        https://instructables.com
  */
 
 include_once( 'includes/config.php' );
-include_once( RASPI_CONFIG.'/pihelmetcam.php' );
+include_once( RASPI_CONFIG.'/bikecamera.php' );
 include_once( 'includes/functions.php' );
 include_once( 'includes/authenticate.php' );
 include_once( 'includes/admin.php' );
@@ -164,7 +164,7 @@ if(isset($_POST['completed_file'])){
                 </li>
               <?php endif; ?>
               <li>
-                 <a target="_blank" rel="noopener noreferrer" href="https://github.com/njkeng/PiHelmetCam/blob/master/README.md"><i class="fa fa-question-circle fa-fw"></i> Software README</a>
+                 <a target="_blank" rel="noopener noreferrer" href="https://github.com/njkeng/BiKecameRa/blob/master/README.md"><i class="fa fa-question-circle fa-fw"></i> Software README</a>
               </li>
               <li>
                  <a target="_blank" rel="noopener noreferrer" href="https://instructables.com"><i class="fa fa-info-circle fa-fw"></i> BikeCamera Instructable</a>
@@ -180,7 +180,7 @@ if(isset($_POST['completed_file'])){
         <div class="row">
           <div class="col-lg-12">
               <h1 class="page-header">
-                <img class="logo" src="img/BikeCamera_logo_simple.png" width="45" height="45">  BikeCamera
+                <img class="logo" src="img/BikeCamera_logo_simple.png" width="240" height="98">  BikeCamera
               </h1>
           </div>
         </div><!-- /.row -->
@@ -219,7 +219,7 @@ if(isset($_POST['completed_file'])){
       </div><!-- /#page-wrapper --> 
     </div><!-- /#wrapper -->
 
-    <!-- PiHelmetCam JavaScript -->
+    <!-- BiKecameRa JavaScript -->
     <script src="dist/js/functions.js"></script>
 
     <!-- jQuery -->
@@ -239,7 +239,7 @@ if(isset($_POST['completed_file'])){
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
 
-    <!-- Custom PiHelmetCam JS -->
+    <!-- Custom BiKecameRa JS -->
     <script src="js/custom.js"></script>
   </body>
 </html>

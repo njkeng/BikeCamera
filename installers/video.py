@@ -15,7 +15,7 @@ ledGPIO = 24            # LED is connected to GPIO 24 (pin 18)
 
 # Read key-value pairs from the ini file
 myvars = {}
-with open('/etc/pihelmetcam/video/video.ini') as myfile:
+with open('/etc/bikecamera/video/video.ini') as myfile:
     for line in myfile:
         name, var = line.partition(" = ")[::2]
         myvars[name.strip()] = var.strip()

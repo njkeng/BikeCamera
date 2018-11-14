@@ -3,10 +3,10 @@
 function process_video_files() {
 
 	# String variables from video.ini
-	vid_dir=$(sudo cat /etc/pihelmetcam/video/video.ini | grep --only-matching --perl-regexp "(?<=vid_dir = \")\S+(?=\")")
+	vid_dir=$(sudo cat /etc/bikecamera/video/video.ini | grep --only-matching --perl-regexp "(?<=vid_dir = \")\S+(?=\")")
 
 	# Numeric variables from video.ini
-    cull_free_space=$(sudo cat /etc/pihelmetcam/video/video.ini | grep --only-matching --perl-regexp "(?<=cull_free_space = )\w+")
+    cull_free_space=$(sudo cat /etc/bikecamera/video/video.ini | grep --only-matching --perl-regexp "(?<=cull_free_space = )\w+")
 
 	# Calculate required free space in kB
 	cull_kb=$(expr $cull_free_space \* 1024)

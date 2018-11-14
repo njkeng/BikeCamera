@@ -1,6 +1,6 @@
-bc_devicename="pihelmetcam"
-pihelmetcam_dir="/etc/pihelmetcam"
-pihelmetcam_user="www-data"
+bc_devicename="bikecamera"
+bikecamera_dir="/etc/bikecamera"
+bikecamera_user="www-data"
 version=`sed 's/\..*//' /etc/debian_version`
 
 # Determine version, set default home location for lighttpd and 
@@ -18,20 +18,20 @@ else
     php_package="php5-cgi" 
 fi 
 
-# Outputs a PiHelmetCam Install log line
+# Outputs a BikeCamera Install log line
 function install_log() {
-    echo -e "\033[1;32mPiHelmetCam Install: $*\033[m"
+    echo -e "\033[1;32mBikeCamera Install: $*\033[m"
 }
 
-# Outputs a PiHelmetCam Install Error log line and exits with status code 1
+# Outputs a BikeCamera Install Error log line and exits with status code 1
 function install_error() {
-    echo -e "\033[1;37;41mPiHelmetCam Install Error: $*\033[m"
+    echo -e "\033[1;37;41mBikeCamera Install Error: $*\033[m"
     exit 1
 }
 
-# Outputs a PiHelmetCam Install attention line
+# Outputs a BikeCamera Install attention line
 function install_attn() {
-    echo -e "\033[1;33mPiHelmetCam Attention: $*\033[m"
+    echo -e "\033[1;33mBikeCamera Attention: $*\033[m"
 }
 
 # Outputs a welcome message
@@ -75,11 +75,11 @@ function config_installation() {
         read answer
     done
     if [ "$user_devicename" == "" ]; then
-    	pihelmetcam_devicename="$bc_devicename"
+    	bikecamera_devicename="$bc_devicename"
     else
-    	pihelmetcam_devicename="$user_devicename"
+    	bikecamera_devicename="$user_devicename"
     fi
-    install_attn "Installation continuing with device name: $pihelmetcam_devicename"
+    install_attn "Installation continuing with device name: $bikecamera_devicename"
 }
 
 # Runs a system software update to make sure we're using all fresh packages
@@ -96,9 +96,9 @@ function install_dependencies() {
 
 # Sets the hostname of the Pi
 function set_hostname() {
-    echo $pihelmetcam_devicename | sudo tee  /etc/hostname || install_error "Unable to set /etc/hostname"
-    sudo sed -i -e 's/^.*pihelmetcam-installer.*$//g' /etc/hosts
-    echo "127.0.1.1      " $pihelmetcam_devicename " ### Set by pihelmetcam-installer"  | sudo tee -a /etc/hosts || install_error "Unable to set /etc/hosts"
+    echo $bikecamera_devicename | sudo tee  /etc/hostname || install_error "Unable to set /etc/hostname"
+    sudo sed -i -e 's/^.*bikecamera-installer.*$//g' /etc/hosts
+    echo "127.0.1.1      " $bikecamera_devicename " ### Set by bikecamera-installer"  | sudo tee -a /etc/hosts || install_error "Unable to set /etc/hosts"
 }
 
 # Enables PHP for lighttpd and restarts service for settings to take effect
@@ -110,57 +110,57 @@ function enable_php_lighttpd() {
     sudo /etc/init.d/lighttpd restart || install_error "Unable to restart lighttpd"
 }
 
-# Verifies existence and permissions of PiHelmetCam directory
-function create_pihelmetcam_directories() {
-    install_log "Creating PiHelmetCam directories"
-    if [ -d "$pihelmetcam_dir" ]; then
-        sudo mv $pihelmetcam_dir "$pihelmetcam_dir.`date +%F-%R`" || install_error "Unable to move old '$pihelmetcam_dir' out of the way"
+# Verifies existence and permissions of BikeCamera directory
+function create_bikecamera_directories() {
+    install_log "Creating BikeCamera directories"
+    if [ -d "$bikecamera_dir" ]; then
+        sudo mv $bikecamera_dir "$bikecamera_dir.`date +%F-%R`" || install_error "Unable to move old '$bikecamera_dir' out of the way"
     fi
-    sudo mkdir -p "$pihelmetcam_dir" || install_error "Unable to create directory '$pihelmetcam_dir'"
+    sudo mkdir -p "$bikecamera_dir" || install_error "Unable to create directory '$bikecamera_dir'"
 
     # Create a directory for existing file backups.
-    sudo mkdir -p "$pihelmetcam_dir/backups"
+    sudo mkdir -p "$bikecamera_dir/backups"
 
     # Create a directory to store networking configs
-    sudo mkdir -p "$pihelmetcam_dir/networking"
+    sudo mkdir -p "$bikecamera_dir/networking"
     # Copy existing dhcpcd.conf to use as base config
-    cat /etc/dhcpcd.conf | sudo tee -a /etc/pihelmetcam/networking/defaults
+    cat /etc/dhcpcd.conf | sudo tee -a /etc/bikecamera/networking/defaults
 
-    sudo chown -R $pihelmetcam_user:$pihelmetcam_user "$pihelmetcam_dir" || install_error "Unable to change file ownership for '$pihelmetcam_dir'"
+    sudo chown -R $bikecamera_user:$bikecamera_user "$bikecamera_dir" || install_error "Unable to change file ownership for '$bikecamera_dir'"
 }
 
 # Generate logging directories for hostapd
 function create_logging_scripts() {
     install_log "Creating logging scripts"
-    sudo mkdir -p $pihelmetcam_dir/hostapd || install_error "Unable to create directory '$pihelmetcam_dir/hostapd'"
+    sudo mkdir -p $bikecamera_dir/hostapd || install_error "Unable to create directory '$bikecamera_dir/hostapd'"
 }
 
-# Generate configuration reset files for pihelmetcam
+# Generate configuration reset files for bikecamera
 function create_reset_scripts() {
-    sudo mv /var/www/html/installers/reset.sh $pihelmetcam_dir/hostapd
-    sudo mv /var/www/html/installers/button.py $pihelmetcam_dir/hostapd
+    sudo mv /var/www/html/installers/reset.sh $bikecamera_dir/hostapd
+    sudo mv /var/www/html/installers/button.py $bikecamera_dir/hostapd
 }
 
-# Move video files for pihelmetcam
+# Move video files for bikecamera
 function create_video_files() {
     install_log "Preparing video recording scripts"
-    sudo mkdir -p $pihelmetcam_dir/video || install_error "Unable to create directory '$pihelmetcam_dir/video'"
-    sudo mv /var/www/html/installers/video.py $pihelmetcam_dir/video
-    sudo mv /var/www/html/installers/process_vid.sh $pihelmetcam_dir/video
+    sudo mkdir -p $bikecamera_dir/video || install_error "Unable to create directory '$bikecamera_dir/video'"
+    sudo mv /var/www/html/installers/video.py $bikecamera_dir/video
+    sudo mv /var/www/html/installers/process_vid.sh $bikecamera_dir/video
     #
     # Need to move other video processing scripts HERE
     # After I have written them of course
     #
-    sudo mkdir -p $pihelmetcam_dir/video/completed || install_error "Unable to create directory '$pihelmetcam_dir/video/completed'"
-    sudo chmod a+r $pihelmetcam_dir/video/completed || install_error "Unable to set read permissions for '$pihelmetcam_dir/video/completed'"
-    sudo chmod a+w $pihelmetcam_dir/video/completed || install_error "Unable to set write permissions for '$pihelmetcam_dir/video/completed'"
-    sudo mkdir -p $pihelmetcam_dir/video/raw || install_error "Unable to create directory '$pihelmetcam_dir/video/raw'"
-    sudo chmod a+r $pihelmetcam_dir/video/raw || install_error "Unable to set read permissions for '$pihelmetcam_dir/video/raw'"
-    sudo chmod a+w $pihelmetcam_dir/video/raw || install_error "Unable to set write permissions for '$pihelmetcam_dir/video/raw'"
+    sudo mkdir -p $bikecamera_dir/video/completed || install_error "Unable to create directory '$bikecamera_dir/video/completed'"
+    sudo chmod a+r $bikecamera_dir/video/completed || install_error "Unable to set read permissions for '$bikecamera_dir/video/completed'"
+    sudo chmod a+w $bikecamera_dir/video/completed || install_error "Unable to set write permissions for '$bikecamera_dir/video/completed'"
+    sudo mkdir -p $bikecamera_dir/video/raw || install_error "Unable to create directory '$bikecamera_dir/video/raw'"
+    sudo chmod a+r $bikecamera_dir/video/raw || install_error "Unable to set read permissions for '$bikecamera_dir/video/raw'"
+    sudo chmod a+w $bikecamera_dir/video/raw || install_error "Unable to set write permissions for '$bikecamera_dir/video/raw'"
     #
     # Link the video directory so the web server can create live links to the video files
     #
-    sudo ln -s $pihelmetcam_dir/video /var/www/html
+    sudo ln -s $bikecamera_dir/video /var/www/html
 }
 
 # Fetches latest files from github to webroot
@@ -170,8 +170,8 @@ function download_latest_files() {
     fi
 
     install_log "Cloning latest files from github"
-    git clone https://github.com/njkeng/PiHelmetCam /tmp/pihelmetcam || install_error "Unable to download files from github"
-    sudo mv /tmp/pihelmetcam $webroot_dir || install_error "Unable to move pihelmetcam to web root"
+    git clone https://github.com/njkeng/BikeCamera /tmp/bikecamera || install_error "Unable to download files from github"
+    sudo mv /tmp/bikecamera $webroot_dir || install_error "Unable to move bikecamera to web root"
 }
 
 # Sets files ownership in web root directory
@@ -181,7 +181,7 @@ function change_file_ownership() {
     fi
 
     install_log "Changing file ownership in web root directory"
-    sudo chown -R $pihelmetcam_user:$pihelmetcam_user "$webroot_dir" || install_error "Unable to change file ownership for '$webroot_dir'"
+    sudo chown -R $bikecamera_user:$bikecamera_user "$webroot_dir" || install_error "Unable to change file ownership for '$webroot_dir'"
 }
 
 # Update default config files with hostname and ethernet MAC for this device
@@ -191,54 +191,54 @@ function update_config_files() {
 	sudo sed -i "s/b8:27:eb:ff:ff:ff/$mac_address/g" $webroot_dir/config/dnsmasq.conf || install_error "Unable to write mac address to dnsmasq"
 
 	# Update hostapd config with this device's hostname
-	sudo sed -i "s/bikecamera/$pihelmetcam_devicename/g" $webroot_dir/config/hostapd.conf || install_error "Unable to write hostname to AP config"
+	sudo sed -i "s/bikecamera/$bikecamera_devicename/g" $webroot_dir/config/hostapd.conf || install_error "Unable to write hostname to AP config"
 }
 
 # Check for existing /etc/network/interfaces and /etc/hostapd/hostapd.conf files
 function check_for_old_configs() {
     if [ -f /etc/network/interfaces ]; then
-        sudo cp /etc/network/interfaces "$pihelmetcam_dir/backups/interfaces.`date +%F-%R`"
-        sudo ln -sf "$pihelmetcam_dir/backups/interfaces.`date +%F-%R`" "$pihelmetcam_dir/backups/interfaces"
+        sudo cp /etc/network/interfaces "$bikecamera_dir/backups/interfaces.`date +%F-%R`"
+        sudo ln -sf "$bikecamera_dir/backups/interfaces.`date +%F-%R`" "$bikecamera_dir/backups/interfaces"
     fi
 
     if [ -f /etc/hostapd/hostapd.conf ]; then
-        sudo cp /etc/hostapd/hostapd.conf "$pihelmetcam_dir/backups/hostapd.conf.`date +%F-%R`"
-        sudo ln -sf "$pihelmetcam_dir/backups/hostapd.conf.`date +%F-%R`" "$pihelmetcam_dir/backups/hostapd.conf"
+        sudo cp /etc/hostapd/hostapd.conf "$bikecamera_dir/backups/hostapd.conf.`date +%F-%R`"
+        sudo ln -sf "$bikecamera_dir/backups/hostapd.conf.`date +%F-%R`" "$bikecamera_dir/backups/hostapd.conf"
     fi
 
     if [ -f /etc/dnsmasq.conf ]; then
-        sudo cp /etc/dnsmasq.conf "$pihelmetcam_dir/backups/dnsmasq.conf.`date +%F-%R`"
-        sudo ln -sf "$pihelmetcam_dir/backups/dnsmasq.conf.`date +%F-%R`" "$pihelmetcam_dir/backups/dnsmasq.conf"
+        sudo cp /etc/dnsmasq.conf "$bikecamera_dir/backups/dnsmasq.conf.`date +%F-%R`"
+        sudo ln -sf "$bikecamera_dir/backups/dnsmasq.conf.`date +%F-%R`" "$bikecamera_dir/backups/dnsmasq.conf"
     fi
 
     if [ -f /etc/rc.local ]; then
-        sudo cp /etc/rc.local "$pihelmetcam_dir/backups/rc.local.`date +%F-%R`"
-        sudo ln -sf "$pihelmetcam_dir/backups/rc.local.`date +%F-%R`" "$pihelmetcam_dir/backups/rc.local"
+        sudo cp /etc/rc.local "$bikecamera_dir/backups/rc.local.`date +%F-%R`"
+        sudo ln -sf "$bikecamera_dir/backups/rc.local.`date +%F-%R`" "$bikecamera_dir/backups/rc.local"
     fi
 }
 
 # Move configuration file to the correct location
 function move_config_file() {
-    if [ ! -d "$pihelmetcam_dir" ]; then
-        install_error "'$pihelmetcam_dir' directory doesn't exist"
+    if [ ! -d "$bikecamera_dir" ]; then
+        install_error "'$bikecamera_dir' directory doesn't exist"
     fi
 
-    install_log "Moving configuration file to '$pihelmetcam_dir'"
-    sudo mv "$webroot_dir"/pihelmetcam.php "$pihelmetcam_dir" || install_error "Unable to move files to '$pihelmetcam_dir'"
+    install_log "Moving configuration file to '$bikecamera_dir'"
+    sudo mv "$webroot_dir"/bikecamera.php "$bikecamera_dir" || install_error "Unable to move files to '$bikecamera_dir'"
 }
 
 # Set up configuration for the reset function
 function configuration_for_reset() {
     install_log "Setting up configuration for the reset function"
     sudo echo "webroot_dir = \"$webroot_dir\"" >> /tmp/reset.ini || install_error "Unable to write to reset configuration file"
-    sudo mv /tmp/reset.ini /etc/pihelmetcam/hostapd/ || install_error "Unable to move files to '$pihelmetcam_dir'"
+    sudo mv /tmp/reset.ini /etc/bikecamera/hostapd/ || install_error "Unable to move files to '$bikecamera_dir'"
 }
 
 # Set up configuration for the video functions
 function configuration_for_video() {
     install_log "Setting up configuration for the video function"
-    sudo echo "vid_output_dir = \"$pihelmetcam_dir/video/completed\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo echo "vid_input_dir = \"$pihelmetcam_dir/video/processing\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_output_dir = \"$bikecamera_dir/video/completed\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_input_dir = \"$bikecamera_dir/video/processing\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "cull_free_space = 1000" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_hflip = 0" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_vflip = 0" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
@@ -251,15 +251,15 @@ function configuration_for_video() {
     sudo echo "picamera_awb_mode = \"auto\"">> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_exp_mode = \"auto\"">> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_length = 5" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo echo "vid_dir = \"$pihelmetcam_dir/video\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_dir = \"$bikecamera_dir/video\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_datetime_enable = 1" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_datetime_size = 15" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo mv /tmp/video.ini $pihelmetcam_dir/video/ || install_error "Unable to move files to '$pihelmetcam_dir'"
+    sudo mv /tmp/video.ini $bikecamera_dir/video/ || install_error "Unable to move files to '$bikecamera_dir'"
 }
 
-# Set permissions for all PiHelmetCam directories and folders
+# Set permissions for all BikeCamera directories and folders
 function set_permissions() {
-    sudo chown -R $pihelmetcam_user:$pihelmetcam_user "$pihelmetcam_dir" || install_error "Unable to change file ownership for '$pihelmetcam_dir'"
+    sudo chown -R $bikecamera_user:$bikecamera_user "$bikecamera_dir" || install_error "Unable to change file ownership for '$bikecamera_dir'"
 }
 
 # Set up default configuration
@@ -288,12 +288,12 @@ function default_configuration() {
     fi
 
     # Generate required lines for Rasp AP to place into rc.local file.
-    # #PiHelmetCam is for removal script
+    # #BikeCamera is for removal script
     lines=(
-    'echo 1 > /proc/sys/net/ipv4/ip_forward #PiHelmetCam'
-    'iptables -t nat -A POSTROUTING -j MASQUERADE #PiHelmetCam'
-    "python3 $pihelmetcam_dir/hostapd/button.py \&  #PiHelmetCam"
-    "python3 $pihelmetcam_dir/video/video.py \&  #PiHelmetCam"
+    'echo 1 > /proc/sys/net/ipv4/ip_forward #BikeCamera'
+    'iptables -t nat -A POSTROUTING -j MASQUERADE #BikeCamera'
+    "python3 $bikecamera_dir/hostapd/button.py \&  #BikeCamera"
+    "python3 $bikecamera_dir/video/video.py \&  #BikeCamera"
     )
     
     for line in "${lines[@]}"; do
@@ -319,7 +319,7 @@ function process_vid_crontab() {
 
         # Assemble new line for crontab file
         # Run processing script every 2 minutes
-        crontab_line="*/2 * * * * sudo $pihelmetcam_dir/video/process_vid.sh >/dev/null 2>&1"
+        crontab_line="*/2 * * * * sudo $bikecamera_dir/video/process_vid.sh >/dev/null 2>&1"
 
         # Check if crontab is empty
         crontab_exists=$(cat /tmp/current_crontab | grep 'no crontab')
@@ -375,7 +375,7 @@ function patch_system_files() {
         "/sbin/ip link set wlan1 down"
         "/sbin/ip link set wlan1 up"
         "/sbin/ip -s a f label wlan1"
-        "/bin/cp /etc/pihelmetcam/networking/dhcpcd.conf /etc/dhcpcd.conf"
+        "/bin/cp /etc/bikecamera/networking/dhcpcd.conf /etc/dhcpcd.conf"
         "/sbin/hwclock"
         "/bin/date"
     )
@@ -400,7 +400,7 @@ function patch_system_files() {
 
 # Check if Samba config needs updating
 function samba_settings() {
-    samba_updated=$(cat /etc/samba/smb.conf | grep $pihelmetcam_devicename)
+    samba_updated=$(cat /etc/samba/smb.conf | grep $bikecamera_devicename)
     if [ "$samba_updated" == "" ]; then
         install_log "Updating samba config"
         sudo cp /etc/samba/smb.conf "/etc/samba/smb.conf.`date +%F-%R`" || install_error "Unable to move old /etc/samba/smb.conf out of the way"
@@ -408,8 +408,8 @@ function samba_settings() {
         sudo chmod a+w /tmp/new_smb.conf  || install_error "Unable to change permissions of temporary smb.conf"
         sudo echo "" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         # The following words in square brackets will be the name of the share
-        sudo echo "[$pihelmetcam_devicename]" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
-        sudo echo "path = $pihelmetcam_dir/video/completed" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "[$bikecamera_devicename]" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "path = $bikecamera_dir/video/completed" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "comment = Bike video folder" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "browseable = yes" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "writeable = no" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
@@ -458,9 +458,9 @@ function rtc_kernel_module() {
     if [ $(sudo grep -c DS3231 /boot/config.txt) -ne 1 ]
     then
         # Didn't find existing line for DS3231 support
-        config_plus_date="$pihelmetcam_dir/boot.config.txt.`date +%F-%R`"
+        config_plus_date="$bikecamera_dir/boot.config.txt.`date +%F-%R`"
         install_log "Patching /boot/config.txt"
-	    sudo sh -c "echo 'cp /boot/config.txt $config_plus_date'" || install_error "Unable to copy /boot/config.txt to $pihelmetcam_dir"
+	    sudo sh -c "echo 'cp /boot/config.txt $config_plus_date'" || install_error "Unable to copy /boot/config.txt to $bikecamera_dir"
         sudo sh -c "echo '' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
         sudo sh -c "echo '# Enable Real Time Clock' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
         sudo sh -c "echo 'dtoverlay=i2c-rtc,ds3231' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
@@ -505,7 +505,7 @@ function install_complete() {
     sudo shutdown -r now || install_error "Unable to execute shutdown"
 }
 
-function install_pihelmetcam() {
+function install_bikecamera() {
     display_welcome
     config_installation
     update_system_packages
@@ -513,7 +513,7 @@ function install_pihelmetcam() {
     set_hostname
     install_dependencies
     enable_php_lighttpd
-    create_pihelmetcam_directories
+    create_bikecamera_directories
     check_for_old_configs
     download_latest_files
     change_file_ownership

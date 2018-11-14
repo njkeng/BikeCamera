@@ -121,7 +121,7 @@ Once those modifications are done, git clone the files to `/var/www/html`.
 `/var/www` instead.
 ```sh
 sudo rm -rf /var/www/html
-sudo git clone https://github.com/njkeng/PiHelmetCam /var/www/html
+sudo git clone https://github.com/njkeng/BikeCamera /var/www/html
 ```
 Set the files ownership to `www-data` user.
 ```sh
