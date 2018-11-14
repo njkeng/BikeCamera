@@ -7,13 +7,16 @@ Items to add:
 - Choice of camera.  Mention odd camera cable size for Pi Zero. 11.5 at pi.  16mm at camera
 - Choice of RTC
 - SD card corruption and how to avoid
-- Video modes and file size
+- How video modes relate to file size
 - Installation preparation i.e. 
-	Connect to WiFi
-	hostname, 
-	camera interface and i2c interface
-	localisation inc WiFi country etc.
-	turn off bluetooth on desktop
+  	Connect to WiFi
+  	hostname, 
+  	camera interface and i2c interface
+  	localisation inc WiFi country etc.
+  	turn off bluetooth on desktop
+- Video settings
+    What does it all mean??
+    Reboot for changes to take effect
 - Why BikeCamera only provides raw .h264
 - Playing video on the Bike Camera. Playback rate.
 - Converting video.  On BikeCamera or on PC
