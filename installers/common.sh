@@ -239,7 +239,7 @@ function configuration_for_video() {
     install_log "Setting up configuration for the video function"
     sudo echo "vid_output_dir = \"$pihelmetcam_dir/video/completed\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_input_dir = \"$pihelmetcam_dir/video/processing\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo echo "cull_free_space = 500" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "cull_free_space = 1000" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_hflip = 0" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_vflip = 0" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_hres = 960" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
@@ -461,7 +461,9 @@ function rtc_kernel_module() {
         config_plus_date="$pihelmetcam_dir/boot.config.txt.`date +%F-%R`"
         install_log "Patching /boot/config.txt"
 	    sudo sh -c "echo 'cp /boot/config.txt $config_plus_date'" || install_error "Unable to copy /boot/config.txt to $pihelmetcam_dir"
-    	sudo sh -c "echo 'dtoverlay=i2c-rtc,ds3231' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
+        sudo sh -c "echo '' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
+        sudo sh -c "echo '# Enable Real Time Clock' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
+        sudo sh -c "echo 'dtoverlay=i2c-rtc,ds3231' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
     else
         install_log "RTC kernel module already enabled"
     fi
