@@ -31,7 +31,7 @@ if(isset($_POST['generate']) && isset($_POST['csrf_token']) && CSRFValidate()) {
     }
 
     if(file_put_contents(RASPI_CONFIG_NETWORKING.'/dhcpcd.conf',$strConfFile)) {
-        exec('sudo /bin/cp /etc/pihelmetcam/networking/dhcpcd.conf /etc/dhcpcd.conf');
+        exec('sudo /bin/cp /etc/bikecamera/networking/dhcpcd.conf /etc/dhcpcd.conf');
         $output = ['return'=>0,'output'=>'Settings successfully applied'];
     } else {
         $output = ['return'=>2,'output'=>'Unable to write to apply settings'];
