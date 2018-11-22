@@ -15,6 +15,7 @@ function DisplayVideoSettings(){
   $cull_free_space = array(500, 1000, 2000, 3000, 4000);
   $vid_datetime_size = array(12, 15, 20, 25, 32, 45);
   $picamera_quality = array(20, 22, 24, 26);
+  $picamera_rotation = array(0, 90, 180, 270);
   $picamera_bitrate = array(1, 3, 5, 7, 9, 11, 13, 15, 17);
   $picamera_awb_modes = array('auto','sunlight','cloudy','shade','tungsten','fluorescent','incandescent','flash','horizon');
   $picamera_exp_modes = array('auto','night','nightpreview','backlight','spotlight','sports','snow','beach','verylong','fixedfps','antishake','fireworks');
@@ -90,32 +91,12 @@ function DisplayVideoSettings(){
                   </div>
 
                   <div class="form-group">
-                    <label for="picamera_hflip" class="col-sm-4 control-label">Flip horizontally</label>
-                    <div class="radio col-sm-5" id="picamera_hflip">
-                      <div class="col-sm-3">
-                        <input type="radio" name="picamera_hflip" value="0" <?php if($video_ini['picamera_hflip']==0) { echo "checked"; } ?>>
-                    Normal
-                      </div>
-                      <div class="col-sm-2">
-                        <input type="radio" name="picamera_hflip" id="picamera_hflip" value="1" <?php if($video_ini['picamera_hflip']==1) { echo "checked"; } ?>>
-                    Flip
-                      </div>
+                    <label for="picamera_rotation" class="col-sm-4 control-label">Video rotation</label>
+                    <div class="col-sm-3">
+                      <?php SelectorOptions('picamera_rotation', $picamera_rotation, $video_ini['picamera_rotation']); ?>
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label for="picamera_vflip" class="col-sm-4 control-label">Flip vertically</label>
-                    <div class="radio col-sm-5" id="picamera_vflip">
-                      <div class="col-sm-3">
-                        <input type="radio" name="picamera_vflip" value="0" <?php if($video_ini['picamera_vflip']==0) { echo "checked"; } ?>>
-                    Normal
-                      </div>
-                      <div class="col-sm-2">
-                        <input type="radio" name="picamera_vflip" id="picamera_vflip" value="1" <?php if($video_ini['picamera_vflip']==1) { echo "checked"; } ?>>
-                    Flip
-                      </div>
-                    </div>
-                  </div>
                 </div><!-- /.tab-pane  -->
 
                 <div class="tab-pane fade" id="storage">
@@ -225,12 +206,11 @@ function SaveVideoSettings($status, $video_ini) {
     $ini_data ['cull_free_space']       = $_POST['cull_free_space'];
     $ini_data ['vid_datetime_size']     = $_POST['vid_datetime_size'];
     $ini_data ['vid_datetime_enable']   = $_POST['vid_datetime_enable'];
-    $ini_data ['picamera_hflip']        = $_POST['picamera_hflip'];
-    $ini_data ['picamera_vflip']        = $_POST['picamera_vflip'];
+    $ini_data ['picamera_rotation']     = $_POST['picamera_rotation'];
     $ini_data ['picamera_quality']      = $_POST['picamera_quality'];
     $ini_data ['picamera_bitrate']      = $_POST['picamera_bitrate'];
-    $ini_data ['picamera_awb_mode']      = $_POST['picamera_awb_mode'];
-    $ini_data ['picamera_exp_mode']      = $_POST['picamera_exp_mode'];
+    $ini_data ['picamera_awb_mode']     = $_POST['picamera_awb_mode'];
+    $ini_data ['picamera_exp_mode']     = $_POST['picamera_exp_mode'];
 
     switch($_POST['picamera_resolution']){
 
@@ -276,6 +256,7 @@ function SaveVideoSettings($status, $video_ini) {
 
   return true;
 }
+
 ?>
 
 

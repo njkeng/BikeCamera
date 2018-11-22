@@ -21,8 +21,7 @@ with open('/etc/bikecamera/video/video.ini') as myfile:
         myvars[name.strip()] = var.strip()
 
 # Video parameters
-hc_hflip = int(myvars["picamera_hflip"])
-hc_vflip = int(myvars["picamera_vflip"])
+hc_rotation = int(myvars["picamera_rotation"])
 hc_hres = int(myvars["picamera_hres"])
 hc_vres = int(myvars["picamera_vres"])
 hc_framerate = int(myvars["picamera_framerate"])
@@ -87,8 +86,6 @@ def video_split():
         shutil.move(source, destination)
         current_file = vid_file_name
 
-
-
 # Update video annotation with current time and date
 #
 def update_annotation():
@@ -105,8 +102,7 @@ def update_annotation():
 camera = picamera.PiCamera()
 camera.resolution = (hc_hres, hc_vres)
 camera.framerate = hc_framerate
-camera.hflip = hc_hflip
-camera.vflip = hc_vflip
+camera.rotation = hc_rotation
 camera.awb_mode = hc_awb_mode
 camera.exposure_mode = hc_exp_mode
 if vid_datetime_enable:
