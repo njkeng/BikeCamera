@@ -19,6 +19,7 @@ with open('/etc/bikecamera/video/video.ini') as myfile:
     for line in myfile:
         name, var = line.partition(" = ")[::2]
         myvars[name.strip()] = var.strip()
+myfile.close()
 
 # Video parameters
 hc_rotation = int(myvars["picamera_rotation"])
@@ -51,11 +52,13 @@ def when_pressed():
         camera.start_recording(filename, format='h264', quality=hc_quality, bitrate=hc_bitrate)
         led.blink(on_time=0.5, off_time=0.5)
         current_file = vid_file_name
+        update_status()
 
     else:
         print ("Stopping recording")
         camera.stop_recording()
         led.on()
+        update_status()
 
         # Move the previously recorded file
         source = vid_dir + '/raw/' + current_file
@@ -97,6 +100,45 @@ def update_annotation():
         # The wait_recording function is called so that all camera errors are shown on screen
         camera.wait_recording(0.2)
 
+# Check for start or stop commands stored in a file
+#
+def check_status():
+
+    status_timer = Timer(2, check_status).start()
+
+    # Read key-value pairs from the ini file
+    statusvars = {}
+    with open('/etc/bikecamera/video/status.ini', 'r') as statusfile:
+        for line in statusfile:
+            name, var = line.partition(" = ")[::2]
+            statusvars[name.strip()] = var.strip()
+    statusfile.close()
+
+    status_start = int(statusvars["status_start"])
+    status_stop = int(statusvars["status_stop"])
+
+    if status_start:
+        if not camera.recording:
+            when_pressed()
+        update_status()
+
+    if status_stop:
+        if camera.recording:
+            when_pressed()
+        update_status()
+
+
+def update_status():
+    statusfile = open('/etc/bikecamera/video/status.ini', 'w')
+    statusfile.write("status_start = 0\n")
+    statusfile.write("status_stop = 0\n")
+    if camera.recording:
+        statusfile.write("status_current = 1\n")
+    else:
+        statusfile.write("status_current = 0\n")
+
+    statusfile.close()
+
 # Main program
 #
 camera = picamera.PiCamera()
@@ -118,8 +160,9 @@ led.on()
 button = Button(buttonGPIO)
 button.when_pressed = when_pressed
 
-update_annotation()
 video_split()
+update_annotation()
+check_status()
 
 print ("Waiting for a button press")
 

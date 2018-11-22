@@ -236,7 +236,7 @@ function configuration_for_reset() {
 
 # Set up configuration for the video functions
 function configuration_for_video() {
-    install_log "Setting up configuration for the video function"
+    install_log "Setting up configuration for the video recording function"
     sudo echo "vid_output_dir = \"$bikecamera_dir/video/completed\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_input_dir = \"$bikecamera_dir/video/processing\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "cull_free_space = 1000" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
@@ -254,6 +254,11 @@ function configuration_for_video() {
     sudo echo "vid_datetime_enable = 1" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_datetime_size = 15" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo mv /tmp/video.ini $bikecamera_dir/video/ || install_error "Unable to move files to '$bikecamera_dir'"
+
+    sudo echo "status_start = 0" >> /tmp/status.ini || install_error "Unable to write to video status file"
+    sudo echo "status_stop = 0" >> /tmp/status.ini || install_error "Unable to write to video status file"
+    sudo echo "status_current = 0" >> /tmp/status.ini || install_error "Unable to write to video status file"
+    sudo mv /tmp/status.ini $bikecamera_dir/video/ || install_error "Unable to move files to '$bikecamera_dir'"
 }
 
 # Set permissions for all BikeCamera directories and folders

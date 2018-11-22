@@ -29,7 +29,9 @@ function DisplayVideoSettings(){
   $picamera_resolution = array('1080p_HD','1080p_SD','720p_HD','720p_SD','VGA');
 
 
-  if( isset($_POST['saveCP1settings']) ) {
+  # Check for command to save settings
+  #
+  if( isset($_POST['save_settings']) ) {
     if (CSRFValidate()) {
       # Read existing configuration data, else use default data
       if ( ! $video_ini = parse_ini_file('/etc/bikecamera/video/video.ini')) {
@@ -41,9 +43,56 @@ function DisplayVideoSettings(){
     }
   }
 
-  # Read existing configuration data, else use default data
+  # Check for command to start recording
+  #
+  if( isset($_POST['start_recording']) ) {
+    if (CSRFValidate()) {
+      # Read existing status data, else use default data
+      if ( ! $status_ini = parse_ini_file('/etc/bikecamera/video/status.ini')) {
+        $status->addMessage('Could not find an existing status file', 'warning');
+      }
+      # Write start command to status.ini
+      $status_ini ['status_start']  = "1";
+      if ( write_php_ini($status_ini,'/etc/bikecamera/video/status.ini')) {
+        $status->addMessage('Start command sent', 'success');
+      } else {
+        $status->addMessage('Unable to send the start command', 'danger');
+        return false;
+      }
+    } else {
+      error_log('CSRF violation');
+    }
+  }
+
+  # Check for command to stop recording
+  #
+  if( isset($_POST['stop_recording']) ) {
+    if (CSRFValidate()) {
+      # Read existing status data, else use default data
+      if ( ! $status_ini = parse_ini_file('/etc/bikecamera/video/status.ini')) {
+        $status->addMessage('Could not find an existing status file', 'warning');
+      }
+      # Write stop command to status.ini
+      $status_ini ['status_stop']  = "1";
+      if ( write_php_ini($status_ini,'/etc/bikecamera/video/status.ini')) {
+        $status->addMessage('Stop command sent', 'success');
+      } else {
+        $status->addMessage('Unable to send the stop command', 'danger');
+        return false;
+      }
+    } else {
+      error_log('CSRF violation');
+    }
+  }
+
+  # Read existing configuration data
   if ( ! $video_ini = parse_ini_file('/etc/bikecamera/video/video.ini')) {
     $status->addMessage('Could not find an existing configuration file', 'warning');
+  }
+
+  # Read status data
+  if ( ! $status_ini = parse_ini_file('/etc/bikecamera/video/status.ini')) {
+    $status->addMessage('Could not find an existing status file', 'warning');
   }
 
   ?>
@@ -59,7 +108,14 @@ function DisplayVideoSettings(){
           <form method="POST" action="?page=videosettings_conf" name="video_conf_form" class="form-horizontal">
             <?php CSRFToken() ?>
             <input type="hidden" name="video_settings" ?>
-   
+
+            <h4>
+            <div class="btn-group btn-block">
+              <input type="submit" class="col-md-2 btn btn-success" name="start_recording" value="Start recording" />
+              <input type="submit" class="col-md-2 btn btn-danger" name="stop_recording" value="Stop recording" />
+            </div><!-- /.btn-group -->
+          </h4>
+          
               <!-- Nav tabs -->
               <ul class="nav nav-tabs">
                 <li class="active">
@@ -184,7 +240,8 @@ function DisplayVideoSettings(){
 
               </div><!-- /.tab-content  -->
 
-          <input type="submit" class="btn btn-outline btn-primary" name="saveCP1settings" value="Save settings" />
+            <input type="submit" class="btn btn-outline btn-primary" name="save_settings" value="Save settings" />
+
           </form>
         </div><!-- ./ Panel body -->
         <div class="panel-footer"></div>
