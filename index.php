@@ -219,7 +219,7 @@ if(isset($_POST['completed_file'])){
       </div><!-- /#page-wrapper --> 
     </div><!-- /#wrapper -->
 
-    <!-- BiKecameRa JavaScript -->
+    <!-- BikeCamera JavaScript -->
     <script src="dist/js/functions.js"></script>
 
     <!-- jQuery -->
@@ -239,7 +239,7 @@ if(isset($_POST['completed_file'])){
     <!-- Custom Theme JavaScript -->
     <script src="dist/js/sb-admin-2.js"></script>
 
-    <!-- Custom BiKecameRa JS -->
+    <!-- Custom BikeCamera JS -->
     <script src="js/custom.js"></script>
   </body>
 </html>

@@ -115,11 +115,11 @@ function DisplayWPAConfig(){
             $status->addMessage('Wifi settings updated but cannot restart (cannon execute "wpa_cli reconfigure")', 'danger');
           }
         } else {
-          $status->addMessage('Wifi settings failed to be updated', 'danger');
+          $status->addMessage('Failed to update wifi settings', 'danger');
         }
       }
     } else {
-      $status->addMessage('Failed to updated wifi settings', 'danger');
+      $status->addMessage('Failed to update wifi settings', 'danger');
     }
   }
 
@@ -210,7 +210,7 @@ function DisplayWPAConfig(){
                         <?php if ($network['protocol'] === 'Open') { ?>
                           <input type="hidden" name="passphrase<?php echo $index ?>" value="" />---
                         <?php } else { ?>
-                          <input type="text" class="form-control" name="passphrase<?php echo $index ?>" value="<?php echo $network['passphrase'] ?>" onKeyUp="CheckPSK(this, 'update<?php echo $index?>')" />
+                          <input type="text" class="form-control" name="passphrase<?php echo $index ?>" value="" onKeyUp="CheckPSK(this, 'update<?php echo $index?>')" />
                         <?php } ?>
                       <br>
 
