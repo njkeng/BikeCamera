@@ -27,7 +27,7 @@ function process_video_files() {
 		fi
 
     	# Get the file name of the oldest video file in the folder
-		oldest_file=$(find $vid_dir/completed -name 'vid*' -printf '%P\n' | sort | head -1)
+		oldest_file=$(find $vid_dir -mindepth 1 -name 'vid*' -printf '%P\n' | sort | head -1)
 
 		# Check if there are no more files to delete
 		if [ "$oldest_file" == "" ]; then
@@ -37,7 +37,7 @@ function process_video_files() {
 
 	    # Remove the file
 	    echo "Deleting $oldest_file"
-	    sudo rm $vid_dir/completed/$oldest_file
+	    sudo rm $vid_dir/$oldest_file
 
 	done
 
