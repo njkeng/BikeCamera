@@ -148,9 +148,9 @@ function create_video_files() {
     sudo mv /var/www/html/installers/video.py $bikecamera_dir/video
     sudo mv /var/www/html/installers/process_vid.sh $bikecamera_dir/video
 
-    sudo mkdir -p $pihelmetcam_dir/video/mp4 || install_error "Unable to create directory '$pihelmetcam_dir/video/mp4'"
-    sudo chmod a+r $pihelmetcam_dir/video/mp4 || install_error "Unable to set read permissions for '$pihelmetcam_dir/video/mp4'"
-    sudo chmod a+w $ppihelmetcam_dir/video/mp4 || install_error "Unable to set write permissions for '$pihelmetcam_dir/video/mp4'"
+    sudo mkdir -p $bikecamera_dir/video/mp4 || install_error "Unable to create directory '$bikecamera_dir/video/mp4'"
+    sudo chmod a+r $bikecamera_dir/video/mp4 || install_error "Unable to set read permissions for '$bikecamera_dir/video/mp4'"
+    sudo chmod a+w $bikecamera_dir/video/mp4 || install_error "Unable to set write permissions for '$bikecamera_dir/video/mp4'"
     sudo mkdir -p $bikecamera_dir/video/completed || install_error "Unable to create directory '$bikecamera_dir/video/completed'"
     sudo chmod a+r $bikecamera_dir/video/completed || install_error "Unable to set read permissions for '$bikecamera_dir/video/completed'"
     sudo chmod a+w $bikecamera_dir/video/completed || install_error "Unable to set write permissions for '$bikecamera_dir/video/completed'"
