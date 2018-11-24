@@ -44,26 +44,6 @@ if (empty($_SESSION['csrf_token'])) {
 }
 $csrf_token = $_SESSION['csrf_token'];
 
-# Check if any video file checkboxes have been selected
-if(isset($_POST['completed_file'])){
-  # Create a zip file containing the selected completed video files
-  $completed_zip = '/var/www/html/completed_files.zip';
-  if ( ! create_zip($_POST['completed_file'],$completed_zip)) {
-    die ("Can't create ".$completed_zip." file");
-  } else {
-    header('Content-type: application/zip');
-    header('Content-Disposition: attachment; filename="'.basename($completed_zip).'"');
-    header("Content-length: " . filesize($completed_zip));
-    header("Pragma: no-cache");
-    header("Expires: 0");
-    ob_clean();
-    flush();
-    readfile($completed_zip);
-    unlink($completed_zip);
-    exit;
-  }
-}
-
 ?>
 
 <!DOCTYPE html>

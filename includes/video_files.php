@@ -21,29 +21,76 @@ function DisplayVideoFiles(){
   unset($completed_files[count($completed_files)-1]);
   unset($completed_files[count($completed_files)-1]);
 
+  $mp4_path = "video/mp4/";
+  if ( ! $mp4_files = scandir($base_dir.$mp4_path)) {
+    $status->addMessage('Could not read video files from "mp4" directory', 'warning');
+  }
+  # Remove unwanted . and .. files from the array
+  unset($mp4_files[0]);
+  unset($mp4_files[1]);
+
 ?>
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-primary">
         <div class="panel-heading"><i class="fa fa-file-movie-o fa-fw"></i>Video files</div>
         <div class="panel-body">
-          <form role="form" action="?page=video_files_conf" method="POST">
-            <input type="submit" class="btn btn-outline btn-primary" name="download_zip" value="Download zip of selected video files" />
-            <?php CSRFToken() ?>
-            <div class="row">
-              <div class="form-group col-md-4">
-                <label for="checkbox">Files</label>
-                <div class="checkbox">
-                  <label>
-                    <?php foreach ($completed_files as &$value) {
-                      echo "<input type='checkbox' name='completed_file[]' value='".$completed_path.$value."'> <a href='".$completed_path.$value."' target='_black' >".$value."</a>   ".formatSizeUnits(filesize($completed_path.$value))."<br/>";
-                      } 
-                    ?>
-                  </label>
+
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#processed" data-toggle="tab">Processed files</a>
+            </li>
+            <li>
+              <a href="#unprocessed" data-toggle="tab">Unprocessed files</a>
+            </li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+
+            <div class="tab-pane fade in active" id="processed">
+
+              <?php CSRFToken() ?>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <?php if (count($mp4_files) < 1) {
+                    echo "<h4>There are no files to list</h4>";
+                  } else {
+                    echo "<h4></h4>";
+                    echo "<label for='processed_list'>Right click to download / save</label>";
+                    echo "<ul class='list-unstyled' id='processed_list'>";
+                    foreach ($mp4_files as &$value) {
+                      echo "<li><a href='".$mp4_path.$value."' target='_black' >".$value."</a>   ".formatSizeUnits(filesize($mp4_path.$value))."</li>";
+                      }
+                    echo "</ul>";
+                  } ?>
                 </div>
               </div>
             </div>
-          </form>
+
+            <div class="tab-pane fade" id="unprocessed">
+
+              <div class="row">
+                <div class="form-group col-md-4">
+
+                  <?php if (count($completed_files) < 1) {
+                    echo "<h4>There are no files to list</h4>";
+                  } else {
+                    echo "<h4></h4>";
+                    echo "<label for='processed_list'>Right click to download / save</label>";
+                    echo "<ul class='list-unstyled' id='processed_list'>";
+                    foreach ($completed_files as &$value) {
+                      echo "<li><a href='".$completed_path.$value."' target='_black' >".$value."</a>   ".formatSizeUnits(filesize($completed_path.$value))."</li>";
+                      }
+                    echo "</ul>";
+                  } ?>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div><!-- /.panel-body -->
       </div><!-- /.panel-default -->
     </div><!-- /.col-lg-12 -->
