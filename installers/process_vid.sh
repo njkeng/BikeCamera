@@ -11,18 +11,15 @@ function process_video_files() {
 	# Numeric variables from status.ini
     status_current=$(sudo cat /etc/bikecamera/video/status.ini | grep --only-matching --perl-regexp "(?<=status_current = )\w+")
 
-	# Calculate required free space in kB
-	cull_kb=$(expr $cull_free_space \* 1024)
-	echo "Required free space: $cull_kb kB"
 
--    # Process all of the video files in the 'completed' folder
+    # Process all of the video files in the 'completed' folder
     while : ; do
 
-    	# Check for camera recording
-    	if [ $status_current -gt 1 ]; then
-    		echo "Video is being recorded - skip processing"
-    		break
-    	fi
+    	# # Check for camera recording
+    	# if [ $status_current -gt 1 ]; then
+    	# 	echo "Video is being recorded - skip processing"
+    	# 	break
+    	# fi
 
     	# Check for MP4Box already running
     	MP4Box_count=$(ps ax | grep -c MP4Box)
@@ -43,12 +40,15 @@ function process_video_files() {
 	    fi
 
 	    # Execute the conversion command
-	    sudo MP4Box -add $vid_dir/completed/$input_file.h264 $vid_dir/mp4/$input_file.$mp4
+	    sudo MP4Box -add $vid_dir/completed/$input_file.h264 $vid_dir/mp4/$input_file.mp4
 
 	    # Remove the file after it has been processed
 	    sudo rm $vid_dir/completed/$input_file.h264
     done
 
+	# Calculate required free space in kB
+	cull_kb=$(expr $cull_free_space \* 1024)
+	echo "Required free space: $cull_kb kB"
 
 	while : ; do
 
