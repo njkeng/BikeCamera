@@ -440,7 +440,7 @@ function check_camera_i2c_enabled() {
 	fi
 
 	# Check for I2C enabled
-    if [ -f /dev/i2c-1 ]; then
+    if [ -e /dev/i2c-1 ]; then
         install_log "I2C is enabled"
     else
         install_attn "I2C is not enabled"
@@ -486,7 +486,7 @@ function rtc_kernel_module() {
     sudo mv /tmp/new_hwclock-set /lib/udev/hwclock-set || install_error "Unable to move new hwclock-set file into place"
 
     # Set the time on the RTC
-    if [ -f /dev/rtc ]; then
+    if [ -e /dev/rtc ]; then
     	sudo hwclock -w
         install_attn "The time has been set on the Real Time Clock"
     else
