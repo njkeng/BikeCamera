@@ -143,14 +143,14 @@ function create_reset_scripts() {
 
 # Move video files for bikecamera
 function create_video_files() {
-    install_log "Preparing video recording scripts"
+    install_log "Preparing video recording directories and scripts"
     sudo mkdir -p $bikecamera_dir/video || install_error "Unable to create directory '$bikecamera_dir/video'"
     sudo mv /var/www/html/installers/video.py $bikecamera_dir/video
     sudo mv /var/www/html/installers/process_vid.sh $bikecamera_dir/video
-    #
-    # Need to move other video processing scripts HERE
-    # After I have written them of course
-    #
+
+    sudo mkdir -p $pihelmetcam_dir/video/mp4 || install_error "Unable to create directory '$pihelmetcam_dir/video/mp4'"
+    sudo chmod a+r $pihelmetcam_dir/video/mp4 || install_error "Unable to set read permissions for '$pihelmetcam_dir/video/mp4'"
+    sudo chmod a+w $ppihelmetcam_dir/video/mp4 || install_error "Unable to set write permissions for '$pihelmetcam_dir/video/mp4'"
     sudo mkdir -p $bikecamera_dir/video/completed || install_error "Unable to create directory '$bikecamera_dir/video/completed'"
     sudo chmod a+r $bikecamera_dir/video/completed || install_error "Unable to set read permissions for '$bikecamera_dir/video/completed'"
     sudo chmod a+w $bikecamera_dir/video/completed || install_error "Unable to set write permissions for '$bikecamera_dir/video/completed'"
@@ -237,8 +237,6 @@ function configuration_for_reset() {
 # Set up configuration for the video functions
 function configuration_for_video() {
     install_log "Setting up configuration for the video recording function"
-    sudo echo "vid_output_dir = \"$bikecamera_dir/video/completed\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo echo "vid_input_dir = \"$bikecamera_dir/video/processing\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "cull_free_space = 1000" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_rotation = 0" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_hres = 960" >> /tmp/video.ini || install_error "Unable to write to video configuration file"

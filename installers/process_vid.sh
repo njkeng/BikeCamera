@@ -8,9 +8,47 @@ function process_video_files() {
 	# Numeric variables from video.ini
     cull_free_space=$(sudo cat /etc/bikecamera/video/video.ini | grep --only-matching --perl-regexp "(?<=cull_free_space = )\w+")
 
+	# Numeric variables from status.ini
+    status_current=$(sudo cat /etc/bikecamera/video/status.ini | grep --only-matching --perl-regexp "(?<=status_current = )\w+")
+
 	# Calculate required free space in kB
 	cull_kb=$(expr $cull_free_space \* 1024)
 	echo "Required free space: $cull_kb kB"
+
+-    # Process all of the video files in the 'completed' folder
+    while : ; do
+
+    	# Check for camera recording
+    	if [ $status_current -gt 1 ]; then
+    		echo "Video is being recorded - skip processing"
+    		break
+    	fi
+
+    	# Check for MP4Box already running
+    	MP4Box_count=$(ps ax | grep -c MP4Box)
+    	if [ $MP4Box_count -gt 1 ]; then
+    		echo "MP4Box already running - will not start a second conversion"
+    		break
+    	fi
+
+    	# Get the file name of the oldest video file in the folder
+		input_file=$(find $vid_dir/completed -name '*.h264' -printf '%P\n' | sort | head -1)
+		# Trim the file extension
+		input_file=${input_file%'.h264'}
+
+		# Check for all files completed
+	    if [ "$input_file" == "" ]; then
+	    	echo "Found no files to process"
+	    	break
+	    fi
+
+	    # Execute the conversion command
+	    sudo MP4Box -add $vid_dir/completed/$input_file.h264 $vid_dir/mp4/$input_file.$mp4
+
+	    # Remove the file after it has been processed
+	    sudo rm $vid_dir/completed/$input_file.h264
+    done
+
 
 	while : ; do
 
