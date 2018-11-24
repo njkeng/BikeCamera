@@ -432,11 +432,11 @@ function samba_settings() {
 function check_camera_i2c_enabled() {
 
 	# Check for camera enabled
-	if [ $(sudo grep "start_x=1" /boot/config.txt) -ne 1 ]; then
-        install_log "The camera interface is already enabled"
-	else
+	if [ $(sudo grep -c "start_x=1" /boot/config.txt) -ne 1 ]; then
         sudo sed -i "s/start_x=0/start_x=1/g" /boot/config.txt  || install_error "Unable to enable the camera interface"
-    	install_log "The camera interface has been enabled"
+        install_log "The camera interface has been enabled"
+	else
+        install_log "The camera interface is already enabled"
 	fi
 
 	# Check for I2C enabled
@@ -456,7 +456,7 @@ function rtc_kernel_module() {
     install_log "Enabling real-time clock kernel module"
 
     # Check if /boot/config.txt needs patching
-    if [ $(sudo grep -c DS3231 /boot/config.txt) -ne 1 ]
+    if [ $(sudo grep -c ds3231 /boot/config.txt) -ne 1 ]
     then
         # Didn't find existing line for DS3231 support
         config_plus_date="$bikecamera_dir/boot.config.txt.`date +%F-%R`"
@@ -488,7 +488,7 @@ function rtc_kernel_module() {
     # Set the time on the RTC
     if [ -e /dev/rtc ]; then
     	sudo hwclock -w
-        install_attn "The time has been set on the Real Time Clock"
+        install_log "The time has been set on the Real Time Clock"
     else
         install_attn "Could not set the Real Time Clock.  Is there one installed?"
     fi
