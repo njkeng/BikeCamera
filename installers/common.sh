@@ -432,8 +432,7 @@ function samba_settings() {
 function check_camera_i2c_enabled() {
 
 	# Check for camera enabled
-	if grep "start_x=1" /boot/config.txt
-	then
+	if [ $(sudo grep "start_x=1" /boot/config.txt) -ne 1 ]; then
         install_log "The camera interface is already enabled"
 	else
         sudo sed -i "s/start_x=0/start_x=1/g" /boot/config.txt  || install_error "Unable to enable the camera interface"
