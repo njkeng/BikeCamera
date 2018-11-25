@@ -15,11 +15,11 @@ function process_video_files() {
     # Process all of the video files in the 'completed' folder
     while : ; do
 
-    	# # Check for camera recording
-    	# if [ $status_current -gt 1 ]; then
-    	# 	echo "Video is being recorded - skip processing"
-    	# 	break
-    	# fi
+    	# Check for camera recording
+    	if [ $status_current -gt 0 ]; then
+    		echo "Video is being recorded - skip processing"
+    		break
+    	fi
 
     	# Check for MP4Box already running
     	MP4Box_count=$(ps ax | grep -c MP4Box)
