@@ -96,7 +96,7 @@ def update_annotation():
 
     annotation_timer = Timer(0.5, update_annotation).start()
     if camera.recording:
-        camera_text = vid_camera_name + '/  /'
+        camera_text = vid_camera_name + '  '
         if vid_datetime_enable:
             camera_text = camera_text + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         camera.annotate_text = camera_text
