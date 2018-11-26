@@ -103,6 +103,14 @@ function DisplayVideoSettings(){
         <div class="panel-heading"><i class="fa fa-video-camera fa-fw"></i> Video settings</div>
         <!-- /.panel-heading -->
         <div class="panel-body">
+
+        <?php
+        if (isset($_POST['system_reboot'])) {
+          echo '<div class="alert alert-warning">System Rebooting Now!</div>';
+          $result = shell_exec("sudo /sbin/reboot");
+        }
+        ?>
+
           <p><?php $status->showMessages(); ?></p>
 
           <form method="POST" action="?page=videosettings_conf" name="video_conf_form" class="form-horizontal">
@@ -241,6 +249,7 @@ function DisplayVideoSettings(){
               </div><!-- /.tab-content  -->
 
             <input type="submit" class="btn btn-outline btn-primary" name="save_settings" value="Save settings" />
+            <input type="submit" class="btn btn-warning" name="system_reboot"   value="Reboot" />
 
           </form>
         </div><!-- ./ Panel body -->
@@ -305,7 +314,7 @@ function SaveVideoSettings($status, $video_ini) {
     }
 
     if ( write_php_ini($ini_data,'/etc/bikecamera/video/video.ini')) {
-      $status->addMessage('Successfully saved configuration data', 'success');
+      $status->addMessage('Successfully saved configuration. Reboot for settings to take effect', 'success');
     } else {
       $status->addMessage('Unable to save configuration data', 'danger');
       return false;
