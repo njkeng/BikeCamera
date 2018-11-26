@@ -36,6 +36,7 @@ vid_length = int(myvars["vid_length"])          # Video file length in minutes
 vid_dir = myvars["vid_dir"].strip('"')
 vid_datetime_enable = int(myvars["vid_datetime_enable"])
 vid_datetime_size = int(myvars["vid_datetime_size"])
+vid_camera_name = myvars["vid_camera_name"].strip('"')
 
 # Toggle start / stop recording wshen the button is pressed
 #
@@ -95,8 +96,10 @@ def update_annotation():
 
     annotation_timer = Timer(0.5, update_annotation).start()
     if camera.recording:
+        camera_text = vid_camera_name + '/  /'
         if vid_datetime_enable:
-            camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            camera_text = camera_text + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        camera.annotate_text = camera_text
         # The wait_recording function is called so that all camera errors are shown on screen
         camera.wait_recording(0.2)
 
@@ -147,9 +150,8 @@ camera.framerate = hc_framerate
 camera.rotation = hc_rotation
 camera.awb_mode = hc_awb_mode
 camera.exposure_mode = hc_exp_mode
-if vid_datetime_enable:
-    camera.annotate_background = picamera.Color('black')
-    camera.annotate_text_size = vid_datetime_size
+camera.annotate_background = picamera.Color('black')
+camera.annotate_text_size = vid_datetime_size
 
 # Usually don't want this.  The preview pops up over the whole desktop.
 #camera.start_preview()

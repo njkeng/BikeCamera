@@ -250,7 +250,8 @@ function configuration_for_video() {
     sudo echo "vid_length = 5" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_dir = \"$bikecamera_dir/video\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_datetime_enable = 1" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo echo "vid_datetime_size = 15" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_datetime_size = 20" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "vid_camera_name = \"$bikecamera_devicename\"" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo mv /tmp/video.ini $bikecamera_dir/video/ || install_error "Unable to move files to '$bikecamera_dir'"
 
     sudo echo "status_start = 0" >> /tmp/status.ini || install_error "Unable to write to video status file"
