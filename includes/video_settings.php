@@ -106,8 +106,10 @@ function DisplayVideoSettings(){
 
         <?php
         if (isset($_POST['system_reboot'])) {
-          echo '<div class="alert alert-warning">System Rebooting Now!</div>';
-          $result = shell_exec("sudo /sbin/reboot");
+          echo '<div class="alert alert-warning">System Rebooting Now!   ';
+          echo '<input type="button" class="btn btn-outline btn-primary" value="Reload page" onclick="document.location.reload(true)" />';
+          echo '</div>';
+          $result = shell_exec("sleep 5s; sudo /sbin/reboot > /dev/null 2>/dev/null &");
         }
         ?>
 
