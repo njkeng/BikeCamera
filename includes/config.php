@@ -18,7 +18,7 @@ define('RASPI_WPA_CTRL_INTERFACE', '/var/run/wpa_supplicant');
 define('RASPI_PAGETITLE_NAME', 'BikeCamera Configuration Portal');
 
 //Menu navbar text
-define('RASPI_NAVBAR_NAME', 'BikeCamera Configuration Portal v1.0');
+define('RASPI_NAVBAR_NAME', 'BikeCamera Configuration Portal');
 
 // Optional services, set to true to enable.
 define('RASPI_VIDEOSETTINGS_ENABLED', true );

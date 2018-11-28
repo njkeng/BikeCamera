@@ -159,7 +159,7 @@ function DisplayWPAConfig(){
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-primary">           
-        <div class="panel-heading"><i class="fa fa-signal fa-fw"></i> Configure client</div>
+        <div class="panel-heading"><i class="fa fa-signal fa-fw"></i> Configure WiFi networks</div>
         <!-- /.panel-heading -->
         <div class="panel-body">
           <p><?php $status->showMessages(); ?></p>
@@ -187,10 +187,10 @@ function DisplayWPAConfig(){
 
                 <div class="info-item">Status</div> 
                   <?php if ($network['configured']) { ?>
-                    <i class="fa fa-check-circle fa-fw"></i>
+                    <i class="fa fa-check-circle fa-fw"></i> Configured
                   <?php } ?>
                   <?php if ($network['connected']) { ?>
-                    <i class="fa fa-exchange fa-fw"></i>
+                    <i class="fa fa-exchange fa-fw"></i> Connected
                   <?php } ?>
                 <br>
 

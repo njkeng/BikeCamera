@@ -141,7 +141,7 @@ $csrf_token = $_SESSION['csrf_token'];
               <?php endif; ?>
               <?php if ( RASPI_CONFAUTH_ENABLED ) : ?>
                 <li>
-                  <a href="index.php?page=auth_conf"><i class="fa fa-lock fa-fw"></i> Configure Auth</a>
+                  <a href="index.php?page=auth_conf"><i class="fa fa-lock fa-fw"></i> BikeCamera login</a>
                 </li>
               <?php endif; ?>
               <?php if ( RASPI_SYSTEM_ENABLED ) : ?>
@@ -166,7 +166,7 @@ $csrf_token = $_SESSION['csrf_token'];
         <div class="row">
           <div class="col-lg-12">
               <h1 class="page-header">
-                <img class="logo" src="img/BikeCamera_logo_simple.png" width="240" height="98">  BikeCamera
+                <img class="logo" src="img/BikeCamera_logo_simple.png" width="120" height="49">  BikeCamera
               </h1>
           </div>
         </div><!-- /.row -->

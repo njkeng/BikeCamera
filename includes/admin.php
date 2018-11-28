@@ -38,17 +38,11 @@ function DisplayAuthConfig($username, $password){
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-primary">
-        <div class="panel-heading"><i class="fa fa-lock fa-fw"></i>Configure Auth</div>
+        <div class="panel-heading"><i class="fa fa-lock fa-fw"></i>BikeCamera portal login</div>
         <div class="panel-body">
           <p><?php $status->showMessages(); ?></p>
           <form role="form" action="?page=auth_conf" method="POST">
             <?php CSRFToken() ?>
-            <div class="row">
-              <div class="form-group col-md-4">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" name="username" value="<?php echo $username; ?>"/>
-              </div>
-            </div>
             <div class="row">
               <div class="form-group col-md-4">
                 <label for="password">Old password</label>
