@@ -121,7 +121,7 @@ $csrf_token = $_SESSION['csrf_token'];
               <?php endif; ?>              
               <?php if ( RASPI_CLIENT_ENABLED ) : ?>
                 <li>
-                  <a href="index.php?page=wpa_conf"><i class="fa fa-signal fa-fw"></i> Configure WiFi Client</a>
+                  <a href="index.php?page=wpa_conf"><i class="fa fa-signal fa-fw"></i> WiFi networks</a>
                 </li>
               <?php endif; ?>
               <?php if ( RASPI_HOTSPOT_ENABLED ) : ?>
