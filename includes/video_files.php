@@ -35,7 +35,14 @@ function DisplayVideoFiles(){
       <div class="panel panel-primary">
         <div class="panel-heading"><i class="fa fa-file-movie-o fa-fw"></i>Video files</div>
         <div class="panel-body">
-
+          <div class="row">
+          <label for="notes">  Notes:</label>
+            <ul id="notes">
+              <li>Processing converts raw video files into standard .mp4</li>
+              <li>Processing only occurs when recording is Stopped</li>
+              <li>Processing is slow.  It takes about the same time as it took to record.</li>
+            </ul>
+          </div>
           <!-- Nav tabs -->
           <ul class="nav nav-tabs">
             <li class="active">
@@ -55,7 +62,7 @@ function DisplayVideoFiles(){
               <div class="row">
                 <div class="form-group col-md-4">
                   <?php if (count($mp4_files) < 1) {
-                    echo "<h4>There are no files to list</h4>";
+                    echo "<h4>There are no processed files/h4>";
                   } else {
                     echo "<h4></h4>";
                     echo "<label for='processed_list'>Right click to download / save</label>";
@@ -75,7 +82,7 @@ function DisplayVideoFiles(){
                 <div class="form-group col-md-4">
 
                   <?php if (count($completed_files) < 1) {
-                    echo "<h4>There are no files to list</h4>";
+                    echo "<h4>All files have been processed</h4>";
                   } else {
                     echo "<h4></h4>";
                     echo "<label for='processed_list'>Right click to download / save</label>";
