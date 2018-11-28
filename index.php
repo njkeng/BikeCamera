@@ -21,6 +21,7 @@ include_once( 'includes/functions.php' );
 include_once( 'includes/authenticate.php' );
 include_once( 'includes/admin.php' );
 include_once( 'includes/hostapd.php' );
+include_once( 'includes/dhcp.php' );
 include_once( 'includes/system.php' );
 include_once( 'includes/configure_client.php' );
 include_once( 'includes/video_settings.php' );
@@ -128,6 +129,11 @@ $csrf_token = $_SESSION['csrf_token'];
                   <a href="index.php?page=hostapd_conf"><i class="fa fa-dot-circle-o fa-fw"></i> Configure Hotspot</a>
                 </li>
               <?php endif; ?>
+              <?php if ( RASPI_DHCP_ENABLED ) : ?>
+              <li>
+                <a href="index.php?page=dhcpd_conf"><i class="fa fa-exchange fa-fw"></i> Configure DHCP Server</a>
+              </li>
+              <?php endif; ?>
               <?php if ( RASPI_TIME_ENABLED ) : ?>
                 <li>
                   <a href="index.php?page=time_conf"><i class="fa fa-clock-o fa-fw"></i> Time and date</a>
@@ -173,6 +179,9 @@ $csrf_token = $_SESSION['csrf_token'];
             break;
           case "video_files_conf":
             DisplayVideoFiles();
+            break;
+          case "dhcpd_conf":
+            DisplayDHCPConfig();
             break;
           case "wpa_conf":
             DisplayWPAConfig();

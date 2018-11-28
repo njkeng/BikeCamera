@@ -211,6 +211,11 @@ function check_for_old_configs() {
         sudo ln -sf "$bikecamera_dir/backups/dnsmasq.conf.`date +%F-%R`" "$bikecamera_dir/backups/dnsmasq.conf"
     fi
 
+    if [ -f /etc/dhcpcd.conf ]; then
+        sudo cp /etc/dhcpcd.conf "$bikecamera_dir/backups/dhcpcd.conf.`date +%F-%R`"
+        sudo ln -sf "$bikecamera_dir/backups/dhcpcd.conf.`date +%F-%R`" "$bikecamera_dir/backups/dhcpcd.conf"
+    fi
+
     if [ -f /etc/rc.local ]; then
         sudo cp /etc/rc.local "$bikecamera_dir/backups/rc.local.`date +%F-%R`"
         sudo ln -sf "$bikecamera_dir/backups/rc.local.`date +%F-%R`" "$bikecamera_dir/backups/rc.local"
@@ -274,10 +279,8 @@ function default_configuration() {
     sudo cp $webroot_dir/config/default_hostapd /etc/default/hostapd || install_error "Unable to copy hostapd defaults file"
     sudo cp $webroot_dir/config/hostapd.conf /etc/hostapd/hostapd.conf || install_error "Unable to copy hostapd configuration file"
     sudo cp $webroot_dir/config/dnsmasq.conf /etc/dnsmasq.conf || install_error "Unable to copy dnsmasq configuration file"
+    sudo cp $webroot_dir/config/dhcpcd.conf /etc/dhcpcd.conf || install_error "Unable to copy dhcpcd configuration file"
     sudo cp $webroot_dir/config/interfaces /etc/network/interfaces || install_error "Unable to copy interface configuration file"
-
-    # After these configuration files are installed, dhcpcd is no linger needed, so disable
-    sudo update-rc.d dhcpcd disable
 
     # Backup original wifi client configuration files
     if [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then
@@ -290,7 +293,7 @@ function default_configuration() {
         sudo cp /etc/wpa_supplicant/wpa_supplicant_wlan1.conf $webroot_dir/config/wpa_supplicant_wlan1.conf || install_error "Unable to copy original wpa_supplicant_wlan1 configuration"
     fi
 
-    # Generate required lines for Rasp AP to place into rc.local file.
+    # Generate required lines for installer to place into rc.local file.
     # #BikeCamera is for removal script
     lines=(
     'echo 1 > /proc/sys/net/ipv4/ip_forward #BikeCamera'
@@ -488,7 +491,7 @@ function rtc_kernel_module() {
 
     # Set the time on the RTC
     if [ -e /dev/rtc ]; then
-    	sudo hwclock -w
+    	sudo hwclock -w || install_error "Unable to set the time on the Real Time CLock"
         install_log "The time has been set on the Real Time Clock"
     else
         install_attn "Could not set the Real Time Clock.  Is there one installed?"

@@ -7,6 +7,8 @@ define('RASPI_WIFI_CLIENT_INTERFACE', 'wlan0');
 
 // Constants for configuration file paths.
 // These are typical for default RPi installs. Modify if needed.
+define('RASPI_DNSMASQ_CONFIG', '/etc/dnsmasq.conf');
+define('RASPI_DNSMASQ_LEASES', '/var/lib/misc/dnsmasq.leases');
 define('RASPI_HOSTAPD_CONFIG', '/etc/hostapd/hostapd.conf');
 define('RASPI_WPA_SUPPLICANT_CONFIG', '/etc/wpa_supplicant/wpa_supplicant.conf');
 define('RASPI_HOSTAPD_CTRL_INTERFACE', '/var/run/hostapd');
@@ -23,6 +25,7 @@ define('RASPI_VIDEOSETTINGS_ENABLED', true );
 define('RASPI_VIDEOFILES_ENABLED', true );
 define('RASPI_CLIENT_ENABLED', true );
 define('RASPI_HOTSPOT_ENABLED', true );
+define('RASPI_DHCP_ENABLED', true );
 define('RASPI_TIME_ENABLED', false );
 define('RASPI_CONFAUTH_ENABLED', true );
 define('RASPI_SYSTEM_ENABLED', true );
