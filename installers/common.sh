@@ -415,7 +415,7 @@ function samba_settings() {
         sudo echo "" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         # The following words in square brackets will be the name of the share
         sudo echo "[$bikecamera_devicename]" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
-        sudo echo "path = $bikecamera_dir/video/completed" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
+        sudo echo "path = $bikecamera_dir/video/mp4" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "comment = Bike video folder" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "browseable = yes" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
         sudo echo "writeable = no" >> /tmp/new_smb.conf || install_error "Unable to write to samba configuration file"
