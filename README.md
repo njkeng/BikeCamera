@@ -17,14 +17,7 @@ Items to add:
 - Video settings
     What does it all mean??
     Reboot for changes to take effect
-- Why BikeCamera only provides raw .h264
-- Playing video on the Bike Camera. Playback rate.
-- Converting video.  On BikeCamera or on PC
 
-ffmpeg -f lavfi -i aevalsrc=0 -r 30 -i input_file.h264 -shortest -c:v copy -c:a aac -strict experimental output_file.mp4
-
-- Rotate or flip
-- Playing video on PC
 
 
 
@@ -65,7 +58,7 @@ Real time clock??
 ## Quick installer
 Install RaspAP from your RaspberryPi's shell prompt:
 ```sh
-$ wget -q https://git.io/fpOh4 -O /tmp/caminstaller && bash /tmp/caminstaller
+$ wget -q https://git.io/fpOh4 -O /tmp/bci && bash /tmp/bci
 ```
 The installer will complete the steps in the manual installation (below) for you.
 
