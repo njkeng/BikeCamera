@@ -64,7 +64,7 @@ function DisplayHostAPDConfig(){
   <div class="row">
     <div class="col-lg-12">
       <div class="panel panel-primary">
-        <div class="panel-heading"><i class="fa fa-dot-circle-o fa-fw"></i> Configure hotspot</div>
+        <div class="panel-heading"><i class="fa fa-dot-circle-o fa-fw"></i> WiFi hotspot</div>
         <!-- /.panel-heading -->
         <div class="panel-body">
 	  <p><?php $status->showMessages(); ?></p>
@@ -479,10 +479,10 @@ function SaveHostAPDConfig($wpa_array, $enc_types, $modes, $interfaces, $status)
       if( $return == 0 ) {
         $status->addMessage('Wifi Hotspot settings saved', 'success');
       } else {
-        $status->addMessage('Unable to save wifi hotspot settings', 'danger');
+        $status->addMessage('Unable to save Wifi hotspot settings', 'danger');
       }
     } else {
-      $status->addMessage('Unable to save wifi hotspot settings', 'danger');
+      $status->addMessage('Unable to save Wifi hotspot settings', 'danger');
       return false;
     }
   }
