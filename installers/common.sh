@@ -20,23 +20,23 @@ fi
 
 # Outputs a BikeCamera Install log line
 function install_log() {
-    echo -e "\033[1;32mBikeCamera Install: $*\033[m"
+    echo -e "\033[1;32mInstall: $*\033[m"
 }
 
 # Outputs a BikeCamera Install Error log line and exits with status code 1
 function install_error() {
-    echo -e "\033[1;37;41mBikeCamera Install Error: $*\033[m"
+    echo -e "\033[1;37;41mInstall Error: $*\033[m"
     exit 1
 }
 
 # Outputs a BikeCamera Install attention line
 function install_attn() {
-    echo -e "\033[1;33mBikeCamera Attention: $*\033[m"
+    echo -e "\033[1;33mAttention: $*\033[m"
 }
 
 # Outputs a BikeCamera Install information line
 function install_info() {
-    echo -e "\033[1;36mBikeCamera Information: $*\033[m"
+    echo -e "\033[1;36mInformation: $*\033[m"
 }
 
 # Outputs a welcome message
@@ -505,11 +505,12 @@ function rtc_kernel_module() {
 
 function ip_addresses() {
     install_log "IP Addresses"
-    echo -e "You need to take note of the following IP addresses\n"
-    echo -e "You will need to use them to access the web interface of the camera\n\n"
+    install_attn "IMPORTANT:" 
+    echo -e "You need to take note of the following IP addresses"
+    echo -e "You will need to use them to access the web interface of the camera\n"
     wifi_addr=$(ip addr show dev wlan0 | grep -Po '(?!(inet 127.\d.\d.1))(inet \K(\d{1,3}\.){3}\d{1,3})')
-    install_info "The IP address of the camera on WiFi is $wifi_addr"
-    install_info "The IP address of the camera direct connect is 10.1.1.1"
+    install_info "The camera's address using WiFi is $wifi_addr"
+    install_info "The camera's address using direct connect is 10.1.1.1"
     echo -e "\n"
 }
 
