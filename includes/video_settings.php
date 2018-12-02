@@ -55,6 +55,7 @@ function DisplayVideoSettings(){
       $status_ini ['status_start']  = "1";
       if ( write_php_ini($status_ini,'/etc/bikecamera/video/status.ini')) {
         $status->addMessage('Start command sent', 'success');
+        sleep(2);
       } else {
         $status->addMessage('Unable to send the start command', 'danger');
         return false;
@@ -76,6 +77,7 @@ function DisplayVideoSettings(){
       $status_ini ['status_stop']  = "1";
       if ( write_php_ini($status_ini,'/etc/bikecamera/video/status.ini')) {
         $status->addMessage('Stop command sent', 'success');
+        sleep(2);
       } else {
         $status->addMessage('Unable to send the stop command', 'danger');
         return false;
@@ -85,14 +87,22 @@ function DisplayVideoSettings(){
     }
   }
 
+  # Check camera status
+  #
+  # Read existing status data, else use default data
+  if ( ! $status_ini = parse_ini_file('/etc/bikecamera/video/status.ini')) {
+    $status->addMessage('Could not find an existing status file', 'warning');
+  }
+  # Output status of the camera
+  if ( $status_ini ['status_current'] == "1" ) {
+    $status->addMessage('Camera is recording', 'success');
+  } else {
+    $status->addMessage('Camera is not recording', 'danger');
+  }
+
   # Read existing configuration data
   if ( ! $video_ini = parse_ini_file('/etc/bikecamera/video/video.ini')) {
     $status->addMessage('Could not find an existing configuration file', 'warning');
-  }
-
-  # Read status data
-  if ( ! $status_ini = parse_ini_file('/etc/bikecamera/video/status.ini')) {
-    $status->addMessage('Could not find an existing status file', 'warning');
   }
 
   ?>
@@ -120,12 +130,12 @@ function DisplayVideoSettings(){
             <input type="hidden" name="video_settings" ?>
 
             <h4>
-            <div class="btn-group btn-block">
-              <input type="submit" class="col-md-2 btn btn-success" name="start_recording" value="Start recording" />
-              <input type="submit" class="col-md-2 btn btn-danger" name="stop_recording" value="Stop recording" />
-            </div><!-- /.btn-group -->
-          </h4>
-          
+              <div class="btn-group btn-block">
+                <input type="submit" class="col-md-2 btn btn-success" name="start_recording" value="Start recording" />
+                <input type="submit" class="col-md-2 btn btn-danger" name="stop_recording" value="Stop recording" />
+              </div><!-- /.btn-group -->
+            </h4>
+
               <!-- Nav tabs -->
               <ul class="nav nav-tabs">
                 <li class="active">
