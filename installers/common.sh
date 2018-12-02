@@ -34,6 +34,11 @@ function install_attn() {
     echo -e "\033[1;33mBikeCamera Attention: $*\033[m"
 }
 
+# Outputs a BikeCamera Install information line
+function install_info() {
+    echo -e "\033[1;36mBikeCamera Information: $*\033[m"
+}
+
 # Outputs a welcome message
 function display_welcome() {
     red='\033[0;31m'
@@ -498,6 +503,16 @@ function rtc_kernel_module() {
     fi
 }
 
+function ip_addresses() {
+    install_log "IP Addresses"
+    echo -e "You need to take note of the following IP addresses\n"
+    echo -e "You will need to use them to access the web interface of the camera\n\n"
+    wifi_addr=$(ip addr show dev wlan0 | grep -Po '(?!(inet 127.\d.\d.1))(inet \K(\d{1,3}\.){3}\d{1,3})')
+    install_info "The IP address of the camera on WiFi is $wifi_addr"
+    install_info "The IP address of the camera direct connect is 10.1.1.1"
+    echo -e "\n"
+}
+
 function install_complete() {
     install_log "Installation completed!"
 
@@ -537,5 +552,6 @@ function install_bikecamera() {
     samba_settings
     check_camera_i2c_enabled
     rtc_kernel_module
+    ip_addresses
     install_complete
 }
