@@ -46,7 +46,7 @@ function DisplayVideoFiles(){
           <!-- Nav tabs -->
           <ul class="nav nav-tabs">
             <li class="active">
-                <a href="#processed" data-toggle="tab">Processed files</a>
+                <a href="#processed" data-toggle="tab">mp4 files</a>
             </li>
             <li>
               <a href="#unprocessed" data-toggle="tab">Unprocessed files</a>
