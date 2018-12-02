@@ -49,7 +49,7 @@ function DisplayVideoFiles(){
                 <a href="#processed" data-toggle="tab">mp4 files</a>
             </li>
             <li>
-              <a href="#unprocessed" data-toggle="tab">Unprocessed files</a>
+              <a href="#unprocessed" data-toggle="tab">Raw files</a>
             </li>
           </ul>
 
