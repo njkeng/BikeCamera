@@ -62,7 +62,7 @@ function DisplayVideoFiles(){
               <div class="row">
                 <div class="form-group col-md-4">
                   <?php if (count($mp4_files) < 1) {
-                    echo "<h4>There are no processed files/h4>";
+                    echo "<h4>There are no video files</h4>";
                   } else {
                     echo "<h4></h4>";
                     echo "<label for='processed_list'>Right click to download / save</label>";
