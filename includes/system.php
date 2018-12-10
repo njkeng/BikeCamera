@@ -125,7 +125,7 @@ function DisplaySystem(){
                   <div class="panel-body">
 		            <h4>System Information</h4>
 		            <div class="info-item">Pi Revision</div> <?php echo RPiVersion() ?></br></br>
-		            <div class="info-item">SD Card Capacity</div>
+		            <div class="info-item">SD Card Used</div>
 		            <div class="progress">
 		                <div class="progress-bar progress-bar-<?php echo $space_status ?> progress-bar-striped active"
 		                role="progressbar"
