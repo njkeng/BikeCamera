@@ -254,7 +254,7 @@ function configuration_for_video() {
     sudo echo "picamera_framerate = 40" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_quality = 20" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_bitrate = 17" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
-    sudo echo "picamera_resolution = \"720p_SD\"">> /tmp/video.ini || install_error "Unable to write to video configuration file"
+    sudo echo "picamera_resolution = \"1080p_SD\"">> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_awb_mode = \"auto\"">> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "picamera_exp_mode = \"auto\"">> /tmp/video.ini || install_error "Unable to write to video configuration file"
     sudo echo "vid_length = 5" >> /tmp/video.ini || install_error "Unable to write to video configuration file"
