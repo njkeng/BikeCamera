@@ -9,7 +9,7 @@
 This project involves both hardware and software.  This repository contains the software only.
 The software and hardware aspects of the project are described in detail at instructables.com
 
-[**BikeCamera project**](https://www.instructables.com)
+[**BikeCamera project**](https://www.instructables.com/id/BikeCamera-Video-Camera)
 
 ### Here are some screenshots:
 
