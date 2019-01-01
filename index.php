@@ -150,10 +150,10 @@ $csrf_token = $_SESSION['csrf_token'];
                 </li>
               <?php endif; ?>
               <li>
-                 <a target="_blank" rel="noopener noreferrer" href="https://github.com/njkeng/BiKecameRa/blob/master/README.md"><i class="fa fa-question-circle fa-fw"></i> Software README</a>
+                 <a target="_blank" rel="noopener noreferrer" href="https://github.com/njkeng/bikecamera/blob/master/README.md"><i class="fa fa-question-circle fa-fw"></i> Software README</a>
               </li>
               <li>
-                 <a target="_blank" rel="noopener noreferrer" href="https://instructables.com"><i class="fa fa-info-circle fa-fw"></i> BikeCamera Instructable</a>
+                 <a target="_blank" rel="noopener noreferrer" href="https://www.instructables.com/id/BikeCamera-Video-Camera"><i class="fa fa-info-circle fa-fw"></i> BikeCamera Instructable</a>
               </li>
             </ul>
           </div><!-- /.navbar-collapse -->
