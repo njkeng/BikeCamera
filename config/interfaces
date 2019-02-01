@@ -38,7 +38,7 @@ allow-hotplug ap0
 iface ap0 inet static
         pre-up iw phy phy0 interface add ap0 type __ap
         post-down iw dev ap0 del
-        address 10.3.141.1
+        address 10.1.1.1
         netmask 255.255.255.0
         hostapd /etc/hostapd/hostapd.conf
 
