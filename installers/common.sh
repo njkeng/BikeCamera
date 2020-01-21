@@ -8,7 +8,7 @@ version=`sed 's/\..*//' /etc/debian_version`
 webroot_dir="/var/www/html" 
 if [ $version -eq 10 ]; then 
     version_msg="Raspian 10.0 (Buster)" 
-    php_package="php7.0-cgi" 
+    php_package="php7.3-cgi" 
 elif [ $version -eq 9 ]; then 
     version_msg="Raspian 9.0 (Stretch)" 
     php_package="php7.0-cgi" 
