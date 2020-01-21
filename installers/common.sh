@@ -8,17 +8,17 @@ version=`sed 's/\..*//' /etc/debian_version`
 webroot_dir="/var/www/html" 
 if [ $version -eq 10 ]; then 
     version_msg="Raspian 10.0 (Buster)" 
-    php_package="php7.3-cgi" 
+    php_package="php php-common php-cgi php-zip" 
 elif [ $version -eq 9 ]; then 
     version_msg="Raspian 9.0 (Stretch)" 
-    php_package="php7.0-cgi" 
+    php_package="php7.0-cgi php7.0-zip" 
 elif [ $version -eq 8 ]; then 
     version_msg="Raspian 8.0 (Jessie)" 
-    php_package="php5-cgi" 
+    php_package="php5-cgi php7.0-zip" 
 else 
     version_msg="Raspian earlier than 8.0 (Wheezy)"
     webroot_dir="/var/www" 
-    php_package="php5-cgi" 
+    php_package="php5-cgi php7.0-zip" 
 fi 
 
 # Outputs a BikeCamera Install log line
