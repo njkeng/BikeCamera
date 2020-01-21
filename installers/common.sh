@@ -474,6 +474,9 @@ function rtc_kernel_module() {
         sudo sh -c "echo '' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
         sudo sh -c "echo '# Enable Real Time Clock' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
         sudo sh -c "echo 'dtoverlay=i2c-rtc,ds3231' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
+        sudo sh -c "echo '' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
+        sudo sh -c "echo '# Disable automatic reboot on GPIO3 going low' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
+        sudo sh -c "echo 'dtoverlay=gpio-poweroff' >> /boot/config.txt" || install_error "Unable to write to /boot/config.txt"
     else
         install_log "RTC kernel module already enabled"
     fi
