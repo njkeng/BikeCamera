@@ -6,7 +6,10 @@ version=`sed 's/\..*//' /etc/debian_version`
 # Determine version, set default home location for lighttpd and 
 # php package to install 
 webroot_dir="/var/www/html" 
-if [ $version -eq 9 ]; then 
+if [ $version -eq 10 ]; then 
+    version_msg="Raspian 10.0 (Buster)" 
+    php_package="php7.0-cgi" 
+elif [ $version -eq 9 ]; then 
     version_msg="Raspian 9.0 (Stretch)" 
     php_package="php7.0-cgi" 
 elif [ $version -eq 8 ]; then 
