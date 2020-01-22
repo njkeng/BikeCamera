@@ -524,6 +524,58 @@ function ip_addresses() {
     echo -e "\n"
 }
 
+# Optimize configuration of php-cgi.
+function optimize_php() {
+    install_log "Optimize PHP configuration"
+    if [ ! -f "$phpcgiconf" ]; then
+        install_warning "PHP configuration could not be found."
+        return
+    fi
+
+    # Backup php.ini and create symlink for restoring.
+    datetimephpconf=$(date +%F-%R)
+    sudo cp "$phpcgiconf" "$raspap_dir/backups/php.ini.$datetimephpconf"
+    sudo ln -sf "$raspap_dir/backups/php.ini.$datetimephpconf" "$raspap_dir/backups/php.ini"
+
+    echo -n "Enable HttpOnly for session cookies (Recommended)? [Y/n]: "
+    if [ "$assume_yes" == 0 ]; then
+        read answer < /dev/tty
+        if [ "$answer" != "${answer#[Nn]}" ]; then
+            echo -e
+        else
+             php_session_cookie=1;
+        fi
+    fi
+
+    if [ "$assume_yes" == 1 ] || [ "$php_session_cookie" == 1 ]; then
+        echo "Php-cgi enabling session.cookie_httponly."
+        sudo sed -i -E 's/^session\.cookie_httponly\s*=\s*(0|([O|o]ff)|([F|f]alse)|([N|n]o))\s*$/session.cookie_httponly = 1/' "$phpcgiconf"
+    fi
+
+    if [ "$php_package" = "php7.1-cgi" ]; then
+        echo -n "Enable PHP OPCache (Recommended)? [Y/n]: "
+        if [ "$assume_yes" == 0 ]; then
+            read answer < /dev/tty
+            if [ "$answer" != "${answer#[Nn]}" ]; then
+                echo -e
+            else
+                php_opcache=1;
+            fi
+        fi
+
+        if [ "$assume_yes" == 1 ] || [ "$phpopcache" == 1 ]; then
+            echo -e "Php-cgi enabling opcache.enable."
+            sudo sed -i -E 's/^;?opcache\.enable\s*=\s*(0|([O|o]ff)|([F|f]alse)|([N|n]o))\s*$/opcache.enable = 1/' "$phpcgiconf"
+            # Make sure opcache extension is turned on.
+            if [ -f "/usr/sbin/phpenmod" ]; then
+                sudo phpenmod opcache
+            else
+                install_warning "phpenmod not found."
+            fi
+        fi
+    fi
+}
+
 function install_complete() {
     install_log "Installation completed!"
 
@@ -564,5 +616,6 @@ function install_bikecamera() {
     check_camera_i2c_enabled
     rtc_kernel_module
     ip_addresses
+    optimize_php
     install_complete
 }
