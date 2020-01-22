@@ -103,7 +103,7 @@ function update_system_packages() {
 # Installs additional dependencies using system package manager
 function install_dependencies() {
     install_log "Installing required packages"
-    sudo apt-get install $apt_option lighttpd $php_package git hostapd dnsmasq vnstat || install_error "Unable to install dependencies"
+    sudo apt-get install $apt_option lighttpd $php_package git hostapd dnsmasq vnstat python3-picamera python3-gpiozero || install_error "Unable to install dependencies"
 }
 
 # Sets the hostname of the Pi
