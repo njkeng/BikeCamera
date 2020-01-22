@@ -534,8 +534,8 @@ function optimize_php() {
 
     # Backup php.ini and create symlink for restoring.
     datetimephpconf=$(date +%F-%R)
-    sudo cp "$phpcgiconf" "$raspap_dir/backups/php.ini.$datetimephpconf"
-    sudo ln -sf "$raspap_dir/backups/php.ini.$datetimephpconf" "$raspap_dir/backups/php.ini"
+    sudo cp "$phpcgiconf" "$bikecamera_dir/backups/php.ini.$datetimephpconf"
+    sudo ln -sf "$bikecamera_dir/backups/php.ini.$datetimephpconf" "$bikecamera_dir/backups/php.ini"
 
     echo -n "Enable HttpOnly for session cookies (Recommended)? [Y/n]: "
     if [ "$assume_yes" == 0 ]; then
