@@ -3,23 +3,26 @@ bikecamera_dir="/etc/bikecamera"
 bikecamera_user="www-data"
 version=`sed 's/\..*//' /etc/debian_version`
 
-# Determine version, set default home location for lighttpd and 
+# Determine Raspbian version, set default home location for lighttpd and 
 # php package to install 
-webroot_dir="/var/www/html" 
-if [ $version -eq 10 ]; then 
-    version_msg="Raspian 10.0 (Buster)" 
-    php_package="php php-common php-cgi php-zip" 
-elif [ $version -eq 9 ]; then 
-    version_msg="Raspian 9.0 (Stretch)" 
-    php_package="php7.0-cgi php7.0-zip" 
-elif [ $version -eq 8 ]; then 
-    version_msg="Raspian 8.0 (Jessie)" 
-    php_package="php5-cgi php7.0-zip" 
-else 
-    version_msg="Raspian earlier than 8.0 (Wheezy)"
-    webroot_dir="/var/www" 
-    php_package="php5-cgi php7.0-zip" 
-fi 
+if [ "$version" -eq "10" ]; then
+    version_msg="Raspbian 10.0 (Buster)"
+    php_package="php7.1-cgi"
+elif [ "$version" -eq "9" ]; then
+    version_msg="Raspbian 9.0 (Stretch)" 
+    php_package="php7.0-cgi" 
+elif [ "$version" -eq "8" ]; then
+    install_error "Raspbian 8.0 (Jessie) and php5 are deprecated. Please upgrade."
+elif [ "$version" -lt "8" ]; then
+    install_error "Raspbian ${version} is unsupported. Please upgrade."
+fi
+
+phpcgiconf=""
+if [ "$php_package" = "php7.1-cgi" ]; then
+    phpcgiconf="/etc/php/7.1/cgi/php.ini"
+elif [ "$php_package" = "php7.0-cgi" ]; then
+    phpcgiconf="/etc/php/7.0/cgi/php.ini"
+fi
 
 # Outputs a BikeCamera Install log line
 function install_log() {
@@ -98,8 +101,8 @@ function update_system_packages() {
 
 # Installs additional dependencies using system package manager
 function install_dependencies() {
-    # OVERLOAD THIS
-    install_error "No function definition for install_dependencies"
+    install_log "Installing required packages"
+    sudo apt-get install $apt_option lighttpd $php_package git hostapd dnsmasq vnstat || install_error "Unable to install dependencies"
 }
 
 # Sets the hostname of the Pi
