@@ -7,9 +7,4 @@ function update_system_packages() {
     sudo apt-get update || install_error "Unable to update package list"
 }
 
-function install_dependencies() {
-    install_log "Installing required packages"
-    sudo apt-get -y install lighttpd $php_packages git hostapd dnsmasq samba samba-common-bin python-smbus i2c-tools gpac || install_error "Unable to install dependencies"
-}
-
 install_bikecamera
