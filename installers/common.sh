@@ -1,6 +1,7 @@
 bc_devicename="bikecamera"
 bikecamera_dir="/etc/bikecamera"
 bikecamera_user="www-data"
+webroot_dir="/var/www/html"
 version=`sed 's/\..*//' /etc/debian_version`
 
 # Determine Raspbian version, set default home location for lighttpd and 
