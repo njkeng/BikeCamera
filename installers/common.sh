@@ -103,7 +103,7 @@ function update_system_packages() {
 # Installs additional dependencies using system package manager
 function install_dependencies() {
     install_log "Installing required packages"
-    sudo apt-get install -y lighttpd $php_package git hostapd dnsmasq vnstat || install_error "Unable to install dependencies"
+    sudo apt-get install -y lighttpd $php_package git hostapd dnsmasq vnstat samba samba-common-bin python-smbus i2c-tools gpac || install_error "Unable to install dependencies"
 }
 
 # Sets the hostname of the Pi
